@@ -1,0 +1,49 @@
+<div class="main-navbar">
+  <div id="mainnav">
+    <div class="toggle-nav" (click)="mainMenuToggle()">
+      <i class="fa fa-bars sidebar-bar"></i>
+    </div>
+    <ul class="nav-menu" [class.opennav]="menuToggle">
+      <li class="back-btn">
+        <div class="mobile-back text-right" (click)="mainMenuToggle()">
+          <span>Back</span>
+          <i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
+        </div>
+      </li>
+
+      <li>
+        <a class="nav-link" [routerLink]="['/shop/collection']">shop</a>
+      </li>
+      <li>
+        <a [routerLink]="['/blog']" class="nav-link">blog</a>
+      </li>
+
+      <li *ngIf="!isLoggedIn">
+        <a [routerLink]="['/auth/register']" class="nav-link">Register</a>
+      </li>
+
+      <li *ngIf="!isLoggedIn">
+        <a [routerLink]="['/auth/login']" class="nav-link">Login</a>
+      </li>
+
+      <li>
+        <a [routerLink]="['/pages/aboutus']" class="nav-link">about us</a>
+      </li>
+
+      <!-- <li ngbDropdown class="nav-item dropdown d-inline-block">
+
+      </li> -->
+
+      <li *ngIf="isLoggedIn" ngbDropdown>
+        <a class="btn btn-outline-default" id="dropdownBasic1" ngbDropdownToggle>{{fullName}}</a>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <button [routerLink]="['/pages/wishlist']" ngbDropdownItem>Wishlist</button>
+          <button [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
+          <button [routerLink]="['/pages/profile']" ngbDropdownItem>Profile</button>
+          <button [routerLink]="['/auth/forgotpassword']" ngbDropdownItem>Forgot Password</button>
+          <button (click)="onLogout()" ngbDropdownItem>Logout</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

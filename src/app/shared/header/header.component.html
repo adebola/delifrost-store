@@ -1,0 +1,26 @@
+<header class="sticky" [ngClass]="class" [class.fixed]="stick && sticky">
+  <div class="mobile-fix-option"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="main-menu">
+          <div class="menu-left">
+            <div class="brand-logo">
+              <a routerLink="/home" id="headerlogo">
+                <img [src]="themeLogo" class="img-fluid" alt="logo">
+              </a>
+            </div>
+          </div>
+          <div class="menu-right pull-right">
+            <div>
+              <app-menu></app-menu>
+            </div>
+            <div>
+              <app-settings></app-settings>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

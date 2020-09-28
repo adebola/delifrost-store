@@ -1,0 +1,38 @@
+<a [routerLink]="['/shop/product/left/sidebar/', product.productId]">
+  <img
+    class="img-fluid w-auto"
+    [defaultImage]="'assets/images/product/placeholder.jpg'"
+    [lazyLoad]="product.bundles[0].imagePath"
+    alt=""
+  />
+</a>
+
+<div class="media-body align-self-center">
+  <bar-rating [rate]="5" [readOnly]="true"></bar-rating>
+  <a [routerLink]="['/shop/product/left/sidebar/', product.productId]">
+    <h6>{{ product.name | titlecase }}</h6></a
+  >
+
+  <h4>
+    {{
+      bundle.price
+        | discount: bundle
+        | currency: "₦":"symbol":"1.0-0"
+    }}
+    <!-- {{ product.bundles[0].price * productService.Currency?.price | discount:product | currency:productService.Currency?.currency:'symbol' }} -->
+    <del *ngIf="product.bundles[0].discount">
+      <span class="money">
+        <!-- {{ product.bundles[0].price * productService.Currency?.price | currency:productService.Currency?.currency:'symbol' }} -->
+        {{ bundle.price | currency: "₦":"symbol":"1.0-0" }}
+      </span>
+    </del>
+  </h4>
+
+  <div class="select">
+    <select (change)="onChange($event.target.value)">
+      <option *ngFor="let bundle of product.bundles" value="{{bundle.id}}">
+        {{ bundle.variantOptions[0].variantOption }}
+      </option>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<app-breadcrumb [title]="'Login'" [breadcrumb]="'Login'"></app-breadcrumb>
+<!-- section start -->
+<section class="login-page section-b-space">
+    <div   class="container">
+        <div  class="row">
+            <div  class="col mx-auto" style="max-width: 600px;" >
+                <h3 *ngIf="!isLoading">Login</h3>
+                <div *ngIf="!isLoading" class="theme-card">
+                    <form class="theme-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                        <div class="form-group">
+                            <!-- <label for="email">Email</label> -->
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required ngModel>
+                        </div>
+                        <div class="form-group">
+                            <!-- <label for="review">Password</label> -->
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required ngModel>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <button class="btn btn-solid" type="submit" [disabled]="!loginForm.valid">Login</button>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-solid pull-right" type="button" [routerLink]="['/auth/register']">SignUP</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <app-loading-spinner *ngIf="isLoading" style="position: absolute; top: 50%; left: 50%;"></app-loading-spinner>
+            </div>
+        </div>
+    </div>
+   
+</section>
+<!--Section ends-->

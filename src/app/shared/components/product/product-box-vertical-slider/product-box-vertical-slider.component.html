@@ -1,0 +1,24 @@
+<!-- side-bar single product slider start -->
+<div class="theme-card">
+    <h5 class="title-border">{{ title }}</h5>
+    <owl-carousel-o [options]="NewProductSliderConfig" class="offer-slider">
+        <ng-container *ngFor="let product of products | slice:0:3 ">  
+            <ng-template carouselSlide>
+                <div>
+                  <div class="media" *ngFor="let product of products | slice:0:3 ">
+                    <app-product-box-one-side [product]="product"></app-product-box-one-side>
+                  </div>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div >
+                  <div class="media" *ngFor="let product of products | slice:3:6 ">
+                    <app-product-box-one-side [product]="product"></app-product-box-one-side>
+                  </div>
+                </div>
+            </ng-template>
+        </ng-container>
+    </owl-carousel-o>
+</div>
+<!-- side-bar single product slider end -->
+  
