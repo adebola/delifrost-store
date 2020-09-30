@@ -15,7 +15,7 @@ export class Resolver implements Resolve<Product> {
               public productService: ProductService) {}
 
 
-  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Product | Observable<Product> | Promise<Product> {
+  async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<Product> {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     this.productService.getProductBySlug(route.params.slug).subscribe(product => {

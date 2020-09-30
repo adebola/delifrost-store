@@ -19,6 +19,7 @@ import 'hammerjs';
 import 'mousetrap';
 import { AuthComponent } from './auth/auth.component';
 import { BlogPlaceHolderComponent } from './blog/blog-placeholder.component';
+import {LoadingService} from './shared/components/loading-spinner/loading.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -48,7 +49,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     AppRoutingModule
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
+  providers: [
+      LoadingService,
+      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

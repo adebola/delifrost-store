@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, Subject } from 'rxjs';
-import { map, filter, shareReplay } from 'rxjs/operators';
+import {BehaviorSubject, Observable, of, Subject, throwError} from 'rxjs';
+import {map, catchError, tap} from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product, Bundle } from '../classes/product';
 import { environment } from 'src/environments/environment';
+import {LoadingService} from '../components/loading-spinner/loading.service';
 
 const state = {
   products: JSON.parse(localStorage.products || '[]'),
@@ -19,10 +20,17 @@ const PRODUCT_URL = environment.base_url + '/api/v1/store/products';
 })
 export class ProductService {
   public Currency = { name: 'Naira', currency: '₦', price: 1 }; // Default Currency
-  private Products: Observable<Product[]>;
 
+  private subject = new BehaviorSubject<Product[]>([]);
+  products$: Observable<Product[]> = this.subject.asObservable();
 
-  constructor(private http: HttpClient, private toastrService: ToastrService) { }
+  // private Products: Observable<Product[]>;
+  constructor(
+      private http: HttpClient,
+      private loading: LoadingService,
+      private toastrService: ToastrService) {
+    this.loadAllProducts();
+  }
 
   /*
     ---------------------------------------------
@@ -30,32 +38,29 @@ export class ProductService {
     ---------------------------------------------
   */
 
-
-  public getProducts(): Observable<Product[]> {
-    return this.Products = this.http.get<Product[]>(PRODUCT_URL)
-      .pipe(
-        shareReplay()
-      );
-  }
-
-  public get products(): Observable<Product[]> {
-
-
-    return this.Products;
-
-    // this.Products = this.http.get<Product[]>('assets/data/products.json').pipe(map(data => data));
-    // this.Products.subscribe(next => { localStorage['products'] = JSON.stringify(next); });
-    // return this.Products = this.Products.pipe(startWith(JSON.parse(localStorage['products'] || '[]')));
-  }
-
   public getProductBySlug(slug: string): Observable<Product> {
-    return this.Products.pipe(map(items => {
+    return this.products$.pipe(map(items => {
       return items.find((item: any) => {
         return item.title.replace(' ', '-') === slug;
       });
     }));
   }
 
+  private loadAllProducts() {
+    const loadedProducts$ = this.http.get<Product[]>(PRODUCT_URL)
+        .pipe(
+            catchError(err => {
+              const message = ' Unable to Load Products';
+              this.toastrService.error(message);
+              console.log(message, err);
+              return throwError(err);
+            }),
+            tap(products => this.subject.next(products))
+        );
+
+    this.loading.showLoaderUntilCompleted(loadedProducts$)
+        .subscribe();
+  }
 
   /*
     ---------------------------------------------
@@ -130,7 +135,7 @@ export class ProductService {
   //     return Tags;
   //   })
   // ));
-  //}
+  // }
 
   // Sorting Filter
   public sortProducts(products: Product[], payload: string): any {
@@ -241,7 +246,7 @@ export class ProductService {
 
     let returnBundle: Bundle;
 
-    this.Products.subscribe(products => {
+    this.products$.subscribe(products => {
       for (const product of products) {
         for (const bundle of product.bundles) {
           if (bundle.id == bundleId) {
@@ -272,7 +277,7 @@ export class ProductService {
 
     const brands = [];
 
-    this.Products.subscribe(products => {
+    this.products$.subscribe(products => {
       for (const product of products) {
         if (product.brand) {
           const index = brands.indexOf(product.brand);

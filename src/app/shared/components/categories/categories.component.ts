@@ -11,12 +11,12 @@ import { ProductService } from '../../services/product.service';
 export class CategoriesComponent implements OnInit {
 
   public products: Product[] = [];
-  public collapse: boolean = true;
+  public collapse = true;
 
   constructor(public productService: ProductService) {}
 
   ngOnInit(): void {
-    this.productService.products.subscribe(products => this.products = products)
+    this.productService.products$.subscribe(products => this.products = products);
   }
 
   get filterbyCategory() {

@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { ProductService } from '../../shared/services/product.service';
 import { Product } from '../../shared/classes/product';
-import { ObserveOnOperator } from 'rxjs/internal/operators/observeOn';
-import { Observable } from 'rxjs';
+import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
 
 @Component({
   selector: 'app-collection',
@@ -15,7 +14,7 @@ export class CollectionComponent implements OnInit {
 
   public grid = 'col-xl-3 col-md-6';
   public layoutView = 'grid-view';
-  public products: Observable<Product[]>;
+  public products: Product[];
   public brands: any[] = [];
   public minPrice = 0;
   public maxPrice = 1200;
@@ -26,40 +25,42 @@ export class CollectionComponent implements OnInit {
   public sortBy: string; // Sorting Order
   public mobileSidebar = false;
   public loader = true;
+  public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private router: Router,
-              private viewScroller: ViewportScroller, public productService: ProductService) {}
+  constructor(private route: ActivatedRoute, private router: Router, public loadingService: LoadingService,
+              private viewScroller: ViewportScroller, public productService: ProductService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
 
-      this.brands = params.brand ? params.brand.split(',') : [];
-      this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
-      this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
-      // this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
+    this.route.queryParams
+      .subscribe(params => {
 
-      this.category = params.category ? params.category : null;
-      this.sortBy = params.sortBy ? params.sortBy : 'ascending';
-      this.pageNo = params.page ? params.page : this.pageNo;
+        this.brands = params.brand ? params.brand.split(',') : [];
+        this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
+        this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
+        // this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
 
-      this.productService.getProducts().subscribe(products => {
+        this.category = params.category ? params.category : null;
+        this.sortBy = params.sortBy ? params.sortBy : 'ascending';
+        this.pageNo = params.page ? params.page : this.pageNo;
 
-        // this.products = products;
-        // const y = this.productService.products;
+        this.productService.products$
+          .subscribe(products => {
 
-        if (params.category) {
-          this.products = this.products.filter(item => item.category === this.category);
-        }
+            this.products = products;
 
-        if (this.brands && this.brands.length > 0) {
-          this.products = this.products.filter(item => this.brands.indexOf(item.brand) !== -1);
-        }
+            if (params.category) {
+              this.products = this.products.filter(item => item.category === this.category);
+            }
 
-        // Paginate Products
-        this.paginate = this.productService.getPager(this.products.length, +this.pageNo);
+            if (this.brands && this.brands.length > 0) {
+              this.products = this.products.filter(item => this.brands.indexOf(item.brand) !== -1);
+            }
 
+            // Paginate Products
+            this.paginate = this.productService.getPager(this.products.length, +this.pageNo);
+          });
       });
-    });
   }
 
 

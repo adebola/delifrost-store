@@ -1,5 +1,4 @@
-import { Component, Injectable, PLATFORM_ID, Inject, OnInit } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { map, delay, withLatestFrom } from 'rxjs/operators';
 import { AuthService } from './auth/auth.service';
@@ -22,12 +21,5 @@ export class AppComponent implements OnInit {
     this.authService.autoLogin();
   }
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object,
-              private loader: LoadingBarService, private authService: AuthService) {
-
-    // if (isPlatformBrowser(this.platformId)) {
-    //   translate.setDefaultLang('en');
-    //   translate.addLangs(['en', 'fr']);
-    // }
-  }
+  constructor(private loader: LoadingBarService, private authService: AuthService) {}
 }

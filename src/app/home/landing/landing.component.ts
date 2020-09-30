@@ -14,21 +14,12 @@ import { Observable } from 'rxjs';
 export class LandingComponent implements OnInit, OnDestroy {
 
   public themeLogo = 'assets/images/icon/logo-7.png'; // Change Logo
-  public products: Observable<Product[]>;
 
   public ProductSliderConfig: any = ProductSlider;
 
   @ViewChild('videoModal') VideoModal: VideoModalComponent;
 
-  constructor(public productService: ProductService) {
-
-    // this.productService.getProducts()
-
-      // this.productService.getProducts.subscribe(response =>
-      //   // this.products = response.filter(item => item.category === 'Butter')
-      //   this.products = response
-      // );
-  }
+  constructor(public productService: ProductService) {}
 
   // Sliders
   public sliders = [{
@@ -71,12 +62,6 @@ export class LandingComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Change color for this layout
     document.documentElement.style.setProperty('--theme-deafult', '#fc8c03');
-
-    this.products = this.productService.getProducts();
-
-    // this.productService.getProducts().subscribe(response =>
-    //   //   // this.products = response.filter(item => item.category === 'Butter')
-    //   //   this.products = response
   }
 
   ngOnDestroy(): void {

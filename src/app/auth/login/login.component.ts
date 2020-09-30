@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService, AuthSignInResponseData } from 'src/app/auth/auth.service';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +15,14 @@ import { ToastrService } from 'ngx-toastr';
 export class LoginComponent implements OnInit, OnDestroy {
 
   private closeSub: Subscription;
-  isLoading = false;
   error: string = null;
 
 
-  constructor(private authService: AuthService, private router: Router, private toastrService: ToastrService) { }
+  constructor(
+    private authService: AuthService,
+    private loading: LoadingService,
+    private router: Router,
+    private toastrService: ToastrService) { }
 
   ngOnDestroy(): void {
     if (this.closeSub) {
@@ -37,20 +42,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    const login$ = this.authService.login(email, password)
+      .pipe(
+        catchError(err => {
+          const message = 'Authentication Error, please try again';
+          this.toastrService.error(message);
+          console.log(message, err);
+          return throwError(err);
+        }),
+        tap(() => this.router.navigate(['/shop/collection']))
+      );
 
-    this.closeSub = this.authService.login(email, password).subscribe((response: AuthSignInResponseData) => {
-      this.isLoading = false;
-      //console.log(response);
-      this.router.navigate(['/shop/collection']);
-    }, (errorMessage) => {
-      this.isLoading = false;
-      this.error = 'An Error has occurred ' + errorMessage;
-
-      this.toastrService.error(errorMessage, 'Authentication Error');
-
-      //console.log(this.error);
-    });
+    this.loading.showLoaderUntilCompleted(login$)
+      .subscribe();
 
     form.reset();
   }

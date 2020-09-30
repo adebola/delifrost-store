@@ -4,8 +4,8 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12 mx-auto" style="max-width: 600px;">
-        <h3 *ngIf="!isLoading">create account</h3>
-        <div *ngIf="!isLoading" class="theme-card">
+        <h3>create account</h3>
+        <div class="theme-card">
           <form
             class="theme-form"
             #registerform="ngForm"
@@ -92,7 +92,6 @@
               </button>
             </form>
         </div>
-        <app-loading-spinner *ngIf="isLoading" style="position: absolute; top: 50%; left: 50%;"></app-loading-spinner>
       </div>
     </div>
   </div>

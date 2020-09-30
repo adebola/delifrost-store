@@ -1,14 +1,27 @@
-.lds-facebook {
+/* .lds-facebook {
   display: inline-block;
   position: relative;
   width: 80px;
-  height: 80px;
+  height: 80px; */
 
   /* position: absolute;
   top: 50%;
   left: 50%;
   margin-left: -50%;
   margin-top: -50%; */
+/* } */
+
+.lds-facebook {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  /* background:rgba(0, 0, 0, 0.32); */
+  z-index: 2000;
 }
 
 .lds-facebook div {
@@ -34,6 +47,8 @@
   left: 56px;
   animation-delay: 0;
 }
+
+
 
 @keyframes lds-facebook {
   0% {

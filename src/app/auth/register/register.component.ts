@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { AuthService, AuthSignUpResponseData } from 'src/app/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-register',
@@ -13,10 +15,13 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent implements OnInit, OnDestroy {
 
   private closeSub: Subscription;
-  isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService, private router: Router, private toastrService: ToastrService) { }
+  constructor(
+    private authService: AuthService,
+    private loading: LoadingService,
+    private router: Router,
+    private toastrService: ToastrService) { }
 
   ngOnDestroy(): void {
      if (this.closeSub) {
@@ -38,23 +43,25 @@ export class RegisterComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
-
     const email = form.value.email;
     const password = form.value.password;
     const fullName = form.value.fullname;
     const telephone = form.value.telephone;
     const address = form.value.address;
 
-    this.authService.signup(email, email, password, fullName, telephone, address).subscribe((response: AuthSignUpResponseData) => {
-      this.isLoading = false;
-      this.toastrService.info(response.message);
-      this.router.navigate(['/auth/login']);
-    }, (errorMessage) => {
-      this.isLoading = false;
-      this.error = 'An Error has occurred : ' + errorMessage;
-      this.toastrService.error(this.error);
-    });
+    const register$ = this.authService.signup(email, email, password, fullName, telephone, address)
+      .pipe(
+        catchError(err => {
+          const message = 'Registration Error, please try again';
+          this.toastrService.error(message);
+          console.log(message, err);
+          return throwError(err);
+        }),
+        tap(() =>  this.router.navigate(['/auth/login']))
+      );
+
+    this.loading.showLoaderUntilCompleted(register$)
+      .subscribe();
 
     form.reset();
   }
