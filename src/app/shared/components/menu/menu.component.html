@@ -15,33 +15,36 @@
         <a class="nav-link" [routerLink]="['/shop/collection']">shop</a>
       </li>
       <li>
-        <a [routerLink]="['/blog']" class="nav-link">blog</a>
+        <a class="nav-link" [routerLink]="['/blog']">blog</a>
       </li>
 
       <li *ngIf="!isLoggedIn">
-        <a [routerLink]="['/auth/register']" class="nav-link">Register</a>
+        <a class="nav-link" [routerLink]="['/auth/register']">Register</a>
       </li>
 
       <li *ngIf="!isLoggedIn">
-        <a [routerLink]="['/auth/login']" class="nav-link">Login</a>
+        <a class="nav-link" [routerLink]="['/auth/login']">Login</a>
       </li>
 
-      <li>
-        <a [routerLink]="['/pages/aboutus']" class="nav-link">about us</a>
-      </li>
-
-      <!-- <li ngbDropdown class="nav-item dropdown d-inline-block">
-
+      <!-- <li>
+        <a class="nav-link" [routerLink]="['/pages/aboutus']">about us</a>
       </li> -->
 
+      <li ngbDropdown>
+        <a class="btn btn-outline-default text-left" id="dropdownBasic1" ngbDropdownToggle>Delifrost</a>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="margin: 10px;">
+          <button class="nav-link" [routerLink]="['/pages/aboutus']" ngbDropdownItem>About US</button>
+          <button class="nav-link" [routerLink]="['/pages/contact']" ngbDropdownItem>Contact US</button>
+        </div>
+      </li>
+
       <li *ngIf="isLoggedIn" ngbDropdown>
-        <a class="btn btn-outline-default" id="dropdownBasic1" ngbDropdownToggle>{{fullName}}</a>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-          <button [routerLink]="['/pages/wishlist']" ngbDropdownItem>Wishlist</button>
-          <button [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
-          <button [routerLink]="['/pages/profile']" ngbDropdownItem>Profile</button>
-          <button [routerLink]="['/auth/forgotpassword']" ngbDropdownItem>Forgot Password</button>
-          <button (click)="onLogout()" ngbDropdownItem>Logout</button>
+        <a class="btn btn-outline-default text-left" id="dropdownBasic2" ngbDropdownToggle>{{fullName}}</a>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic2" style="margin: 10px;">
+          <button class="nav-link" [routerLink]="['/shop/wishlist']" ngbDropdownItem>Wishlist</button>
+          <button class="nav-link" [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
+          <button class="nav-link" [routerLink]="['/pages/profile']" ngbDropdownItem>Profile</button>
+          <button class="nav-link" (click)="onLogout()" ngbDropdownItem>Logout</button>
         </div>
       </li>
     </ul>

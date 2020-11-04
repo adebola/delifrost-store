@@ -5,8 +5,6 @@ import { SharedModule } from '../shared/shared.module';
 import { PagesRoutingModule } from './pages-routing.module';
 
 // Pages Components
-import { WishlistComponent } from './account/wishlist/wishlist.component';
-import { CartComponent } from './account/cart/cart.component';
 import { DashboardComponent } from './account/dashboard/dashboard.component';
 
 import { ProfileComponent } from './account/profile/profile.component';
@@ -17,12 +15,9 @@ import { SearchComponent } from './search/search.component';
 import { ReviewComponent } from './review/review.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
 
-import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
-    WishlistComponent,
-    CartComponent,
     DashboardComponent,
     ProfileComponent,
     ContactComponent,
@@ -30,8 +25,7 @@ import { ErrorComponent } from './error/error.component';
     AboutUsComponent,
     SearchComponent,
     ReviewComponent,
-    OrderSuccessComponent,
-    ErrorComponent,
+    OrderSuccessComponent
   ],
   imports: [
     CommonModule,

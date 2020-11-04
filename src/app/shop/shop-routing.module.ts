@@ -11,11 +11,13 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { SuccessComponent } from './checkout/success/success.component';
 
 import { Resolver } from '../shared/services/resolver.service';
+import { AuthGuard } from '../auth/auth-guard.service';
+
 
 const routes: Routes = [
 
   {
-    path: 'product/no/sidebar/:slug',
+    path: 'product/:slug',
     component: ProductNoSidebarComponent,
     resolve: {
       data: Resolver
@@ -31,7 +33,8 @@ const routes: Routes = [
   },
   {
     path: 'wishlist',
-    component: WishlistComponent
+    component: WishlistComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'checkout',

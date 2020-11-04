@@ -1,0 +1,37 @@
+<div class="blog-right">
+  <div>
+    <h6>{{ post.createdDate | date: "medium" }}</h6>
+    <a [routerLink]="'/blog/details'"
+      ><h4>
+        {{ post.title }}
+      </h4></a
+    >
+    <ul class="post-social">
+      <li>Posted By : {{ post.creator_name }}</li>
+      <!-- <li><a (click)="incrementlikes()"><i class="fa fa-heart"></i> {{post.likes}}</a></li> -->
+      <li>
+        <a #likes
+          ><i class="fa fa-thumbs-up"></i> {{ post.likes }}</a
+        >
+      </li>
+      <li>
+        <a #dislikes
+          ><i class="fa fa-thumbs-down"></i> {{ post.dislikes }}</a
+        >
+      </li>
+      <li>
+        <a><i class="fa fa-comments"></i> {{ post.comment_count }} Comments</a>
+      </li>
+    </ul>
+    <p class="pl-0">
+      {{ post.content }}
+    </p>
+
+    <ng-container *ngIf="">
+      <div ngFor="let comment comments" class="container">
+        
+      </div>
+    </ng-container>
+  </div>
+</div>
+<hr />

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { WishlistComponent } from './account/wishlist/wishlist.component';
-import { CartComponent } from './account/cart/cart.component';
 import { DashboardComponent } from './account/dashboard/dashboard.component';
 
 import { ProfileComponent } from './account/profile/profile.component';
@@ -13,19 +11,9 @@ import { SearchComponent } from './search/search.component';
 
 import { ReviewComponent } from './review/review.component';
 import { OrderSuccessComponent } from './order-success/order-success.component';
-import { ErrorComponent } from './error/error.component';
 import { AuthGuard } from '../auth/auth-guard.service';
 
 const routes: Routes = [
-  {
-    path: 'wishlist',
-    component: WishlistComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'cart',
-    component: CartComponent
-  },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -59,10 +47,6 @@ const routes: Routes = [
   {
     path: 'order/success',
     component: OrderSuccessComponent
-  },
-  {
-    path: '404',
-    component: ErrorComponent
   }
 ];
 

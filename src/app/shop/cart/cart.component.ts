@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ProductService } from '../../shared/services/product.service';
 import { CartService } from '../../shared/services/cart.service';
-import { Product, Bundle } from '../../shared/classes/product';
+import { Product } from '../../shared/classes/product';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-cart',
@@ -12,14 +13,17 @@ import { Product, Bundle } from '../../shared/classes/product';
 export class CartComponent implements OnInit, OnDestroy {
 
   public cart: Product[] = [];
-  public subscription: Subscription;
+  private subscription: Subscription;
 
-  constructor(public productService: ProductService, public cartService: CartService) {
+  constructor(
+    public productService: ProductService,
+    public cartService: CartService,
+    public authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.subscription = this.cartService.cartChanged
-    .subscribe((cart: Product[]) => this.cart = cart);
+      .subscribe((cart: Product[]) => this.cart = cart);
 
     this.cart = this.cartService.cartItems;
   }

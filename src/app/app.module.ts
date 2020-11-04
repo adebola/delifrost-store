@@ -19,23 +19,25 @@ import 'hammerjs';
 import 'mousetrap';
 import { AuthComponent } from './auth/auth.component';
 import { BlogPlaceHolderComponent } from './blog/blog-placeholder.component';
-import {LoadingService} from './shared/components/loading-spinner/loading.service';
+import { LoadingService } from './shared/components/loading-spinner/loading.service';
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient) {
+// export function HttpLoaderFactory(http: HttpClient) {
    // return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
-}
+//}
 
 @NgModule({
-  declarations: [
+  declarations:
+  [
     AppComponent,
     ShopComponent,
     PagesComponent,
     AuthComponent,
     BlogPlaceHolderComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+  imports:
+  [
+    // BrowserModule.withServerTransition({ appId: 'serverApp' }),
     BrowserAnimationsModule,
     HttpClientModule,
     NgbModule,
@@ -49,9 +51,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     SharedModule,
     AppRoutingModule
   ],
-  providers: [
+  providers:
+  [
       LoadingService,
-      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}],
+      {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

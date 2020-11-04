@@ -5,8 +5,7 @@
       <span class="lable4" *ngIf="product.bundles[0].onSale">on sale</span>
     </div>
     <div class="front">
-      <!-- <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]"> -->
-      <a [routerLink]="['/shop/product/no/sidebar/', product.productId]">
+      <a [routerLink]="['/shop/product/', product.productId]">
         <img 
           [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'" 
           [lazyLoad]="ImageSrc ? ImageSrc : product.bundles[0].imagePath" 
@@ -16,7 +15,7 @@
     </div>
     <div class="back" *ngIf="onHowerChangeImage">
       <!-- <a [routerLink]="['/shop/product/left/sidebar/', product.title.replace(' ', '-')]"> -->
-        <a [routerLink]="['/shop/product/no/sidebar/', product.productId]">
+        <a [routerLink]="['/shop/product/', product.productId]">
         <img [src]="ImageSrc ? ImageSrc : product.bundles[0].imagePath " class="img-fluid lazy-loading" alt="{{ product.bundles[0].imagePath  }}">
       </a>
     </div>
@@ -28,14 +27,14 @@
       </li>
     </ul>
     <div class="cart-info cart-wrap">
-      <a href="javascript:void(0)" title="Add to cart" (click)="addToCart(product)"
+      <a title="Add to cart" (click)="addToCart(product)"
         *ngIf="!cartModal">
         <i class="ti-shopping-cart"></i>
       </a>
-      <a href="javascript:void(0)" title="Add to Wishlist" (click)="addToWishlist(product)">
+      <a title="Add to Wishlist" (click)="addToWishlist(product)">
         <i class="ti-heart" aria-hidden="true"></i>
       </a>
-      <a href="javascript:void(0)" title="Quick View" (click)="QuickView.openModal(bundle.id)">
+      <a title="Quick View" (click)="QuickView.openModal(bundle.id)">
         <i class="ti-search" aria-hidden="true"></i>
       </a>
     </div>
@@ -43,8 +42,7 @@
   <div class="product-detail">
     <div>
       <bar-rating [rate]="5" [readOnly]="true"></bar-rating>
-      <a [routerLink]="['/shop/product/no/sidebar/trim-dress']">
-      <!-- <a [routerLink]="['/shop/product/left/sidebar/', product?.title.replace(' ', '-')]"> -->
+       <a [routerLink]="['/shop/product/', product.productId]">
         <h6>{{ product.name | titlecase }}</h6>
       </a>
       <p>{{ product.bundles[0].description }}</p>

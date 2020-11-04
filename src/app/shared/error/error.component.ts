@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./error.component.scss']
 })
 export class ErrorComponent implements OnInit {
+  public themeLogo = 'assets/images/icon/logo-7.png';
 
   constructor() { }
 
   ngOnInit(): void {
+    document.documentElement.style.setProperty('--theme-deafult', '#fc8c03');
   }
-
 }

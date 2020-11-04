@@ -32,6 +32,8 @@ export interface AuthSignInResponseData {
   username: string;
   email: string;
   fullName: string;
+  telephone: string;
+  address: string;
   token: string;
 }
 
@@ -40,7 +42,12 @@ const SIGNIN_URL = environment.base_url + '/api/v1/auth/signin';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  private subject = new BehaviorSubject<User>(null);
+  public user$ = this.subject.asObservable();
+  public isLoggedIn = false;
+  public userId = 0;
+  private failedReq: string;
+
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router, private toastrService: ToastrService) { }
@@ -61,26 +68,37 @@ export class AuthService {
     const signInRequest: AuthSignInRequestData = { username, password };
 
     return this.http.post<AuthSignInResponseData>(SIGNIN_URL, signInRequest)
-      .pipe(catchError(this.handleError), tap(resData => {
-        this.handleAuthentication(resData);
-      }));
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(resData);
+        }));
   }
 
   private handleAuthentication(responseData: AuthSignInResponseData) {
 
     const decoded = jwt_decode(responseData.token);
-    const expiryDate = new Date(parseInt(decoded.exp) * 1000);
+    const expiryDate = new Date(parseInt(decoded.exp, 10) * 1000);
     const nowDate = new Date();
 
     const expirationDuration = expiryDate.getTime() - nowDate.getTime();
 
-    console.log(responseData);
-
     const user =
-    new User(+responseData.id, responseData.username, responseData.email, responseData.fullName, responseData.token, expiryDate);
+      new User (
+        +responseData.id,
+        responseData.username,
+        responseData.email,
+        responseData.fullName,
+        responseData.telephone,
+        responseData.address,
+        responseData.token,
+        expiryDate
+      );
 
-    this.user.next(user);
+    this.subject.next(user);
     this.autoLogout(expirationDuration);
+    this.isLoggedIn = true;
+    this.userId = user.userId;
     localStorage.setItem('userData', JSON.stringify(user));
   }
 
@@ -99,7 +117,7 @@ export class AuthService {
         break;
 
       case 500:
-        errorMessage = 'Internal Error Authenticating, Please contact Support';
+        errorMessage = 'Internal Error Authenticating ' + errorResponse.error.message;
         break;
     }
 
@@ -115,6 +133,7 @@ export class AuthService {
   }
 
   autoLogin() {
+    
     const userData = JSON.parse(localStorage.getItem('userData'));
 
     if (!userData) {
@@ -122,28 +141,50 @@ export class AuthService {
     }
 
     const user: User =
-      new User(userData.userId, userData.username, userData.email, 
-        userData.fullName, userData._token, new Date(userData._tokenExpirationDate));
+      new User(
+        userData.userId,
+        userData.username,
+        userData.email,
+        userData.fullName,
+        userData.telephone,
+        userData.address,
+        userData._token,
+        new Date(userData._tokenExpirationDate));
 
     if (user.token) {
       const expirationDuration = new Date(user.tokenExpirationDate).getTime() - new Date().getTime();
 
       if (expirationDuration > 1000) {
         this.autoLogout(expirationDuration);
-        this.user.next(user);
+        this.subject.next(user);
+
+        this.userId = user.userId;
+        this.isLoggedIn = true;
+
+        if (this.failedReq) {
+          this.router.navigate([this.failedReq]);
+        }
+
       }
     }
   }
 
   logout() {
-    this.user.next(null);
+
+    this.isLoggedIn = false;
+    this.subject.next(null);
     localStorage.removeItem('userData');
+    this.userId = 0;
 
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
     }
 
     this.tokenExpirationTimer = null;
+  }
+
+  setFailedReq(value: string) {
+    this.failedReq = value;
   }
 }
 

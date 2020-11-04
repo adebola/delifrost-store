@@ -5,6 +5,7 @@ import { ShopComponent } from './shop/shop.component';
 import { PagesComponent } from './pages/pages.component';
 import { AuthComponent } from './auth/auth.component';
 import { BlogPlaceHolderComponent } from './blog/blog-placeholder.component';
+import { ErrorComponent } from './shared/error/error.component';
 
 const routes: Routes = [
   {
@@ -37,8 +38,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule) 
   },
   {
-    path: '**', // Navigate to Home Page if not found any page
-    redirectTo: 'home',
+    path: '**', // ErrorComponent
+    component: ErrorComponent
   },
 ];
 

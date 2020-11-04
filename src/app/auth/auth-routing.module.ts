@@ -4,6 +4,7 @@ import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { AuthGuard } from './auth-guard.service';
 import { NgModule } from '@angular/core';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 const routes: Routes = [
 {
@@ -17,8 +18,11 @@ const routes: Routes = [
   {
     path: 'forgotpassword',
     component: ForgetPasswordComponent,
-    canActivate: [AuthGuard]
   },
+  {
+    path: '401',
+    component: NotAuthorizedComponent,
+  }
 ];
 
 @NgModule({

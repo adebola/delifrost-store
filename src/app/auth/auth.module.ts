@@ -6,12 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { GalleryModule } from '@ks89/angular-modal-gallery';
 import { CommonModule } from '@angular/common';
+import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     ForgetPasswordComponent,
     RegisterComponent,
+    NotAuthorizedComponent
   ],
   imports: [
     CommonModule,

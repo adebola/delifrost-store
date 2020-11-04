@@ -5,7 +5,6 @@
   <app-slider 
     [sliders]="sliders" 
     [textClass]="'text-center'"
-    [category]="'Butter'"
     [buttonText]="'shop now'"> 
   </app-slider>
 </section>
@@ -82,7 +81,7 @@
                         <div class="product-box">
                           <app-product-box-one 
                             [product]="product" 
-                            [currency]="productService?.Currency"
+                            [currency]="productService.Currency"
                             [cartModal]="true">
                           </app-product-box-one>
                         </div>

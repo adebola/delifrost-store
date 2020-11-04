@@ -28,7 +28,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.authSubscription = this.authService.user.subscribe((user: User) => {
+    this.authSubscription = this.authService.user$.subscribe((user: User) => {
 
       if (user && user.token) {
         this.isLoggedIn = true;
@@ -38,7 +38,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   onLogout() {
-
     this.authService.logout();
     this.isLoggedIn = false;
     this.fullName = null;
@@ -48,10 +47,4 @@ export class MenuComponent implements OnInit, OnDestroy {
   mainMenuToggle(): void {
     this.menuToggle = !this.menuToggle;
   }
-
-  // // Click Toggle menu (Mobile)
-  // toggleNavActive(item: { active: boolean; }) {
-  //   item.active = !item.active;
-  // }
-
 }

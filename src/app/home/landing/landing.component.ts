@@ -1,10 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { VideoModalComponent } from '../../shared/components/modal/video-modal/video-modal.component';
 import { ProductSlider } from '../../shared/data/slider';
-import { Product } from '../../shared/classes/product';
 import { ProductService } from '../../shared/services/product.service';
-import { ThrowStmt } from '@angular/compiler';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-landing',

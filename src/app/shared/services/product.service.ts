@@ -24,7 +24,6 @@ export class ProductService {
   private subject = new BehaviorSubject<Product[]>([]);
   products$: Observable<Product[]> = this.subject.asObservable();
 
-  // private Products: Observable<Product[]>;
   constructor(
       private http: HttpClient,
       private loading: LoadingService,
@@ -39,11 +38,11 @@ export class ProductService {
   */
 
   public getProductBySlug(slug: string): Observable<Product> {
-    return this.products$.pipe(map(items => {
-      return items.find((item: any) => {
-        return item.title.replace(' ', '-') === slug;
-      });
-    }));
+
+    return this.products$
+        .pipe(
+            map(results => results.find(result => result.productId === parseInt(slug, 10)))
+        );
   }
 
   private loadAllProducts() {
@@ -60,6 +59,42 @@ export class ProductService {
 
     this.loading.showLoaderUntilCompleted(loadedProducts$)
         .subscribe();
+  }
+
+  public findProductByBundleId(bundleId: number): Bundle {
+
+    let returnBundle: Bundle;
+
+    this.products$.subscribe(products => {
+      for (const product of products) {
+        for (const bundle of product.bundles) {
+          if (bundle.id == bundleId) {
+            returnBundle = bundle;
+            return bundle;
+          }
+        }
+      }
+    });
+
+    return returnBundle;
+  }
+
+  public uniqueBrands(): string[] {
+
+    const brands = [];
+
+    this.products$.subscribe(products => {
+      for (const product of products) {
+        if (product.brand) {
+          const index = brands.indexOf(product.brand);
+          if (index === -1) {
+            brands.push(product.brand);
+          }
+        }
+      }
+    });
+
+    return brands;
   }
 
   /*
@@ -240,69 +275,5 @@ export class ProductService {
       endIndex,
       pages
     };
-  }
-
-  public findProductByBundleId(bundleId: number): Bundle {
-
-    let returnBundle: Bundle;
-
-    this.products$.subscribe(products => {
-      for (const product of products) {
-        for (const bundle of product.bundles) {
-          if (bundle.id == bundleId) {
-            returnBundle = bundle;
-            return bundle;
-          }
-        }
-      }
-    });
-
-    return returnBundle;
-
-    // return new Observable((observer) => {
-    //   this.Products.subscribe(products => {
-    //     for (const product of products) {
-    //       for (const bundle of product.bundles) {
-    //         if (bundle.id == bundleId) {
-    //           observer.next(bundle);
-    //           return observer.complete();
-    //         }
-    //       }
-    //     }
-    //   });
-    // });
-  }
-
-  public uniqueBrands(): string[] {
-
-    const brands = [];
-
-    this.products$.subscribe(products => {
-      for (const product of products) {
-        if (product.brand) {
-          const index = brands.indexOf(product.brand);
-          if (index === -1) {
-            brands.push(product.brand);
-          }
-        }
-      }
-    });
-
-    return brands;
-
-    // return new Observable((observer) => {
-    //   this.Products.subscribe(products => {
-    //     for (const product of products) {
-    //       if (product.brand) {
-    //         const index = brands.indexOf(product.brand);
-    //         if (index === -1) {
-    //           brands.push(product.brand);
-    //         }
-    //       }
-    //     }
-    //   });
-    //   observer.next(brands);
-    //   return observer.complete();
-    // });
   }
 }

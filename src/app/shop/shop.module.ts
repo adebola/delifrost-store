@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxPayPalModule } from 'ngx-paypal';
+//import { NgxPayPalModule } from 'ngx-paypal';
 import { Ng5SliderModule } from 'ng5-slider';
 import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
@@ -24,11 +24,13 @@ import { GridComponent } from './collection/widgets/grid/grid.component';
 import { PaginationComponent } from './collection/widgets/pagination/pagination.component';
 import { BrandsComponent } from './collection/widgets/brands/brands.component';
 import { PriceComponent } from './collection/widgets/price/price.component';
+import { PostComponent } from './collection/widgets/post/post.component';
 
 import { CartComponent } from './cart/cart.component';
 import { WishlistComponent } from './wishlist/wishlist.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { SuccessComponent } from './checkout/success/success.component';
+import { CartItemComponent } from './cart/cart-item/cart-item.component';
 
 @NgModule({
   declarations: [
@@ -43,14 +45,16 @@ import { SuccessComponent } from './checkout/success/success.component';
     PaginationComponent,
     BrandsComponent,
     PriceComponent,
+    PostComponent,
     CartComponent,
+    CartItemComponent,
     WishlistComponent,
     CheckoutComponent,
     SuccessComponent
   ],
   imports: [
     CommonModule,
-    NgxPayPalModule,
+    //NgxPayPalModule,
     Ng5SliderModule,
     SharedModule,
     ShopRoutingModule

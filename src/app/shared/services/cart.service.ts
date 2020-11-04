@@ -1,32 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Product, Bundle } from '../classes/product';
+import { Product } from '../classes/product';
 import { Cart } from '../classes/cart';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
+
   private cart: Cart;
   public cartChanged = new Subject<Product[]>();
-  public OpenCart = false;
 
   constructor(private toastrService: ToastrService) {
 
     this.cart = JSON.parse(localStorage.cartItems || '{}');
-    console.log('CART');
-    console.log(this.cart);
 
     if (!this.cart.items) {
-      this.cart.items = {};
-      this.cart.totalQty = 0;
-      this.cart.totalPrice = 0;
-      this.cart.delivery = 0;
+      this.zeroCart();
+      this.cartChanged.next(this.cartArray());
     }
+  }
 
-    // console.log('Constructor totalPrice' + this.cart.totalPrice);
+  public zeroCart() {
+    this.cart.items = {};
+    this.cart.totalQty = 0;
+    this.cart.totalPrice = 0;
+    this.cart.delivery = 0;
+    localStorage.removeItem('cartItems');
+    this.cartChanged.next(this.cartArray());
   }
 
   addDelivery() {
@@ -63,14 +66,10 @@ export class CartService {
       arr.push(this.cart.items[id]);
     }
 
-    console.log('CartArray');
-
     return arr;
   }
 
   public get cartTotalAmount(): number {
-
-    // console.log('CART TOTAL ' + this.cart.totalPrice);
 
     return this.cart.totalPrice;
   }
@@ -78,7 +77,6 @@ export class CartService {
   // Add Product Bundle to Shopping Cart
 
   public addToCart(item: Product, bundleId: number, quantity: number): boolean {
-
 
     let storedItem: Product;
     let incrementalPrice = 0;
@@ -119,8 +117,8 @@ export class CartService {
         // console.log(this.cart.totalPrice);
         // console.log(this.cart.totalQty);
 
-        this.cart.totalPrice += incrementalPrice;
-        this.cart.totalQty += incrementalQuantity;
+        // this.cart.totalPrice += incrementalPrice;
+        // this.cart.totalQty += incrementalQuantity;
 
         // console.log('zzzzzzzzzzzzzzzzzzzzzz');
         // console.log(this.cart.totalPrice);
@@ -133,11 +131,28 @@ export class CartService {
       }
     });
 
-    this.OpenCart = true;
+    this.recalculate()
     this.cartChanged.next(this.cartArray());
     localStorage.setItem('cartItems', JSON.stringify(this.cart));
 
     return true;
+  }
+
+  recalculate() {
+    let total_price = 0;
+    let quantity = 0;
+
+    for (const id in this.cart.items) {
+      this.cart.items[id].bundles.forEach((bundle) => {
+        if (bundle.quantity > 0) {
+          total_price += bundle.subTotalPrice;
+          quantity++;
+        }
+      });
+    }
+
+    this.cart.totalPrice = total_price;
+    this.cart.totalQty = quantity;
   }
 
   // Remove Product Bundle from Shopping Cart
@@ -167,6 +182,7 @@ export class CartService {
       delete this.cart.items[productId];
     }
 
+    this.recalculate();
     this.cartChanged.next(this.cartArray());
     localStorage.setItem('cartItems', JSON.stringify(this.cart));
   }
@@ -186,10 +202,11 @@ export class CartService {
           bundle.quantity += 1;
           bundle.subTotalPrice += incrementalPrice;
 
-          this.cart.totalPrice += incrementalPrice;
+          //this.cart.totalPrice += incrementalPrice;
         }
       });
 
+      this.recalculate();
       this.cartChanged.next(this.cartArray());
       localStorage.setItem('cartItems', JSON.stringify(this.cart));
     }
@@ -208,13 +225,14 @@ export class CartService {
           bundle.quantity -= 1;
           bundle.subTotalPrice -= incrementalPrice;
 
-          this.cart.totalPrice -= incrementalPrice;
+          //this.cart.totalPrice -= incrementalPrice;
 
-          if (bundle.quantity === 0) {
-            this.cart.totalQty -= 1;
-          }
+          // if (bundle.quantity === 0) {
+          //   this.cart.totalQty -= 1;
+          // }
         }
       });
+      this.recalculate();
       this.cartChanged.next(this.cartArray());
     }
   }

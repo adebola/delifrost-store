@@ -93,41 +93,15 @@ export class QuickViewComponent implements OnInit, OnDestroy  {
   }
 
   // Add to cart
-  async addToCart(product: Product, bundleId: number) {
+   addToCart() {
     const quantity = this.counter || 1;
-    const status = await this.cartService.addToCart(product, bundleId, quantity);
-
-    // if (status) {
-    //   this.router.navigate(['/shop/cart']);
-    // }
+    this.cartService.addToCart(this.product, this.bundle.id, quantity);
   }
 
   onChange(bundleId) {
-
     this.bundle = this.productService.findProductByBundleId(bundleId);
     this.price = this.bundle.price;
     this.discountedPrice  = this.bundle.price * (1 - (this.bundle.discount / 100)) * this.counter;
-
-    // this.renderer.setProperty(this.h3Price.nativeElement, 'value', '111');
-    // this.renderer.setProperty(this.spanPrice.nativeElement, 'value', '222');
-
-    // const span = document.getElementById('price-full');
-    // const h3 = document.getElementById('price-discount');
-
-    // // span.innerHTML = '₦' + this.bundle.price.toFixed(0);
-    // span.innerText = '11111';
-
-
-    // const price = this.bundle.price * (1 - (this.bundle.discount / 100)) * this.counter;
-    // h3.innerText = '₦' + price.toFixed(0);
-
-    // console.log('SPAN');
-    // console.log(span);
-    // console.log(h3);
-    // console.log(price);
-
-    //const bundleObs$: Observable<Bundle> = this.productService.findProductByBundleId(bundleId);
-    //const subscription: Subscription = bundleObs$.subscribe(bundle => this.bundle = bundle);
   }
 
   ngOnDestroy() {

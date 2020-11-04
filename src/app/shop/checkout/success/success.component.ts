@@ -1,4 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Order } from '../../../shared/classes/order';
 import { OrderService } from '../../../shared/services/order.service';
 import { ProductService } from '../../../shared/services/product.service';
@@ -8,19 +10,21 @@ import { ProductService } from '../../../shared/services/product.service';
   templateUrl: './success.component.html',
   styleUrls: ['./success.component.scss']
 })
-export class SuccessComponent implements OnInit, AfterViewInit{
+export class SuccessComponent implements OnInit, AfterViewInit {
 
-  public orderDetails : Order = {};
+  private id: string;
+  public order$: Observable<Order>;
 
-  constructor(public productService: ProductService,
-    private orderService: OrderService) { }
+  constructor(private route: ActivatedRoute,
+              public productService: ProductService,
+              private orderService: OrderService) { }
 
-  ngOnInit(): void {	
-    this.orderService.checkoutItems.subscribe(response => this.orderDetails = response);
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.order$ = this.orderService.loadOrderById(+this.id);
   }
 
   ngAfterViewInit() {
-    
   }
 
 }

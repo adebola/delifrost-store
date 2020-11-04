@@ -19,13 +19,10 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ProductBoxOneComponent } from './components/product/product-box-one/product-box-one.component';
 import { ProductBoxVerticalComponent } from './components/product/product-box-vertical/product-box-vertical.component';
-import { ProductBoxOneSideComponent } from './components/product/product-box-one-side/product-box-one-side.component';
-import { ProductBoxVerticalSliderComponent } from './components/product/product-box-vertical-slider/product-box-vertical-slider.component';
 
 // Modals Components
 import { NewsletterComponent } from './components/modal/newsletter/newsletter.component';
 import { QuickViewComponent } from './components/modal/quick-view/quick-view.component';
-import { CartVariationComponent } from './components/modal/cart-variation/cart-variation.component';
 import { VideoModalComponent } from './components/modal/video-modal/video-modal.component';
 
 // Skeleton Loader Components
@@ -37,6 +34,7 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 // Pipes
 import { DiscountPipe } from './pipes/discount.pipe';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { ErrorComponent } from './error/error.component';
 
 
 @NgModule({
@@ -48,16 +46,14 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     BreadcrumbComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
-    ProductBoxOneSideComponent,
     ProductBoxVerticalComponent,
-    ProductBoxVerticalSliderComponent,
     NewsletterComponent,
     QuickViewComponent,
-    CartVariationComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
     LoadingSpinnerComponent,
+    ErrorComponent,
     DiscountPipe
   ],
   imports: [
@@ -87,12 +83,9 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
     BreadcrumbComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
-    ProductBoxOneSideComponent,
     ProductBoxVerticalComponent,
-    ProductBoxVerticalSliderComponent,
     NewsletterComponent,
     QuickViewComponent,
-    CartVariationComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,

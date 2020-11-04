@@ -5,20 +5,24 @@ import { AuthService } from './auth.service';
 import { map, take } from 'rxjs/operators';
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {}
+
+  constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
-      boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-        return this.authService.user.pipe(take(1), map(user => {
-           if (!!user)  {
-             return true;
-           }
+    return this.authService.user$.pipe(take(1), map(user => {
 
-           return this.router.createUrlTree(['/pages/login']);
-        }));
+      if (!!user) {
+        return true;
+      }
+
+      // this.authService.setFailedReq(route._routerState.url);
+
+      return this.router.createUrlTree(['/auth/401']);
+    }));
   }
 }
