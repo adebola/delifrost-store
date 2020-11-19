@@ -18,13 +18,11 @@ export class QuickViewComponent implements OnInit, OnDestroy  {
   @Input() product: Product;
   @Input() currency: any;
   @ViewChild('quickView', { static: false }) QuickView: TemplateRef<any>;
-  // @ViewChild('discountedPrice') h3Price: ElementRef<any>;
-  // @ViewChild('fullPrice') spanPrice: ElementRef<any>;
 
   public closeResult: string;
   public ImageSrc: string;
-  public counter: number = 1;
-  public modalOpen: boolean = false;
+  public counter = 1;
+  public modalOpen = false;
 
   constructor(private router: Router, private modalService: NgbModal,
               public cartService: CartService,
@@ -63,19 +61,6 @@ export class QuickViewComponent implements OnInit, OnDestroy  {
     }
   }
 
-  // Change Variants
-  // ChangeVariants(color, product) {
-  //   product.variants.map((item) => {
-  //     if (item.color === color) {
-  //       product.images.map((img) => {
-  //         if (img.image_id === item.image_id) {
-  //           this.ImageSrc = img.src;
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
   // Increment
   increment() {
     this.counter++;
@@ -98,11 +83,6 @@ export class QuickViewComponent implements OnInit, OnDestroy  {
     this.cartService.addToCart(this.product, this.bundle.id, quantity);
   }
 
-  onChange(bundleId) {
-    this.bundle = this.productService.findProductByBundleId(bundleId);
-    this.price = this.bundle.price;
-    this.discountedPrice  = this.bundle.price * (1 - (this.bundle.discount / 100)) * this.counter;
-  }
 
   ngOnDestroy() {
     if (this.modalOpen) {

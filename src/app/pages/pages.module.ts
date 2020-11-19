@@ -9,7 +9,6 @@ import { DashboardComponent } from './account/dashboard/dashboard.component';
 
 import { ProfileComponent } from './account/profile/profile.component';
 import { ContactComponent } from './account/contact/contact.component';
-import { CheckoutComponent } from './account/checkout/checkout.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { SearchComponent } from './search/search.component';
 import { ReviewComponent } from './review/review.component';
@@ -21,7 +20,6 @@ import { OrderSuccessComponent } from './order-success/order-success.component';
     DashboardComponent,
     ProfileComponent,
     ContactComponent,
-    CheckoutComponent,
     AboutUsComponent,
     SearchComponent,
     ReviewComponent,

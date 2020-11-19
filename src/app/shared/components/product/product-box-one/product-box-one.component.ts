@@ -50,13 +50,4 @@ export class ProductBoxOneComponent implements OnInit {
   addToWishlist(product: any) {
     this.productService.addToWishlist(product);
   }
-
-  onChange(bundleId: number) {
-    this.bundle = this.productService.findProductByBundleId(bundleId);
-
-    // const bundleObs$: Observable<Bundle> = this.productService.findProductByBundleId(bundleId);
-
-    // const subscription: Subscription = bundleObs$.subscribe(bundle => this.bundle = bundle);
-    // subscription.unsubscribe();
-  }
 }

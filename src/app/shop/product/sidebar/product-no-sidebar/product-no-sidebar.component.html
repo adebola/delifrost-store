@@ -8,7 +8,7 @@
           <div class="row">
             <div class="col-12 p-0">
               <div class="slider-nav product-slick">
-                <img [defaultImage]="'assets/images/product/placeholder.jpg'"
+                <img [defaultImage]="'assets/images/products/placeholder.jpg'"
                   [lazyLoad]="product.bundles[0].imagePath[0]" [alt]="product.bundles[0].imagePath[0]" class="img-fluid"
                   [src]="product.bundles[0].imagePath[0]" />
               </div>
@@ -25,16 +25,6 @@
               <del *ngIf="bundle.discount"><span id="price-full" class="money">
                   {{ price | currency: "₦":"symbol":"1.0-0" }}</span></del>
             </h3>
-
-            <div class="container m-0 p-0" text-sm-centre text-md-left>
-              <div class="select mb-2">
-                <select (change)="onChange($event.target.value)" class="mx-auto">
-                  <option *ngFor="let o of product.bundles" value="{{ o.id }}">
-                    {{ o.variantOptions[0].variantOption }}
-                  </option>
-                </select>
-              </div>
-            </div>
 
             <app-stock-inventory [stock]="10"></app-stock-inventory>
             <div class="product-description border-product">

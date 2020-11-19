@@ -14,33 +14,32 @@
         </a>
       </div>
       <span class="cart_qty_cls">{{ cart.length }}</span>
-      <ul class="show-div shopping-cart" *ngIf='!cart.length'>
+      <ul class="show-div shopping-cart" *ngIf="!cart.length">
         <h5>Your cart is currently empty.</h5>
       </ul>
-      <ul class="show-div shopping-cart" *ngIf='cart.length'>
+      <ul class="show-div shopping-cart" *ngIf="cart.length">
         <li *ngFor="let product of cart">
           <div *ngFor="let bundle of product.bundles">
-          <div class="media" *ngIf="bundle.quantity > 0">
-            <a [routerLink]="['/shop/product/left/sidebar/']">
-              <img class="mr-3" [src]="bundle.imagePath[0]" [alt]="bundle.imagePath[0]">
-            </a>
-            <div class="media-body">
-              <a [routerLink]="['/shop/product/left/sidebar/']">
-                <h4>{{ product.name}}</h4>
-                <!-- <h4>{{ product?.name }}</h4> -->
+            <div class="media" *ngIf="bundle.quantity > 0">
+              <a [routerLink]="['/shop/product/', product.productId]">
+                <img class="mr-3" [src]="bundle.imagePath[0]" [alt]="bundle.imagePath[0]">
               </a>
-              <h4>
-                <span>
-                  {{ bundle.quantity }} x 
-                  {{ bundle.price | discount:bundle | currency: "₦":"symbol":"1.0-0" }}
-                </span>
-              </h4>
+              <div class="media-body">
+                <a [routerLink]="['/shop/product/', product.productId]">
+                  <h4>{{ product.name}}</h4>
+                </a>
+                <h4>
+                  <span>
+                    {{ bundle.quantity }} x
+                    {{ bundle.price | discount:bundle | currency: "₦":"symbol":"1.0-0" }}
+                  </span>
+                </h4>
+              </div>
+            </div>
+            <div class="close-circle" (click)="removeItem(product.productId, bundle.id)">
+              <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
             </div>
           </div>
-          <div class="close-circle" (click)="removeItem(product.productId, bundle.id)">
-            <a href="javascript:void(0)"><i class="fa fa-times" aria-hidden="true"></i></a>
-          </div>
-        </div>
         </li>
         <li>
           <div class="total">

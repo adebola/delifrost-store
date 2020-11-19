@@ -12,8 +12,9 @@ import { Subscription } from 'rxjs';
 export class MenuComponent implements OnInit, OnDestroy {
 
    private authSubscription: Subscription;
-   isLoggedIn = false;
-   fullName: string = null;
+   public isLoggedIn = false;
+   public fullName: string;
+
    public menuToggle = false;
 
   constructor(private router: Router, private authService: AuthService) {}
@@ -41,7 +42,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.authService.logout();
     this.isLoggedIn = false;
     this.fullName = null;
-    this.router.navigate(['/shop/collection']);
+    this.router.navigate(['/auth']);
   }
 
   mainMenuToggle(): void {

@@ -5,7 +5,6 @@ import { DashboardComponent } from './account/dashboard/dashboard.component';
 
 import { ProfileComponent } from './account/profile/profile.component';
 import { ContactComponent } from './account/contact/contact.component';
-import { CheckoutComponent } from './account/checkout/checkout.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { SearchComponent } from './search/search.component';
 
@@ -29,16 +28,13 @@ const routes: Routes = [
     component: ContactComponent
   },
   {
-    path: 'checkout',
-    component: CheckoutComponent
-  },
-  {
     path: 'aboutus',
     component: AboutUsComponent
   },
   {
     path: 'search',
-    component: SearchComponent
+    component: SearchComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'review',
@@ -46,7 +42,8 @@ const routes: Routes = [
   },
   {
     path: 'order/success',
-    component: OrderSuccessComponent
+    component: OrderSuccessComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

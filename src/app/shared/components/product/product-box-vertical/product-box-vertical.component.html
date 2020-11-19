@@ -1,6 +1,6 @@
 <div class="media">
     <a [routerLink]="['/shop/product/left/sidebar/', product.name]">
-        <img [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/product/placeholder.jpg'" 
+        <img [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/products/placeholder.jpg'" 
              [lazyLoad]="ImageSrc ? ImageSrc : product.bundles[0].imagePath"  
              class="img-fluid lazy-loading" alt="{{ product.bundles[0].imagePath }}">
     </a>

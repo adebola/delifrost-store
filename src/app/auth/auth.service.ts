@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { User } from './user.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { Address } from '../shared/classes/address';
 
 interface AuthSignUpRequestData {
   username: string;
@@ -39,11 +40,16 @@ export interface AuthSignInResponseData {
 
 const SIGNUP_URL = environment.base_url + '/api/v1/auth/signup';
 const SIGNIN_URL = environment.base_url + '/api/v1/auth/signin';
+const USER_URL = environment.base_url + '/api/v1/store/users';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private subject = new BehaviorSubject<User>(null);
   public user$ = this.subject.asObservable();
+
+  private addressSubject = new BehaviorSubject<Address[]>(null);
+  public addresses$ = this.addressSubject.asObservable();
+
   public isLoggedIn = false;
   public userId = 0;
   private failedReq: string;
@@ -129,11 +135,12 @@ export class AuthService {
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
       this.toastrService.success('You session has expired and you have been Logged Out');
+      this.router.navigate(['/auth/login']);
     }, expirationDuration);
   }
 
   autoLogin() {
-    
+
     const userData = JSON.parse(localStorage.getItem('userData'));
 
     if (!userData) {
@@ -181,6 +188,35 @@ export class AuthService {
     }
 
     this.tokenExpirationTimer = null;
+  }
+
+  public loadUserAddresses(): Observable<Address[]> {
+
+    if (this.userId === 0) {
+      this.toastrService.error('User Not Present');
+
+      return  of(null);
+    }
+
+    return this.http.get<Address[]>(USER_URL + '/' + this.userId)
+        .pipe(
+            catchError(err => {
+              const message = ' Unable to Load categories';
+              this.toastrService.error(message);
+              console.log(message, err);
+              return throwError(err);
+            }),
+            tap(o => this.addressSubject.next(o))
+        );
+  }
+
+  getAddress(addressId: number): Observable<Address> {
+
+    return this.addresses$.pipe(
+      map(addr => {
+        return addr.find(el => el.id === addressId);
+      })
+    );
   }
 
   setFailedReq(value: string) {

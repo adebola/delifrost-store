@@ -28,7 +28,7 @@ export class AuthInterceptorService implements HttpInterceptor  {
         if (!user) {
           const tenantHeader = new HttpHeaders(headerSettings);
           const tenantReq = req.clone({headers: tenantHeader});
-          
+
           return next.handle(tenantReq);
         }
 

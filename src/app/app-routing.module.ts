@@ -10,7 +10,7 @@ import { ErrorComponent } from './shared/error/error.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'auth',
     pathMatch: 'full'
   },
   {

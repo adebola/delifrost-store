@@ -103,12 +103,12 @@ export class ProductNoSidebarComponent implements OnInit {
     this.loadPosts();
   }
 
-  onChange(bundleId) {
-    console.log(bundleId);
-    this.bundle = this.productService.findProductByBundleId(bundleId);
-    console.log(this.bundle);
-    this.initValues();
-  }
+  // onChange(bundleId) {
+  //   console.log(bundleId);
+  //   this.bundle = this.productService.findProductByBundleId(bundleId);
+  //   console.log(this.bundle);
+  //   this.initValues();
+  // }
 
   // Add to cart
 

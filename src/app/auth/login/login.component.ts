@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           console.log(message, err);
           return throwError(err);
         }),
-        tap(() => this.router.navigate(['/shop/collection']))
+        tap(() => this.router.navigate(['/home']))
       );
 
     this.loading.showLoaderUntilCompleted(login$)

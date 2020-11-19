@@ -27,13 +27,7 @@
                             <!-- <h5 class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></h5> -->
 
                             <h5 class="avalibility"><span>In Stock</span></h5>
-                            <div class="select">
-                                <select (change)="onChange($event.target.value)">
-                                  <option *ngFor="let o of product.bundles" value="{{o.id}}" [selected]="o.id === bundle.id ? true : false">
-                                    {{ o.variantOptions[0].variantOption }}
-                                  </option>
-                                </select>
-                            </div>
+                        
 
                             <h6 class="product-title">quantity</h6>
                             <div class="qty-box">

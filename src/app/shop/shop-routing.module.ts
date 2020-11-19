@@ -19,17 +19,20 @@ const routes: Routes = [
   {
     path: 'product/:slug',
     component: ProductNoSidebarComponent,
+    canActivate: [AuthGuard],
     resolve: {
       data: Resolver
     }
   },
   {
     path: 'collection',
-    component: CollectionComponent
+    component: CollectionComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'cart',
-    component: CartComponent
+    component: CartComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'wishlist',
@@ -38,11 +41,13 @@ const routes: Routes = [
   },
   {
     path: 'checkout',
-    component: CheckoutComponent
+    component: CheckoutComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'checkout/success/:id',
-    component: SuccessComponent
+    component: SuccessComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

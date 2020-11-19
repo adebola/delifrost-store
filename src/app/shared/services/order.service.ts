@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { User } from 'src/app/auth/user.model';
 import { environment } from 'src/environments/environment';
 import { Order, OrderItem } from '../classes/order';
 import { Product } from '../classes/product';
@@ -27,11 +28,19 @@ export interface OrderDetails {
 })
 export class OrderService {
 
+  private user: User;
+
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private authService: AuthService,
-    private cartService: CartService) { }
+    private cartService: CartService) {
+
+      this.authService.user$.subscribe(user => {
+        this.user = user;
+      });
+    }
 
   // Get Checkout Items
   public get checkoutItems(): Observable<any> {
@@ -63,7 +72,6 @@ export class OrderService {
     const cart: Product[] = this.cartService.cartItems;
     const POST_URL = environment.base_url + '/api/v1/store/orders/';
 
-
     const orderItems: OrderItem[] = [];
 
     let i = 0;
@@ -88,19 +96,42 @@ export class OrderService {
 
     const order: Order = new Order();
 
+    console.log('User is', this.user);
+
     order.user_id = this.authService.userId ? this.authService.userId : null;
-    order.paymentRef = details.payment_ref
-    order.transaction_id = details.transaction_id
+    order.paymentRef = details.payment_ref;
+    order.transaction_id = details.transaction_id;
     order.orderAmount = this.cartService.cartTotalAmount;
+    order.orderItems = orderItems;
     order.pickup = details.pickup;
     order.deliver = !details.pickup;
-    order.telephone = details.telephone;
-    order.address = details.address;
-    order.orderItems = orderItems;
-    order.full_name = details.fullname;
-    order.email = details.email;
 
-    console.log(order);
+    if (details.telephone) {
+      order.telephone = details.telephone;
+    } else {
+      order.telephone = this.user ? this.user.telephone : null;
+    }
+
+    if (details.address) {
+      order.address = details.address;
+    } else {
+      order.address = this.user ? this.user.address : null;
+    }
+
+    if (details.fullname) {
+      order.full_name = details.fullname;
+    } else {
+      order.full_name = this.user ? this.user.fullName : null;
+    }
+
+    if (details.email) {
+      order.email = details.email;
+    } else {
+      order.email = this.user ? this.user.email : null;
+    }
+
+    console.log('Order Email is ', order.email);
+
 
     this.http.post<number>(POST_URL, order, {
       headers: new HttpHeaders({
@@ -117,12 +148,14 @@ export class OrderService {
 
   // Create order
   public createOrder(product: any, details: any, orderId: any, amount: any) {
+
     const item = {
       shippingDetails: details,
-      product: product,
-      orderId: orderId,
+      product,
+      orderId,
       totalAmount: amount
     };
+
     state.checkoutItems = item;
     localStorage.setItem('checkoutItems', JSON.stringify(item));
     localStorage.removeItem('cartItems');

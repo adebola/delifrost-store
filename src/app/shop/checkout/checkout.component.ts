@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Product } from '../../shared/classes/product';
 import { ProductService } from '../../shared/services/product.service';
 import { OrderService, OrderDetails } from '../../shared/services/order.service';
@@ -8,11 +8,9 @@ import { CartService } from 'src/app/shared/services/cart.service';
 import { AuthService } from 'src/app/auth/auth.service';
 
 import '../../../assets/js/inline.js';
-import '../../../assets/js/checkout.js';
-import { Router } from '@angular/router';
+import { Address } from 'src/app/shared/classes/address';
 
 declare var PaystackPop: any;
-declare var Paylink: any;
 
 @Component({
   selector: 'app-checkout',
@@ -26,39 +24,49 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public payment = 'paystack';
   public shipping = 'pickup';
   public amount: any;
-  private subscription: Subscription;
+  private subUser: Subscription;
+  private subCart: Subscription;
   private email: string;
   public alertMessage;
   public formValid = true;
+  public delivery = false;
+  public addresses$: Observable<Address[]>;
 
   constructor(private fb: FormBuilder,
-              private router: Router,
               public cartService: CartService,
               public productService: ProductService,
               public orderService: OrderService,
               public authService: AuthService) {
-
-    this.checkoutForm = this.fb.group({
-      firstname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
-      phone: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-      email: ['', [Validators.required, Validators.email]],
-      address: ['', [Validators.required, Validators.maxLength(50)]]
-    });
   }
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.subUser) {
+      this.subUser.unsubscribe();
+    }
+
+    if (this.subCart) {
+      this.subCart.unsubscribe();
     }
   }
 
   ngOnInit(): void {
 
-    this.subscription = this.cartService.cartChanged
+    this.addresses$ = this.authService.loadUserAddresses();
+
+    this.subCart = this.cartService.cartChanged
       .subscribe((cart: Product[]) => this.products = cart);
 
     if (this.authService.isLoggedIn) {
-      this.subscription = this.authService.user$
-        .subscribe(user => this.email = user.email);
+      this.subUser = this.authService.user$
+        .subscribe(user => {
+          this.email = user.email;
+
+          this.checkoutForm = this.fb.group({
+            firstname: [user.fullName, [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
+            phone: [user.telephone, [Validators.required, Validators.pattern('[0-9]+')]],
+            email: [user.email, [Validators.required, Validators.email]],
+            address: [user.address, [Validators.required, Validators.maxLength(50)]]
+          });
+        });
     } else {
       this.email = 'delifrost@factorialsystems.io';
     }
@@ -75,7 +83,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   checkOut() {
 
-    return this.orderService.testEMail();
+    // return this.orderService.testEMail();
 
     this.alertMessage = null;
 
@@ -83,11 +91,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       return this.alertMessage = 'Please fill in the Delivery Details section completely for anonymous purchase';
     }
 
-    if (this.payment === 'paystack') {
-      this.paystackCheckOut();
-    } else {
-      this.paylinkCheckOut();
-    }
+    this.paystackCheckOut();
   }
 
   private generateId(len: number) {
@@ -129,31 +133,37 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     handler.openIframe();
   }
 
-  private paylinkCheckOut() {
-    Paylink.checkout('factorialsystems', {
-      amount: this.cartService.cartTotalAmount,
-      quantity: 1,
-      reference: this.generateId(16)
-    });
-  }
-
   onChange(event) {
 
     this.alertMessage = null;
 
     if (event === 'deliver') {
-      if (this.authService.isLoggedIn) {
-        this.authService.user$.subscribe(user => {
-          if (!(user.address && user.address.length > 0)) {
-            this.alertMessage =
-              // tslint:disable-next-line: max-line-length
-              'You have requested that goods purchase be delivered however you do not have an address on your profile, please goto your profile under your name on the menu to add address, telephone etc.';
-            this.formValid = false;
-          }
-        });
-      }
+
+      this.delivery = true;
+
+      // if (this.authService.isLoggedIn) {
+      //   this.authService.user$.subscribe(user => {
+      //     if (!(user.address && user.address.length > 0)) {
+      //       this.alertMessage =
+      //         // tslint:disable-next-line: max-line-length
+      //         'You have requested that goods purchase be delivered however you do not have an address on your profile, please goto your profile under your name on the menu to add address, telephone etc.';
+      //       this.formValid = false;
+      //     }
+      //   });
+      // }
+
+
+    } else {
+      this.delivery = false;
     }
 
     this.shipping = event;
+  }
+
+  onSelectChange(event) {
+    const subject = this.authService.getAddress(+event)
+    .subscribe(o => this.checkoutForm.patchValue({address: o.address}));
+
+    subject.unsubscribe();
   }
 }

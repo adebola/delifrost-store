@@ -9,10 +9,19 @@
               *ngIf="alertMessage">
               {{ alertMessage }}
             </div>
-            <div class="col-lg-6 col-sm-12 col-xs-12 mx-auto" *ngIf="!authService.isLoggedIn">
+            <div class="col-lg-6 col-sm-12 col-xs-12 mx-auto" *ngIf="delivery">
               <div class="checkout-title">
                 <h3>Delivery Details</h3>
               </div>
+
+              <div *ngIf="(addresses$ | async) as addresses" class="select">
+                <select (change)="onSelectChange($event.target.value)">
+                  <option *ngFor="let address of addresses" [value]="address.id">
+                    {{ address.address | slice:0:12 }}
+                  </option>
+                </select>
+              </div>
+
               <div class="row check-out">
                 <div class="form-group col-12">
                   <div class="field-label">Full Name</div>
@@ -69,7 +78,7 @@
 
                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                   <div class="field-label">Address</div>
-                  <textarea name="address" [formControl]="checkoutForm.controls['address']" value="" placeholder=""
+                  <textarea id="address" name="address" [formControl]="checkoutForm.controls['address']" value="" placeholder=""
                     rows="6"></textarea>
                   <div *ngIf="
                       checkoutForm.controls.address.touched &&
@@ -151,7 +160,8 @@
                   </ul>
                 </div>
 
-                <div class="payment-box" *ngIf="products.length">
+                <!-- <div class="payment-box" *ngIf="products.length">
+                  
                   <div class="upper-box">
                     <div class="payment-options">
                       <ul>
@@ -175,6 +185,7 @@
                         </li>
                       </ul>
                     </div>
+
                   </div>
                   <div class="text-right">
                     <button type="submit" [disabled]="!formValid" class="btn-solid btn"
@@ -182,7 +193,15 @@
                       Place Order
                     </button>
                   </div>
+                </div> -->
+
+                <div class="text-right">
+                  <button type="submit" [disabled]="!formValid" class="btn-solid btn"
+                    (click)="checkOut()">
+                    Place Order
+                  </button>
                 </div>
+
               </div>
             </div>
           </div>

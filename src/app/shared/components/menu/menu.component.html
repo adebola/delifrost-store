@@ -1,8 +1,10 @@
 <div class="main-navbar">
   <div id="mainnav">
+    
     <div class="toggle-nav" (click)="mainMenuToggle()">
       <i class="fa fa-bars sidebar-bar"></i>
     </div>
+    
     <ul class="nav-menu" [class.opennav]="menuToggle">
       <li class="back-btn">
         <div class="mobile-back text-right" (click)="mainMenuToggle()">
@@ -11,10 +13,11 @@
         </div>
       </li>
 
-      <li>
+      <li *ngIf="isLoggedIn">
         <a class="nav-link" [routerLink]="['/shop/collection']">shop</a>
       </li>
-      <li>
+
+      <li *ngIf="isLoggedIn">
         <a class="nav-link" [routerLink]="['/blog']">blog</a>
       </li>
 

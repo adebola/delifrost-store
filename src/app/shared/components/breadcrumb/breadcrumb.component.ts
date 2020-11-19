@@ -7,12 +7,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  @Input() title : string;
-  @Input() breadcrumb : string;
+  @Input() title: string;
+  @Input() breadcrumb: string;
 
   constructor() {
   }
 
   ngOnInit(): void {  }
-
 }

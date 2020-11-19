@@ -7,9 +7,14 @@ import { NgModule } from '@angular/core';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 
 const routes: Routes = [
-{
+  {
+    path: '',
+    component: LoginComponent
+  },
+  {
     path: 'login',
     component: LoginComponent
+
   },
   {
     path: 'register',
