@@ -24,7 +24,7 @@ export class CartService {
   }
 
   public zeroCart() {
-    this.cart.items = {};
+    this.cart.items = null;
     this.cart.totalQty = 0;
     this.cart.totalPrice = 0;
     this.cart.delivery = 0;
