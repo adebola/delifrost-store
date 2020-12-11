@@ -4,8 +4,8 @@ import { NgForm } from '@angular/forms';
 import { Subscription, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
 import { catchError, tap } from 'rxjs/operators';
+declare var grecaptcha: any;
 
 @Component({
   selector: 'app-login',
@@ -14,19 +14,18 @@ import { catchError, tap } from 'rxjs/operators';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  private closeSub: Subscription;
-  error: string = null;
-
+  public error: string = null;
+  public captchaError = false;
+  private subscription: Subscription;
 
   constructor(
     private authService: AuthService,
-    private loading: LoadingService,
     private router: Router,
     private toastrService: ToastrService) { }
 
   ngOnDestroy(): void {
-    if (this.closeSub) {
-      this.closeSub.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 
@@ -42,20 +41,23 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const login$ = this.authService.login(email, password)
-      .pipe(
-        catchError(err => {
-          const message = 'Authentication Error, please try again';
-          this.toastrService.error(message);
-          console.log(message, err);
-          return throwError(err);
-        }),
-        tap(() => this.router.navigate(['/home']))
-      );
+    const response = grecaptcha.getResponse();
+    if (response.length === 0) {
+      this.captchaError = true;
+      return;
+    }
 
-    this.loading.showLoaderUntilCompleted(login$)
-      .subscribe();
+    console.log(response);
+
+    this.subscription = this.authService.login(email, password, response)
+      .pipe(
+        tap(() => this.router.navigate(['/home']))
+      ).subscribe(() => grecaptcha.reset());
 
     form.reset();
+  }
+
+  resolved(captchaResponse: string) {
+    console.log(captchaResponse);
   }
 }

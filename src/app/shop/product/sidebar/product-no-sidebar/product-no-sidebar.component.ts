@@ -10,6 +10,7 @@ import { PostService } from 'src/app/shared/services/post.service';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NgForm } from '@angular/forms';
+import { WishListService } from 'src/app/shared/services/wishlist.service';
 
 @Component({
   selector: 'app-product-no-sidebar',
@@ -35,7 +36,7 @@ export class ProductNoSidebarComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,
               public productService: ProductService, public cartService: CartService,
               public authService: AuthService, public postService: PostService,
-              private toastrService: ToastrService) {}
+              private toastrService: ToastrService, private wishlistService: WishListService) {}
 
   ngOnInit(): void {
 
@@ -44,6 +45,7 @@ export class ProductNoSidebarComponent implements OnInit {
       this.bundle = this.product.bundles[0];
       this.initValues();
     });
+
     this.loadPosts();
   }
 
@@ -56,8 +58,7 @@ export class ProductNoSidebarComponent implements OnInit {
   // Decrement
   decrement() {
 
-    if (this.counter > 1)
-    {
+    if (this.counter > 1) {
       this.counter--;
       this.initValues();
     }
@@ -103,17 +104,8 @@ export class ProductNoSidebarComponent implements OnInit {
     this.loadPosts();
   }
 
-  // onChange(bundleId) {
-  //   console.log(bundleId);
-  //   this.bundle = this.productService.findProductByBundleId(bundleId);
-  //   console.log(this.bundle);
-  //   this.initValues();
-  // }
-
   // Add to cart
-
   addToCart() {
-
     const quantity = this.counter || 1;
     this.cartService.addToCart(this.product, this.bundle.id, quantity);
   }
@@ -128,7 +120,7 @@ export class ProductNoSidebarComponent implements OnInit {
   }
 
   // Add to Wishlist
-  addToWishlist(product: any) {
-    this.productService.addToWishlist(product);
+  addToWishlist(product: Product) {
+    this.wishlistService.save(product.bundles[0].id);
   }
 }

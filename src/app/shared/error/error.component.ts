@@ -11,6 +11,6 @@ export class ErrorComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    document.documentElement.style.setProperty('--theme-deafult', '#fc8c03');
+    document.documentElement.style.setProperty('--theme-deafult', '#a3d7e7');
   }
 }

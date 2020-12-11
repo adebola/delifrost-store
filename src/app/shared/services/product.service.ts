@@ -1,176 +1,100 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {BehaviorSubject, Observable, of, Subject, throwError} from 'rxjs';
-import {map, catchError, tap} from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
-import { Product, Bundle } from '../classes/product';
+import { Product } from '../classes/product';
 import { environment } from 'src/environments/environment';
-import {LoadingService} from '../components/loading-spinner/loading.service';
-
-const state = {
-  products: JSON.parse(localStorage.products || '[]'),
-  wishlist: JSON.parse(localStorage.wishlistItems || '[]'),
-  cart: JSON.parse(localStorage.cartItems || '[]')
-};
 
 const PRODUCT_URL = environment.base_url + '/api/v1/store/products';
-
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   public Currency = { name: 'Naira', currency: '₦', price: 1 }; // Default Currency
-
   private subject = new BehaviorSubject<Product[]>([]);
-  products$: Observable<Product[]> = this.subject.asObservable();
+  public products$: Observable<Product[]> = this.subject.asObservable();
+  private subscription: Subscription;
+  private products: Product[];
 
   constructor(
-      private http: HttpClient,
-      private loading: LoadingService,
-      private toastrService: ToastrService) {
-    this.loadAllProducts();
+    private http: HttpClient,
+    private toastrService: ToastrService) {
+    this.loadProducts();
   }
 
-  /*
-    ---------------------------------------------
-    ---------------  Product  -------------------
-    ---------------------------------------------
-  */
+  private loadProducts() {
 
-  public getProductBySlug(slug: string): Observable<Product> {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
-    return this.products$
-        .pipe(
-            map(results => results.find(result => result.productId === parseInt(slug, 10)))
-        );
+    this.subscription = this.http.get<Product[]>(PRODUCT_URL)
+      .pipe(
+        catchError(err => {
+          const message = ' Unable to Load Products';
+          this.toastrService.error(message);
+          console.log(message, err);
+          return throwError(err);
+        }),
+        tap(products => {
+          this.subject.next(products);
+          this.products = products;
+        })
+      ).subscribe();
   }
 
-  private loadAllProducts() {
-    const loadedProducts$ = this.http.get<Product[]>(PRODUCT_URL)
-        .pipe(
-            catchError(err => {
-              const message = ' Unable to Load Products';
-              this.toastrService.error(message);
-              console.log(message, err);
-              return throwError(err);
-            }),
-            tap(products => this.subject.next(products))
-        );
+  public findProductByBundleId(bundleId: number): Product {
 
-    this.loading.showLoaderUntilCompleted(loadedProducts$)
-        .subscribe();
-  }
+    let returnProduct: Product;
 
-  public findProductByBundleId(bundleId: number): Bundle {
-
-    let returnBundle: Bundle;
-
-    this.products$.subscribe(products => {
-      for (const product of products) {
-        for (const bundle of product.bundles) {
-          if (bundle.id == bundleId) {
-            returnBundle = bundle;
-            return bundle;
-          }
+    for (const product of this.products) {
+      for (const bundle of product.bundles) {
+        if (bundle.id == bundleId) {
+          returnProduct = product;
+          return product;
         }
       }
-    });
+    }
 
-    return returnBundle;
+    return returnProduct;
   }
 
   public uniqueBrands(): string[] {
 
     const brands = [];
 
-    this.products$.subscribe(products => {
-      for (const product of products) {
-        if (product.brand) {
-          const index = brands.indexOf(product.brand);
-          if (index === -1) {
-            brands.push(product.brand);
-          }
+    for (const product of this.products) {
+      if (product.brand) {
+        const index = brands.indexOf(product.brand);
+        if (index === -1) {
+          brands.push(product.brand);
         }
       }
-    });
+    }
 
     return brands;
   }
 
-  /*
-    ---------------------------------------------
-    ---------------  Wish List  -----------------
-    ---------------------------------------------
-  */
+  public searchProducts(searchString: string): Observable<Product[]> {
 
-  // Get Wishlist Items
-  public get wishlistItems(): Observable<Product[]> {
-    const itemsStream = new Observable(observer => {
-      observer.next(state.wishlist);
-      observer.complete();
-    });
-    return itemsStream as Observable<Product[]>;
+    return this.http.get<Product[]>(PRODUCT_URL + '/search/' + searchString,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      }
+    );
   }
 
-  // Add to Wishlist
-  public addToWishlist(product: Product): any {
-    const wishlistItem = state.wishlist.find(item => item.id === product.productId);
+  public getProductBySlug(slug: string): Observable<Product> {
 
-    if (!wishlistItem) {
-      state.wishlist.push({
-        ...product
-      });
-    }
-    this.toastrService.success('Product has been added in wishlist.');
-    localStorage.setItem('wishlistItems', JSON.stringify(state.wishlist));
-    return true;
+    // return this.products$.pipe(
+    //   switchMap(products => products.find(item => item.productId === +slug))
+    // );
+
+    return of(this.products.find(item => item.productId === +slug));
   }
-
-  // Remove Wishlist items
-  public removeWishlistItem(product: Product): boolean {
-    const index = state.wishlist.indexOf(product);
-    state.wishlist.splice(index, 1);
-    localStorage.setItem('wishlistItems', JSON.stringify(state.wishlist));
-    return true;
-  }
-
-
-  /*
-    ---------------------------------------------
-    ------------  Filter Product  ---------------
-    ---------------------------------------------
-  */
-
-  // Get Product Filter
-  // public filterProducts(filter: any): Product[] {
-
-  //   this.products.filter(item => {
-  //     if (!filter.length) { return true; }
-
-  //     const Tags = filter.some((prev) => { // Match Tags
-  //       if (item.tags) {
-  //         if (item.tags.includes(prev)) {
-  //           return prev;
-  //         }
-  //       }
-  //     });
-  //     return Tags;
-  //   });
-
-  // return this.products.pipe(map(product =>
-  //   product.filter((item: Product) => {
-  //     if (!filter.length) { return true; }
-  //     const Tags = filter.some((prev) => { // Match Tags
-  //       if (item.tags) {
-  //         if (item.tags.includes(prev)) {
-  //           return prev;
-  //         }
-  //       }
-  //     });
-  //     return Tags;
-  //   })
-  // ));
-  // }
 
   // Sorting Filter
   public sortProducts(products: Product[], payload: string): any {

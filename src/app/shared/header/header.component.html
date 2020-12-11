@@ -6,10 +6,10 @@
         <div class="main-menu">
           <div class="menu-left">
             <div class="brand-logo">
-              <a *ngIf="authService.isLoggedIn" routerLink="/home" id="headerlogo">
+              <a *ngIf="(authService.user$ | async)" routerLink="/home" id="headerlogo">
                 <img [src]="themeLogo" class="img-fluid" alt="logo">
               </a>
-              <a *ngIf="!authService.isLoggedIn" id="headerlogo">
+              <a *ngIf="!(authService.user$ | async)" id="headerlogo">
                 <img [src]="themeLogo" class="img-fluid" alt="logo">
               </a>
             </div>
@@ -19,7 +19,7 @@
               <app-menu></app-menu>
             </div>
             <div>
-              <app-settings *ngIf="authService.isLoggedIn"></app-settings>
+              <app-settings *ngIf="authService.user$ | async"></app-settings>
             </div>
           </div>
         </div>

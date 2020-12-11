@@ -9,11 +9,11 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class HeaderComponent implements OnInit {
 
   @Input() class: string;
-  @Input() themeLogo: string = 'assets/images/icon/logo-7.png'; // Default Logo
-  @Input() topbar: boolean = true; // Default True
-  @Input() sticky: boolean = false; // Default false
+  @Input() themeLogo = 'assets/images/icon/logo-7.png'; // Default Logo
+  @Input() topbar = true; // Default True
+  @Input() sticky = false; // Default false
 
-  public stick: boolean = false;
+  public stick = false;
 
   constructor(public authService: AuthService) { }
 

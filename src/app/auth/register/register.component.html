@@ -1,99 +1,66 @@
 <app-breadcrumb [title]="'Register'" [breadcrumb]="'Register'"></app-breadcrumb>
 <!-- section start -->
 <section class="register-page section-b-space">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 mx-auto" style="max-width: 600px;">
-        <h3>create account</h3>
-        <div class="theme-card">
-          <form
-            class="theme-form"
-            #registerform="ngForm"
-            (ngSubmit)="onSubmit(registerform)"
-          >
-            <div class="form-group">
-              <!-- <label for="fullname">Full Name</label> -->
-              <input
-                type="text"
-                name="fullname"
-                class="form-control"
-                id="fullname"
-                placeholder="Full Name"
-                required
-                ngModel
-              />
-            </div>
-            <div class="form-group">
-              <!-- <label for="telephone">Telephone Number</label> -->
-              <input
-                type="text"
-                name="telephone"
-                class="form-control"
-                id="telephone"
-                placeholder="Telephone Number"
-                ngModel
-              />
-            </div>
-            <div class="form-group">
-              <!-- <label for="email">Email</label> -->
-              <input
-                type="email"
-                name="email"
-                class="form-control"
-                id="email"
-                placeholder="Email"
-                required
-                ngModel
-              />
-            </div>
-            <div class="form-group">
-              <!-- <label for="password">Password</label> -->
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                name="password"
-                placeholder="Enter your password"
-                required
-                ngModel
-              />
-            </div>
-            <div class="form-group">
-              <!-- <label for="repeat-password">Password</label> -->
-              <input
-                type="password"
-                class="form-control"
-                id="repeatpassword"
-                name="repeatpassword"
-                placeholder="Repeat your password"
-                required
-                ngModel
-              />
-            </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mx-auto" style="max-width: 600px;">
+                <h3>create account</h3>
+                <div class="theme-card">
+                    <form class="theme-form" #registerform="ngForm" (ngSubmit)="onSubmit(registerform)">
 
-            <div class="form-group">
-              <!-- <label for="address">Address</label> -->
-              <textarea
-                class="form-control"
-                id="address"
-                name="address"
-                placeholder="Please Enter Address"
-                ngModel
-              ></textarea>
-            </div>
+                        <div class="form-group">
+                            <label for="fullname">Full Name<span class="required">*</span></label>
+                            <input type="text" name="fullname" class="form-control" id="fullname"
+                                   placeholder="Full Name" required ngModel/>
+                        </div>
 
-           
-              <button
-                class="btn btn-solid"
-                type="submit"
-                [disabled]="!registerform.valid"
-              >
-                Create Account
-              </button>
-            </form>
+                        <div class="form-group">
+                            <label for="organization">Organization (Optional)</label>
+                            <input type="text" name="organization" class="form-control" id="organization"
+                                   placeholder="Organization" ngModel/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telephone">Telephone Number<span class="required">*</span></label>
+                            <input type="text" name="telephone" class="form-control" id="telephone"
+                                   placeholder="Telephone Number" ngModel/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email<span class="required">*</span></label>
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email"
+                                   required ngModel/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password<span class="required">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="Enter Password" required ngModel/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="repeatpassword">Re confirm Password<span class="required">*</span></label>
+                            <input type="password" class="form-control" id="repeatpassword" name="repeatpassword"
+                                   placeholder="Reconfirm Password" required ngModel/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="address">Address<span class="required">*</span></label>
+                            <textarea class="form-control" id="address" name="address"
+                                      placeholder="Please Enter Address" ngModel></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <re-captcha  (resolved)="resolved($event)" siteKey="6LdBMvkZAAAAAHvvSY40x6YyBkV-tKvdE6zQTgXz"></re-captcha>
+                            <div *ngIf="captchaError" class="error required">Recaptcha not verified.</div>
+                        </div>
+
+                        <button class="btn btn-solid" type="submit" [disabled]="!registerform.valid">
+                            Create Account
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 <!--Section ends-->

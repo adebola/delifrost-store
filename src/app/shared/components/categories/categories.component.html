@@ -7,9 +7,9 @@
                 <li>
                     <a [routerLink]="['/shop/collection']">All</a>
                 </li>
-                <li *ngFor="let category of filterbyCategory">
-                    <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category }">
-                        {{ category }}
+                <li *ngFor="let category of categoryService.categories$ | async">
+                    <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category.name }">
+                        {{ category.name }}
                     </a>
                 </li>
             </ul>

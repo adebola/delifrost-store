@@ -2,15 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './account/dashboard/dashboard.component';
-
 import { ProfileComponent } from './account/profile/profile.component';
-import { ContactComponent } from './account/contact/contact.component';
-import { AboutUsComponent } from './about-us/about-us.component';
-import { SearchComponent } from './search/search.component';
-
-import { ReviewComponent } from './review/review.component';
-import { OrderSuccessComponent } from './order-success/order-success.component';
 import { AuthGuard } from '../auth/auth-guard.service';
+import { OrderComponent } from './account/order/order.component';
 
 const routes: Routes = [
   {
@@ -24,25 +18,8 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'contact',
-    component: ContactComponent
-  },
-  {
-    path: 'aboutus',
-    component: AboutUsComponent
-  },
-  {
-    path: 'search',
-    component: SearchComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'review',
-    component: ReviewComponent
-  },
-  {
-    path: 'order/success',
-    component: OrderSuccessComponent,
+    path: 'orders',
+    component: OrderComponent,
     canActivate: [AuthGuard]
   }
 ];

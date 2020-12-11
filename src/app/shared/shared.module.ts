@@ -24,6 +24,7 @@ import { ProductBoxVerticalComponent } from './components/product/product-box-ve
 import { NewsletterComponent } from './components/modal/newsletter/newsletter.component';
 import { QuickViewComponent } from './components/modal/quick-view/quick-view.component';
 import { VideoModalComponent } from './components/modal/video-modal/video-modal.component';
+import { QuickAddressViewComponent } from './components/modal/quick-address-view/quick-address-view.component';
 
 // Skeleton Loader Components
 import { SkeletonProductBoxComponent } from './components/skeleton/skeleton-product-box/skeleton-product-box.component';
@@ -33,8 +34,8 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 
 // Pipes
 import { DiscountPipe } from './pipes/discount.pipe';
-import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { ErrorComponent } from './error/error.component';
+
 
 
 @NgModule({
@@ -49,10 +50,10 @@ import { ErrorComponent } from './error/error.component';
     ProductBoxVerticalComponent,
     NewsletterComponent,
     QuickViewComponent,
+    QuickAddressViewComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
-    LoadingSpinnerComponent,
     ErrorComponent,
     DiscountPipe
   ],
@@ -86,10 +87,10 @@ import { ErrorComponent } from './error/error.component';
     ProductBoxVerticalComponent,
     NewsletterComponent,
     QuickViewComponent,
+    QuickAddressViewComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
-    LoadingSpinnerComponent,
     DiscountPipe
   ]
 })

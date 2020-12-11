@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../../classes/product';
 import { ProductService } from '../../services/product.service';
+import {Category} from '../../classes/category';
+import {CategoryService} from '../../services/category.service';
 
 @Component({
   selector: 'app-categories',
@@ -9,19 +11,10 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
-
-  public products: Product[] = [];
   public collapse = true;
 
-  constructor(public productService: ProductService) {}
+  constructor(public categoryService: CategoryService) {}
 
-  ngOnInit(): void {
-    this.productService.products$.subscribe(products => this.products = products);
-  }
-
-  get filterbyCategory() {
-    const category = [...new Set(this.products.map(product => product.category))];
-    return category;
-  }
+  ngOnInit(): void {}
 
 }

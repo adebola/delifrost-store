@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-//import { NgxPayPalModule } from 'ngx-paypal';
 import { Ng5SliderModule } from 'ng5-slider';
 import { SharedModule } from '../shared/shared.module';
 import { ShopRoutingModule } from './shop-routing.module';
@@ -31,6 +30,7 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { SuccessComponent } from './checkout/success/success.component';
 import { CartItemComponent } from './cart/cart-item/cart-item.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +47,7 @@ import { CartItemComponent } from './cart/cart-item/cart-item.component';
     PriceComponent,
     PostComponent,
     CartComponent,
+    SearchComponent,
     CartItemComponent,
     WishlistComponent,
     CheckoutComponent,
@@ -54,7 +55,6 @@ import { CartItemComponent } from './cart/cart-item/cart-item.component';
   ],
   imports: [
     CommonModule,
-    //NgxPayPalModule,
     Ng5SliderModule,
     SharedModule,
     ShopRoutingModule

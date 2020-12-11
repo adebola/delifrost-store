@@ -1,10 +1,10 @@
 <div class="main-navbar">
   <div id="mainnav">
-    
+
     <div class="toggle-nav" (click)="mainMenuToggle()">
       <i class="fa fa-bars sidebar-bar"></i>
     </div>
-    
+
     <ul class="nav-menu" [class.opennav]="menuToggle">
       <li class="back-btn">
         <div class="mobile-back text-right" (click)="mainMenuToggle()">
@@ -13,7 +13,7 @@
         </div>
       </li>
 
-      <li *ngIf="isLoggedIn">
+      <li *ngIf="(authService.user$ | async)">
         <a class="nav-link" [routerLink]="['/shop/collection']">shop</a>
       </li>
 
@@ -21,30 +21,21 @@
         <a class="nav-link" [routerLink]="['/blog']">blog</a>
       </li> -->
 
-      <li *ngIf="!isLoggedIn">
-        <a class="nav-link" [routerLink]="['/auth/register']">Register</a>
-      </li>
+      <ng-container *ngIf="!(authService.user$ | async)">
+        <li>
+          <a class="nav-link" [routerLink]="['/auth/register']">Register</a>
+        </li>
 
-      <li *ngIf="!isLoggedIn">
-        <a class="nav-link" [routerLink]="['/auth/login']">Login</a>
-      </li>
+        <li>
+          <a class="nav-link" [routerLink]="['/auth/login']">Login</a>
+        </li>
+      </ng-container>
 
-      <!-- <li>
-        <a class="nav-link" [routerLink]="['/pages/aboutus']">about us</a>
-      </li> -->
-
-      <li ngbDropdown>
-        <a class="btn btn-outline-default text-left" id="dropdownBasic1" ngbDropdownToggle>Delifrost</a>
-        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" style="margin: 10px;">
-          <button class="nav-link" [routerLink]="['/pages/aboutus']" ngbDropdownItem>About US</button>
-          <button class="nav-link" [routerLink]="['/pages/contact']" ngbDropdownItem>Contact US</button>
-        </div>
-      </li>
-
-      <li *ngIf="isLoggedIn" ngbDropdown>
-        <a class="btn btn-outline-default text-left" id="dropdownBasic2" ngbDropdownToggle>{{fullName}}</a>
+      <li *ngIf="(authService.user$ | async) as user" ngbDropdown>
+        <a class="btn btn-outline-default text-left" id="dropdownBasic2" ngbDropdownToggle>{{user.fullName}}</a>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2" style="margin: 10px;">
           <button class="nav-link" [routerLink]="['/shop/wishlist']" ngbDropdownItem>Wishlist</button>
+          <button class="nav-link" [routerLink]="['/pages/orders']" ngbDropdownItem>Order History</button>
           <button class="nav-link" [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
           <button class="nav-link" [routerLink]="['/pages/profile']" ngbDropdownItem>Profile</button>
           <button class="nav-link" (click)="onLogout()" ngbDropdownItem>Logout</button>

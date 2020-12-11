@@ -21,8 +21,9 @@
 <!-- Section ends -->
 
 <ng-container *ngIf="(order$ | async) as order">
+    <app-breadcrumb [title]="'Order Success'" [breadcrumb]="'Order Success'"></app-breadcrumb>
     <!-- thank-you section start -->
-    <section class="section-b-space light-layout" *ngIf="order">
+    <section class="section-b-space light-layout">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -39,7 +40,7 @@
     <!-- Section ends -->
 
     <!-- order-detail section start -->
-    <section class="section-b-space" *ngIf="order">
+    <section class="section-b-space">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -48,7 +49,7 @@
                         <div class="row product-order-detail" *ngFor="let item of order.orderItems">
                             <ng-container *ngIf="item.quantity > 0">
                                 <div class="col-2">
-                                    <img [src]="item.image_path" alt="" class="img-fluid">
+                                    <img [src]="item.image_path" alt="" class="img-fluid" style="max-height: 50px;">
                                 </div>
                                 <div class="col-5 order_detail">
                                     <div>

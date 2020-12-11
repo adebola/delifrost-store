@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ViewportScroller } from '@angular/common';
 import { ProductService } from '../../shared/services/product.service';
 import { Product } from '../../shared/classes/product';
-import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent implements OnInit, OnDestroy {
 
   public grid = 'col-xl-3 col-md-6';
   public layoutView = 'grid-view';
@@ -27,12 +27,18 @@ export class CollectionComponent implements OnInit {
   public loader = true;
   public isLoading = false;
 
-  constructor(private route: ActivatedRoute, private router: Router, public loadingService: LoadingService,
-              private viewScroller: ViewportScroller, public productService: ProductService) { }
+  private subQuery: Subscription;
+  private subProducts: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private viewScroller: ViewportScroller,
+    public productService: ProductService) { }
 
   ngOnInit(): void {
 
-    this.route.queryParams
+    this.subQuery = this.route.queryParams
       .subscribe(params => {
 
         this.brands = params.brand ? params.brand.split(',') : [];
@@ -44,7 +50,7 @@ export class CollectionComponent implements OnInit {
         this.sortBy = params.sortBy ? params.sortBy : 'ascending';
         this.pageNo = params.page ? params.page : this.pageNo;
 
-        this.productService.products$
+        this.subProducts = this.productService.products$
           .subscribe(products => {
 
             this.products = products;
@@ -61,6 +67,17 @@ export class CollectionComponent implements OnInit {
             this.paginate = this.productService.getPager(this.products.length, +this.pageNo);
           });
       });
+  }
+
+  ngOnDestroy() {
+
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
+
+    if (this.subProducts) {
+      this.subProducts.unsubscribe();
+    }
   }
 
 
@@ -98,7 +115,7 @@ export class CollectionComponent implements OnInit {
 
     const params = {
       brand: this.brands.length ? this.brands.join(',') : null
-    }
+    };
 
     this.router.navigate([], {
       relativeTo: this.route,

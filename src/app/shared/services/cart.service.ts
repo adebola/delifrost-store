@@ -99,30 +99,8 @@ export class CartService {
         incrementalPrice = quantity * (bundle.price * discount);
         incrementalQuantity = (quantity > 0) ? 1 : 0;
 
-        // console.log('XXXXXXXXXXXXXXXXXXX');
-        // console.log(bundle.price);
-        // console.log(bundle.discount);
-        // console.log('Incremental Price : ' + incrementalPrice);
-        // console.log(bundle.subTotalPrice);
-        // console.log(bundle.quantity);
-
         bundle.quantity = bundle.quantity ? bundle.quantity += quantity : quantity;
         bundle.subTotalPrice = bundle.subTotalPrice ? bundle.subTotalPrice += incrementalPrice : incrementalPrice;
-
-        // console.log('YYYYYYYYYYYYYYYYYYY');
-        // console.log(bundle.subTotalPrice);
-        // console.log(bundle.quantity);
-
-        // console.log('QQQQQQQQQQQQQQQQQQQ');
-        // console.log(this.cart.totalPrice);
-        // console.log(this.cart.totalQty);
-
-        // this.cart.totalPrice += incrementalPrice;
-        // this.cart.totalQty += incrementalQuantity;
-
-        // console.log('zzzzzzzzzzzzzzzzzzzzzz');
-        // console.log(this.cart.totalPrice);
-        // console.log(this.cart.totalQty);
 
         this.toastrService.success(item.name + ' has been added to the Cart.');
       } else {
@@ -143,12 +121,14 @@ export class CartService {
     let quantity = 0;
 
     for (const id in this.cart.items) {
-      this.cart.items[id].bundles.forEach((bundle) => {
-        if (bundle.quantity > 0) {
-          total_price += bundle.subTotalPrice;
-          quantity++;
-        }
-      });
+      if (this.cart.items[id]) {
+        this.cart.items[id].bundles.forEach((bundle) => {
+          if (bundle.quantity > 0) {
+            total_price += bundle.subTotalPrice;
+            quantity++;
+          }
+        });
+      }
     }
 
     this.cart.totalPrice = total_price;

@@ -4,6 +4,7 @@ import { Product, Bundle } from '../../../classes/product';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { Observable, Subscription } from 'rxjs';
+import { WishListService } from 'src/app/shared/services/wishlist.service';
 
 @Component({
   selector: 'app-product-box-one',
@@ -26,7 +27,10 @@ export class ProductBoxOneComponent implements OnInit {
 
   public ImageSrc: string;
 
-  constructor(private productService: ProductService, private cartService: CartService) { }
+  constructor(
+    private wishListService: WishListService,
+    private productService: ProductService,
+    private cartService: CartService) { }
 
   ngOnInit(): void {
     this.loader = true;
@@ -48,6 +52,6 @@ export class ProductBoxOneComponent implements OnInit {
   }
 
   addToWishlist(product: any) {
-    this.productService.addToWishlist(product);
+    this.wishListService.save(this.bundle.id);
   }
 }

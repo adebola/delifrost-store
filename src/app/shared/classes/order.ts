@@ -19,12 +19,13 @@ export class Order {
     full_name: string;
     email: string;
     orderedAt: Date;
+    paymentRef: string;
+    transaction_id: string;
+    pin: string;
     orderAmount: number;
     pickup: boolean;
     deliver: boolean;
     telephone: string;
     address: string;
-    paymentRef: string;
-    transaction_id: string;
     orderItems: OrderItem[];
 }

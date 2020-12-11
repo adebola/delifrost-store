@@ -11,7 +11,7 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     // Change color for this layout
-    document.documentElement.style.setProperty('--theme-deafult', '#fc8c03');
+    document.documentElement.style.setProperty('--theme-deafult', '#a3d7e7');
   }
 
 }

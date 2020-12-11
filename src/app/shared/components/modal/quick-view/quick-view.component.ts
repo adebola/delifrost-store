@@ -24,7 +24,7 @@ export class QuickViewComponent implements OnInit, OnDestroy  {
   public counter = 1;
   public modalOpen = false;
 
-  constructor(private router: Router, private modalService: NgbModal,
+  constructor(private modalService: NgbModal,
               public cartService: CartService,
               public productService: ProductService) { }
 

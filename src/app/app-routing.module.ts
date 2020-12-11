@@ -4,7 +4,6 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { ShopComponent } from './shop/shop.component';
 import { PagesComponent } from './pages/pages.component';
 import { AuthComponent } from './auth/auth.component';
-import { BlogPlaceHolderComponent } from './blog/blog-placeholder.component';
 import { ErrorComponent } from './shared/error/error.component';
 
 const routes: Routes = [
@@ -28,14 +27,9 @@ const routes: Routes = [
     loadChildren: () => import('./shop/shop.module').then(m => m.ShopModule)
   },
   {
-    path: 'blog',
-    component: BlogPlaceHolderComponent,
-    loadChildren:  () => import('./blog/blog.module').then(m => m.BlogModule)
-  },
-  {
     path: 'pages',
     component: PagesComponent,
-    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule) 
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
   },
   {
     path: '**', // ErrorComponent

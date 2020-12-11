@@ -1,14 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Product } from '../../shared/classes/product';
 import { ProductService } from '../../shared/services/product.service';
 import { OrderService, OrderDetails } from '../../shared/services/order.service';
 import { CartService } from 'src/app/shared/services/cart.service';
-import { AuthService } from 'src/app/auth/auth.service';
 
 import '../../../assets/js/inline.js';
-import { Address } from 'src/app/shared/classes/address';
+import { QuickAddressViewComponent } from 'src/app/shared/components/modal/quick-address-view/quick-address-view.component';
+import { AddressService } from 'src/app/shared/services/address.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 declare var PaystackPop: any;
 
@@ -21,22 +22,25 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   public checkoutForm: FormGroup;
   public products: Product[] = [];
-  public payment = 'paystack';
   public shipping = 'pickup';
   public amount: any;
   private subUser: Subscription;
   private subCart: Subscription;
+  private subAddress: Subscription;
   private email: string;
   public alertMessage;
   public formValid = true;
   public delivery = false;
-  public addresses$: Observable<Address[]>;
+  private firstTime = true;
+
+  @ViewChild('quickAddressView') QuickAddressView: QuickAddressViewComponent;
 
   constructor(private fb: FormBuilder,
               public cartService: CartService,
               public productService: ProductService,
               public orderService: OrderService,
-              public authService: AuthService) {
+              public authService: AuthService,
+              public addressService: AddressService) {
   }
   ngOnDestroy(): void {
     if (this.subUser) {
@@ -46,11 +50,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.subCart) {
       this.subCart.unsubscribe();
     }
+
+    if (this.subAddress) {
+      this.subAddress.unsubscribe();
+    }
   }
 
   ngOnInit(): void {
 
-    this.addresses$ = this.authService.loadUserAddresses();
+    let address;
+
+    this.subAddress =  this.addressService.loadUserAddresses().subscribe(a => {
+      if (a && this.firstTime) {
+        this.firstTime = false;
+        address = a[0].address;
+      }
+    });
 
     this.subCart = this.cartService.cartChanged
       .subscribe((cart: Product[]) => this.products = cart);
@@ -64,7 +79,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
             firstname: [user.fullName, [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
             phone: [user.telephone, [Validators.required, Validators.pattern('[0-9]+')]],
             email: [user.email, [Validators.required, Validators.email]],
-            address: [user.address, [Validators.required, Validators.maxLength(50)]]
+            address: [address ? address : user.address, [Validators.required, Validators.maxLength(50)]]
           });
         });
     } else {
@@ -82,8 +97,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   checkOut() {
-
-    // return this.orderService.testEMail();
 
     this.alertMessage = null;
 
@@ -136,33 +149,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   onChange(event) {
 
     this.alertMessage = null;
-
-    if (event === 'deliver') {
-
-      this.delivery = true;
-
-      // if (this.authService.isLoggedIn) {
-      //   this.authService.user$.subscribe(user => {
-      //     if (!(user.address && user.address.length > 0)) {
-      //       this.alertMessage =
-      //         // tslint:disable-next-line: max-line-length
-      //         'You have requested that goods purchase be delivered however you do not have an address on your profile, please goto your profile under your name on the menu to add address, telephone etc.';
-      //       this.formValid = false;
-      //     }
-      //   });
-      // }
-
-
-    } else {
-      this.delivery = false;
-    }
-
+    this.delivery = (event === 'deliver');
     this.shipping = event;
   }
 
   onSelectChange(event) {
-    const subject = this.authService.getAddress(+event)
-    .subscribe(o => this.checkoutForm.patchValue({address: o.address}));
+    const subject = this.addressService.getAddress(+event)
+      .subscribe(o => this.checkoutForm.patchValue({ address: o.address }));
 
     subject.unsubscribe();
   }

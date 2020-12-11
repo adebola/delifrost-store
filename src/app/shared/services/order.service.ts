@@ -13,6 +13,8 @@ const state = {
   checkoutItems: JSON.parse(localStorage['checkoutItems'] || '[]')
 };
 
+const ORDER_URL = '/api/v1/store/orders/';
+
 export interface OrderDetails {
   payment_ref: string;
   transaction_id: string;
@@ -37,24 +39,30 @@ export class OrderService {
     private authService: AuthService,
     private cartService: CartService) {
 
-      this.authService.user$.subscribe(user => {
-        this.user = user;
-      });
-    }
-
-  // Get Checkout Items
-  public get checkoutItems(): Observable<any> {
-    const itemsStream = new Observable(observer => {
-      observer.next(state.checkoutItems);
-      observer.complete();
+    this.authService.user$.subscribe(user => {
+      this.user = user;
     });
-    return itemsStream as Observable<any>;
   }
 
-  public loadOrderById(orderId: number): Observable<Order> {
-    const URL = environment.base_url + '/api/v1/store/orders/' + orderId;
+  // Get Checkout Items
+  // public get checkoutItems(): Observable<any> {
+  //   const itemsStream = new Observable(observer => {
+  //     observer.next(state.checkoutItems);
+  //     observer.complete();
+  //   });
+  //   return itemsStream as Observable<any>;
+  // }
 
-    return this.http.get<Order>(URL);
+  public loadOrderById(orderId: number): Observable<Order> {
+    return this.http.get<Order>(environment.base_url + ORDER_URL + orderId);
+  }
+
+  public loadOrdersByUserId(userId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(environment.base_url + ORDER_URL + 'user/' + userId);
+  }
+
+  public loadOrderItemsById(orderItem: number): Observable<OrderItem[]> {
+    return this.http.get<OrderItem[]>(environment.base_url + ORDER_URL + 'orderitem/' + orderItem);
   }
 
   public testEMail() {

@@ -1,68 +1,72 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Subscription, throwError } from 'rxjs';
-import { AuthService, AuthSignUpResponseData } from 'src/app/auth/auth.service';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { LoadingService } from 'src/app/shared/components/loading-spinner/loading.service';
-import { catchError, tap } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {NgForm} from '@angular/forms';
+import {Subscription} from 'rxjs';
+import {AuthService} from 'src/app/auth/auth.service';
+import {Router} from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
+import {tap} from 'rxjs/operators';
+
+declare var grecaptcha: any;
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
 
-  private closeSub: Subscription;
-  error: string = null;
+    public captchaError = false;
+    public error: string = null;
+    private subscription: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    private loading: LoadingService,
-    private router: Router,
-    private toastrService: ToastrService) { }
-
-  ngOnDestroy(): void {
-     if (this.closeSub) {
-      this.closeSub.unsubscribe();
-    }
-  }
-
-  ngOnInit(): void {
-  }
-
-  onSubmit(form: NgForm) {
-
-    if (!form.valid) {
-      return;
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private toastrService: ToastrService) {
     }
 
-    if (form.value.password !== form.value.repeatpassword) {
-      this.toastrService.error('Passwords do not match');
-      return;
+    ngOnDestroy(): void {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 
-    const email = form.value.email;
-    const password = form.value.password;
-    const fullName = form.value.fullname;
-    const telephone = form.value.telephone;
-    const address = form.value.address;
+    ngOnInit(): void {
+    }
 
-    const register$ = this.authService.signup(email, email, password, fullName, telephone, address)
-      .pipe(
-        catchError(err => {
-          const message = 'Registration Error, please try again';
-          this.toastrService.error(message);
-          console.log(message, err);
-          return throwError(err);
-        }),
-        tap(() =>  this.router.navigate(['/auth/login']))
-      );
+    onSubmit(form: NgForm) {
 
-    this.loading.showLoaderUntilCompleted(register$)
-      .subscribe();
+        if (!form.valid) {
+            return;
+        }
 
-    form.reset();
-  }
+        if (form.value.password !== form.value.repeatpassword) {
+            this.toastrService.error('Passwords do not match');
+            return;
+        }
+
+        const response = grecaptcha.getResponse();
+        if (response.length === 0) {
+            this.captchaError = true;
+            return;
+        }
+
+        const email = form.value.email;
+        const password = form.value.password;
+        const fullName = form.value.fullname;
+        const telephone = form.value.telephone;
+        const address = form.value.address;
+        const organization = form.value.organization ? form.value.organization : null;
+
+        this.subscription = this.authService.signup(email, email, password, fullName, telephone, address, organization, response)
+            .pipe(
+                tap(() => this.router.navigate(['/auth/login']))
+            ).subscribe(() => grecaptcha.reset());
+
+        form.reset();
+    }
+
+    resolved($event: string) {
+        console.log($event);
+    }
 }
