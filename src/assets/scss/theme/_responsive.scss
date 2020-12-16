@@ -1901,13 +1901,7 @@ background-color: $black;*/
             }
         }
     }
-    .beauty-about {
-        .about-text {
-            p {
-                text-align: center;
-            }
-        }
-    }
+
     .theme-card {
         .offer-slider {
             img {
@@ -2538,16 +2532,7 @@ background-color: $black;*/
                 }
             }
         }
-        .beauty-about {
-            .text-center {
-                text-align: center!important;
-            }
-            .about-text {
-                p {
-                    text-align: center;
-                }
-            }
-        }
+
         .footer-light {
             .subscribe {
                 border-left: none;
@@ -4420,16 +4405,7 @@ background-color: $black;*/
             }
         }
     }
-    .beauty-about {
-        .service {
-            .service-block1 {
-                margin-bottom: 20px;
-                &:last-child {
-                    margin-bottom: 0;
-                }
-            }
-        }
-    }
+
     #fb-root {
         display: none;
     }

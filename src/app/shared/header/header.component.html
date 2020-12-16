@@ -1,11 +1,11 @@
-<header class="sticky" [ngClass]="class" [class.fixed]="stick && sticky">
+<header style="max-height: 60px; background-color: #a3d7e7; display: flex; justify-content: center; align-items: center;" class="sticky" [ngClass]="class" [class.fixed]="stick && sticky">
   <div class="mobile-fix-option"></div>
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
         <div class="main-menu">
           <div class="menu-left">
-            <div class="brand-logo">
+            <div class="mb-1">
               <a *ngIf="(authService.user$ | async)" routerLink="/home" id="headerlogo">
                 <img [src]="themeLogo" class="img-fluid" alt="logo">
               </a>

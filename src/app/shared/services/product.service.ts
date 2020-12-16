@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 import { environment } from 'src/environments/environment';
@@ -17,10 +17,12 @@ export class ProductService {
   private subscription: Subscription;
   private products: Product[];
 
-  constructor(
-    private http: HttpClient,
-    private toastrService: ToastrService) {
+  constructor(private http: HttpClient, private toastrService: ToastrService) {
     this.loadProducts();
+  }
+
+  public loadProductPage(page: number, size: number): Observable<Product[]> {
+    return null;
   }
 
   private loadProducts() {
@@ -62,6 +64,10 @@ export class ProductService {
 
   public uniqueBrands(): string[] {
 
+    if (!this.products) {
+      return [];
+    }
+
     const brands = [];
 
     for (const product of this.products) {
@@ -88,10 +94,6 @@ export class ProductService {
   }
 
   public getProductBySlug(slug: string): Observable<Product> {
-
-    // return this.products$.pipe(
-    //   switchMap(products => products.find(item => item.productId === +slug))
-    // );
 
     return of(this.products.find(item => item.productId === +slug));
   }

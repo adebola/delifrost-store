@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="'Login'" [breadcrumb]="'Login'"></app-breadcrumb>
+<!--<app-breadcrumb [title]="'Login'" [breadcrumb]="'Login'"></app-breadcrumb>-->
 <!-- section start -->
 <section class="login-page section-b-space">
     <div   class="container">
@@ -6,20 +6,33 @@
             <div  class="col mx-auto" style="max-width: 600px;" >
                 <h3>Login</h3>
                 <div class="theme-card">
-                    <form class="theme-form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm)">
+
                         <div class="form-group">
-                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required ngModel>
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email" formControlName="email">
+                            <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email.errors?.required" class="text text-danger">
+                                Email Address is required
+                            </div>
+                            <div *ngIf="loginForm.controls.email.touched && loginForm.controls.email.errors?.email" class="text text-danger">
+                                Invalid Email Address
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required ngModel>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" formControlName="password">
+                            <div *ngIf="loginForm.controls.password.touched && loginForm.controls.password.errors?.required" class="text text-danger">
+                                Password is required
+                            </div>
                         </div>
+
                         <div class="form-group">
-                            <re-captcha  (resolved)="resolved($event)" siteKey="6LdBMvkZAAAAAHvvSY40x6YyBkV-tKvdE6zQTgXz"></re-captcha>
+                            <re-captcha (resolved)="resolved($event)" siteKey="6LdBMvkZAAAAAHvvSY40x6YyBkV-tKvdE6zQTgXz"></re-captcha>
                             <div *ngIf="captchaError" class="error required">Recaptcha not verified.</div>
                         </div>
+
                         <div class="row">
                             <div class="col-12 mb-2">
-                                <button class="btn btn-solid btn-block" type="submit" [disabled]="!loginForm.valid">Login</button>
+                                <button class="btn btn-solid btn-block" type="submit">Login</button>
                             </div>
                             <div class="col-6">
                                 <button class="btn btn-outline btn-sm" type="button" [routerLink]="['/auth/forgotpassword']">Forgot Password</button>

@@ -11,7 +11,7 @@ export class PaginationComponent implements OnInit {
   @Input() products: Product[] = [];
   @Input() paginate: any = {};
 
-  @Output() setPage  : EventEmitter<any> = new EventEmitter<any>();
+  @Output() setPage: EventEmitter<any> = new EventEmitter<any>();
     
   constructor() { 
   }
@@ -22,5 +22,4 @@ export class PaginationComponent implements OnInit {
   pageSet(page: number) {
     this.setPage.emit(page);  // Set Page Number  
   }
-
 }

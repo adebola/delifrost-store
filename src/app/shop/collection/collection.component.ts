@@ -16,16 +16,11 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public layoutView = 'grid-view';
   public products: Product[];
   public brands: any[] = [];
-  public minPrice = 0;
-  public maxPrice = 1200;
-  public tags: any[] = [];
   public category: string;
   public pageNo = 1;
   public paginate: any = {}; // Pagination use only
-  public sortBy: string; // Sorting Order
   public mobileSidebar = false;
   public loader = true;
-  public isLoading = false;
 
   private subQuery: Subscription;
   private subProducts: Subscription;
@@ -38,22 +33,23 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.subQuery = this.route.queryParams
-      .subscribe(params => {
+    if (this.subQuery) {
+      this.subQuery.unsubscribe();
+    }
+
+    this.subQuery = this.route.queryParams.subscribe(params => {
 
         this.brands = params.brand ? params.brand.split(',') : [];
-        this.minPrice = params.minPrice ? params.minPrice : this.minPrice;
-        this.maxPrice = params.maxPrice ? params.maxPrice : this.maxPrice;
-        // this.tags = [...this.brands, ...this.colors, ...this.size]; // All Tags Array
-
         this.category = params.category ? params.category : null;
-        this.sortBy = params.sortBy ? params.sortBy : 'ascending';
-        this.pageNo = params.page ? params.page : this.pageNo;
 
-        this.subProducts = this.productService.products$
-          .subscribe(products => {
+        if (this.subProducts) {
+          this.subProducts.unsubscribe();
+        }
 
+        this.subProducts = this.productService.products$.subscribe(products => {
             this.products = products;
+
+            console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
 
             if (params.category) {
               this.products = this.products.filter(item => item.category === this.category);
@@ -62,9 +58,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
             if (this.brands && this.brands.length > 0) {
               this.products = this.products.filter(item => this.brands.indexOf(item.brand) !== -1);
             }
-
-            // Paginate Products
-            this.paginate = this.productService.getPager(this.products.length, +this.pageNo);
           });
       });
   }
@@ -80,59 +73,14 @@ export class CollectionComponent implements OnInit, OnDestroy {
     }
   }
 
-
   // Append filter value to Url
   updateFilter(tags: any) {
     tags.page = null; // Reset Pagination
+
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: tags,
       queryParamsHandling: 'merge', // preserve the existing query params in the route
-      skipLocationChange: false  // do trigger navigation
-    }).finally(() => {
-      this.viewScroller.setOffset([120, 120]);
-      this.viewScroller.scrollToAnchor('products'); // Anchore Link
-    });
-  }
-
-  // SortBy Filter
-  sortByFilter(value) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { sortBy: value ? value : null },
-      queryParamsHandling: 'merge', // preserve the existing query params in the route
-      skipLocationChange: false  // do trigger navigation
-    }).finally(() => {
-      this.viewScroller.setOffset([120, 120]);
-      this.viewScroller.scrollToAnchor('products'); // Anchore Link
-    });
-  }
-
-  // Remove Tag
-  removeTag(tag: any) {
-
-    this.brands = this.brands.filter(val => val !== tag);
-
-    const params = {
-      brand: this.brands.length ? this.brands.join(',') : null
-    };
-
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: params,
-      queryParamsHandling: 'merge', // preserve the existing query params in the route
-      skipLocationChange: false  // do trigger navigation
-    }).finally(() => {
-      this.viewScroller.setOffset([120, 120]);
-      this.viewScroller.scrollToAnchor('products'); // Anchore Link
-    });
-  }
-
-  // Clear Tags
-  removeAllTags() {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: {},
       skipLocationChange: false  // do trigger navigation
     }).finally(() => {
       this.viewScroller.setOffset([120, 120]);

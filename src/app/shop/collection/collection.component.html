@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="'Collection'" [breadcrumb]="'Collection'"></app-breadcrumb>
+<!--<app-breadcrumb [title]="'Collection'" [breadcrumb]="'Collection'"></app-breadcrumb>-->
 <!-- section start -->
 <section class="section-b-space">
     <div class="collection-wrapper">
@@ -29,24 +29,8 @@
                             <div class="col-sm-12">
                                 <div class="top-banner-wrapper">
                                     <img src="assets/images/collection-banner.jpg" class="img-fluid " alt="">
-                                    <div class="top-banner-content small-section">
-                                        <h4>Delifrost</h4>
-                                        <h5>Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                        </h5>
-                                        <p>
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                            Lorem Ipsum has been the industry's standard dummy text ever since the
-                                            1500s, when an unknown printer took a galley of type and scrambled it to
-                                            make a type specimen book. It has
-                                            survived not only five centuries, but also the leap into electronic
-                                            typesetting, remaining essentially unchanged. It was popularised in the
-                                            1960s with the release of Letraset sheets containing Lorem Ipsum passages,
-                                            and more recently with desktop publishing software like Aldus PageMaker
-                                            including versions of Lorem Ipsum.
-                                        </p>
-                                    </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-2">
                                     <div class="col-xl-12">
                                         <div class="filter-main-btn" (click)="toggleMobileSidebar()">
                                             <span class="filter-btn btn btn-theme">
@@ -55,23 +39,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <ul class="product-filter-tags">
-                                    <li class="mr-1" *ngFor="let tag of tags">
-                                        <a href="javascript:void(0)" class="filter_tag">
-                                            {{tag}} <i class="ti-close" (click)="removeTag(tag)"></i>
-                                        </a>
-                                    </li>
-                                    <li class="clear_filter" *ngIf="tags.length > 0">
-                                        <a href="javascript:void(0)" class="clear_filter" (click)="removeAllTags()">
-                                            Clear all
-                                        </a>
-                                    </li>
-                                </ul>
                                 <div class="collection-product-wrapper" id="products">
+
                                     <app-grid [products]="products" [paginate]="paginate" [layoutView]="layoutView"
-                                        [sortBy]="sortBy" (setGrid)="updateGridLayout($event)"
-                                        (setLayout)="updateLayoutView($event)" (sortedBy)="sortByFilter($event)">
+                                        [pageSize]="20" (setGrid)="updateGridLayout($event)"
+                                        (setLayout)="updateLayoutView($event)" (setPaging)="setPage($event)">
                                     </app-grid>
+
                                     <div class="product-wrapper-grid" [ngClass]="layoutView">
                                         <div class="row">
                                             <div class="col-grid-box" [ngClass]="grid" *ngFor="let product of products">
@@ -105,6 +79,4 @@
         </div>
     </div>
 </section>
-
-
 <!-- section End -->

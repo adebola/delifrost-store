@@ -7,8 +7,60 @@
 </section>
 <!-- Home slider End -->
 
+<!--Experimental Start-->
+
+
+<section class="p-0 ratio2_1">
+  <div class="title1">
+    <h4>categories</h4>
+    <h2 class="title-inner1">product categories</h2>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row category-border">
+      <ng-container *ngFor="let category of categoryService.categories$ | async">
+      <div class="col-sm-4 border-padding mb-2">
+        <div class="category-banner">
+          <div class="bg-size blur-up lazyloaded" [ngStyle] = "{'background-image': 'url(' + category.image_url + ')', 'background-size': 'cover', 'background-position': 'center center', 'display': 'block'}" style="max-height: 200px;">
+            <img [src]="category.image_url" class="img-fluid blur-up lazyload bg-img" alt="" style="display: block;">
+          </div>
+          <div class="category-box">
+            <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category.name }" class="image-block">
+              <h5>{{category.name}}</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+      </ng-container>
+    </div>
+  </div>
+</section>
+<!--Experimental End-->
+
+<!--<section class="section-b-space">-->
+<!--<div class="title1">-->
+<!--  <h4>categories</h4>-->
+<!--  <h2 class="title-inner1">product categories</h2>-->
+<!--</div>-->
+<!--<div class="category-bg">-->
+<!--  <div class="container-fluid p-0">-->
+<!--    <div class="row order-section">-->
+
+<!--      <ng-container *ngFor="let category of categoryService.categories$ | async">-->
+<!--        <div class="col-sm-4 p-0">-->
+<!--          <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category.name }" class="image-block">-->
+<!--            <h2 class="centered">{{category.name}}</h2>-->
+<!--            <img [alt]="category.image_url" [src]="category.image_url" class="img-fluid" />-->
+<!--          </a>-->
+<!--        </div>-->
+<!--      </ng-container>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</section>-->
+
 <!-- About section start -->
-<section class="section-b-space beauty-about">
+<section class="section-b-space">
   <div class="container">
     <div class="row">
       <div class="col-xl-5 col-lg-6 col-md-12 offset-xl-1 text-center">
@@ -99,26 +151,6 @@
 </section>
 <!-- About section  end -->
 
-<div class="title1">
-  <h4>categories</h4>
-  <h2 class="title-inner1">product categories</h2>
-</div>
-<div class="category-bg">
-  <div class="container-fluid p-0">
-    <div class="row order-section">
-
-      <ng-container *ngFor="let category of categoryService.categories$ | async">
-        <div class="col-sm-4 p-0">
-          <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category.name }" class="image-block">
-            <h2 class="centered">{{category.name}}</h2>
-            <img [alt]="category.image_url" [src]="category.image_url" class="img-fluid" />
-          </a>
-        </div>
-      </ng-container>
-    </div>
-  </div>
-</div>
-
 <!-- Video section start -->
 <section class="video-section section-b-space">
   <div class="title1">
@@ -144,4 +176,4 @@
 
 <app-newsletter></app-newsletter>
 <app-video-modal #videoModal></app-video-modal>
-<app-footer [themeLogo]="themeLogo"></app-footer>
+<app-footer [themeLogo]="themeLogo" [mainFooter]="false"></app-footer>

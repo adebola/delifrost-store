@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AuthService} from 'src/app/auth/auth.service';
 import {Router} from '@angular/router';
@@ -18,11 +18,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public captchaError = false;
     public error: string = null;
     private subscription: Subscription;
+    public registerForm: FormGroup;
 
     constructor(
         private authService: AuthService,
         private router: Router,
-        private toastrService: ToastrService) {
+        private toastrService: ToastrService,
+        private fb: FormBuilder) {
     }
 
     ngOnDestroy(): void {
@@ -32,17 +34,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.createForm();
     }
 
-    onSubmit(form: NgForm) {
-
-        if (!form.valid) {
-            return;
-        }
+    onSubmit(form: FormGroup) {
 
         if (form.value.password !== form.value.repeatpassword) {
-            this.toastrService.error('Passwords do not match');
-            return;
+            return this.toastrService.error('Passwords do not match');
+        }
+
+        console.log(form);
+
+        if (!form.valid) {
+            return this.toastrService.error('The Form has not been completely filled out');
         }
 
         const response = grecaptcha.getResponse();
@@ -60,13 +64,26 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         this.subscription = this.authService.signup(email, email, password, fullName, telephone, address, organization, response)
             .pipe(
-                tap(() => this.router.navigate(['/auth/login']))
+                tap(() => {
+                    this.router.navigate(['/auth/login']);
+                    this.toastrService.info('User has been registered successfully');
+                })
             ).subscribe(() => grecaptcha.reset());
-
-        form.reset();
     }
 
     resolved($event: string) {
         console.log($event);
+    }
+
+    private createForm(): void {
+        this.registerForm = this.fb.group({
+            fullname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
+            organization: [''],
+            telephone: ['', [Validators.required, Validators.minLength(11), Validators.pattern('[0-9]+')]],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required]],
+            repeatpassword: ['', [Validators.required]],
+            address: ['', [Validators.required, Validators.maxLength(200)]]
+        });
     }
 }

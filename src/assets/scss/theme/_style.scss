@@ -4012,19 +4012,6 @@ header {
     }
 }
 
-
-/*=====================
-    17.5.Beauty Demo css
-==========================*/
-
-.beauty-about {
-    .about-text {
-        p {
-            text-align: left;
-        }
-    }
-}
-
 .about-section {
     display: flex;
     justify-content: center;
@@ -9541,23 +9528,7 @@ body.rtl {
             text-align: center;
         }
     }
-    .beauty-about {
-        .text-center {
-            text-align: left !important;
-        }
-    }
-    .beauty-about {
-        .about-text {
-            p {
-                text-align: right;
-            }
-        }
-        .service-block1 {
-            h5 {
-                text-align: center;
-            }
-        }
-    }
+
     .pets-box {
         .product-box {
             .product-detail {

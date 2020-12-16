@@ -10,12 +10,12 @@ export class GridComponent implements OnInit {
 
   @Input() products: Product[] = [];
   @Input() paginate: any = {};
-  @Input() layoutView: string = 'grid-view';
-  @Input() sortBy: string;
+  @Input() layoutView = 'grid-view';
+  @Input() pageSize: number;
 
   @Output() setGrid: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLayout: EventEmitter<any> = new EventEmitter<any>();
-  @Output() sortedBy: EventEmitter<any> = new EventEmitter<any>();
+  @Output() setPaging: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
@@ -27,12 +27,12 @@ export class GridComponent implements OnInit {
   }
 
   setLayoutView(value: string) {
-    this.layoutView = value
+    this.layoutView = value;
     this.setLayout.emit(value); // Set layout view
   }
 
-  sorting(event) {
-    this.sortedBy.emit(event.target.value)
+  paging(value: number) {
+    this.pageSize = value;
+    this.setPaging.emit(value);
   }
-
 }

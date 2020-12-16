@@ -1,4 +1,4 @@
-<app-breadcrumb [title]="'Register'" [breadcrumb]="'Register'"></app-breadcrumb>
+<!--<app-breadcrumb [title]="'Register'" [breadcrumb]="'Register'"></app-breadcrumb>-->
 <!-- section start -->
 <section class="register-page section-b-space">
     <div class="container">
@@ -6,47 +6,79 @@
             <div class="col-lg-12 mx-auto" style="max-width: 600px;">
                 <h3>create account</h3>
                 <div class="theme-card">
-                    <form class="theme-form" #registerform="ngForm" (ngSubmit)="onSubmit(registerform)">
+                    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
 
                         <div class="form-group">
-                            <label for="fullname">Full Name<span class="required">*</span></label>
+<!--                            <label for="fullname">Full Name<span class="required">*</span></label>-->
                             <input type="text" name="fullname" class="form-control" id="fullname"
-                                   placeholder="Full Name" required ngModel/>
+                                   placeholder="Full Name (Required)" formControlName="fullname" required/>
+
+                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.required" class="text text-danger">
+                                Full Name is required.
+                            </div>
+
+                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.pattern" class="text text-danger">
+                                Full Name must be alphabets.
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="organization">Organization (Optional)</label>
+<!--                            <label for="organization">Organization (Optional)</label>-->
                             <input type="text" name="organization" class="form-control" id="organization"
-                                   placeholder="Organization" ngModel/>
+                                   placeholder="Organization (Optional)" formControlName="organization"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="telephone">Telephone Number<span class="required">*</span></label>
+<!--                            <label for="telephone">Telephone Number<span class="required">*</span></label>-->
                             <input type="text" name="telephone" class="form-control" id="telephone"
-                                   placeholder="Telephone Number" ngModel/>
+                                   placeholder="Telephone Number (Required)" formControlName="telephone"/>
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.required" class="text text-danger">
+                                Telephone Number is required.
+                            </div>
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.pattern" class="text text-danger">
+                                Telephone Number must be numbers.
+                            </div>
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.minlength" class="text text-danger">
+                                Telephone Number must be a minimum of 11 characters
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">Email<span class="required">*</span></label>
-                            <input type="email" name="email" class="form-control" id="email" placeholder="Email"
-                                   required ngModel/>
+<!--                            <label for="email">Email<span class="required">*</span></label>-->
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email (Required)"
+                                   formControlName="email" required/>
+                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.required" class="text text-danger">
+                                Email Address is required
+                            </div>
+                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.email" class="text text-danger">
+                                Invalid Email Address
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label for="password">Password<span class="required">*</span></label>
+<!--                            <label for="password">Password<span class="required">*</span></label>-->
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Enter Password" required ngModel/>
+                                   formControlName="password" placeholder="Enter Password (Required)"/>
+                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required" class="text text-danger">
+                                Password is required
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="repeatpassword">Re confirm Password<span class="required">*</span></label>
+<!--                            <label for="repeatpassword">Re confirm Password<span class="required">*</span></label>-->
                             <input type="password" class="form-control" id="repeatpassword" name="repeatpassword"
-                                   placeholder="Reconfirm Password" required ngModel/>
+                                   formControlName="repeatpassword" placeholder="Reconfirm Password (Required)"/>
+                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.required" class="text text-danger">
+                                Password Re-Conformation is required
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="address">Address<span class="required">*</span></label>
+<!--                            <label for="address">Address<span class="required">*</span></label>-->
                             <textarea class="form-control" id="address" name="address"
-                                      placeholder="Please Enter Address" ngModel></textarea>
+                                      formControlName="address" placeholder="Address (Required)"></textarea>
+                            <div *ngIf="registerForm.controls.address.touched && registerForm.controls.address.errors?.required" class="text text-danger">
+                                Address is required
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -54,7 +86,7 @@
                             <div *ngIf="captchaError" class="error required">Recaptcha not verified.</div>
                         </div>
 
-                        <button class="btn btn-solid" type="submit" [disabled]="!registerform.valid">
+                        <button class="btn btn-solid" type="submit">
                             Create Account
                         </button>
                     </form>

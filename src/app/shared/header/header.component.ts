@@ -23,11 +23,11 @@ export class HeaderComponent implements OnInit {
   // @HostListener Decorator
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    const value = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    if (value >= 300 && window.innerWidth > 400) {
-      this.stick = true;
-    } else {
-      this.stick = false;
-    }
+    // const value = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    // if (value >= 300 && window.innerWidth > 400) {
+    //   this.stick = true;
+    // } else {
+    //   this.stick = false;
+    // }
   }
 }
