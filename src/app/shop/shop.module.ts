@@ -26,38 +26,36 @@ import { PriceComponent } from './collection/widgets/price/price.component';
 import { PostComponent } from './collection/widgets/post/post.component';
 
 import { CartComponent } from './cart/cart.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { SuccessComponent } from './checkout/success/success.component';
 import { CartItemComponent } from './cart/cart-item/cart-item.component';
 import { SearchComponent } from './search/search.component';
 
 @NgModule({
-  declarations: [
-    ProductNoSidebarComponent,
-    ServicesComponent,
-    CountdownComponent,
-    SocialComponent,
-    StockInventoryComponent,
-    RelatedProductComponent,
-    CollectionComponent,
-    GridComponent,
-    PaginationComponent,
-    BrandsComponent,
-    PriceComponent,
-    PostComponent,
-    CartComponent,
-    SearchComponent,
-    CartItemComponent,
-    WishlistComponent,
-    CheckoutComponent,
-    SuccessComponent
-  ],
-  imports: [
-    CommonModule,
-    Ng5SliderModule,
-    SharedModule,
-    ShopRoutingModule
-  ]
+    declarations: [
+        ProductNoSidebarComponent,
+        ServicesComponent,
+        CountdownComponent,
+        SocialComponent,
+        StockInventoryComponent,
+        RelatedProductComponent,
+        CollectionComponent,
+        GridComponent,
+        PaginationComponent,
+        BrandsComponent,
+        PriceComponent,
+        PostComponent,
+        CartComponent,
+        SearchComponent,
+        CartItemComponent,
+        CheckoutComponent,
+        SuccessComponent
+    ],
+    imports: [
+        CommonModule,
+        Ng5SliderModule,
+        SharedModule,
+        ShopRoutingModule
+    ]
 })
 export class ShopModule { }

@@ -5,6 +5,7 @@ import { DashboardComponent } from './account/dashboard/dashboard.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { AuthGuard } from '../auth/auth-guard.service';
 import { OrderComponent } from './account/order/order.component';
+import {WishlistComponent} from './wishlist/wishlist.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'wishlist',
+    component: WishlistComponent,
     canActivate: [AuthGuard]
   },
   {

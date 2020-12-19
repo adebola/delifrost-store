@@ -17,10 +17,12 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public products: Product[];
   public brands: any[] = [];
   public category: string;
-  public pageNo = 1;
-  public paginate: any = {}; // Pagination use only
+  public pageNo: number = 1;
+  public pageSize: number = 20;
+  public sortBy: string; // Sorting Order
   public mobileSidebar = false;
   public loader = true;
+  public totalLength: number;
 
   private subQuery: Subscription;
   private subProducts: Subscription;
@@ -41,6 +43,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
         this.brands = params.brand ? params.brand.split(',') : [];
         this.category = params.category ? params.category : null;
+        this.sortBy = params.sortBy ? params.sortBy : null;
+        this.pageNo = (params.page && +params.page > 0) ? params.page : 1;
 
         if (this.subProducts) {
           this.subProducts.unsubscribe();
@@ -48,15 +52,34 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
         this.subProducts = this.productService.products$.subscribe(products => {
             this.products = products;
+            this.totalLength = this.products.length;
 
-            console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+            let shouldPage = true;
 
             if (params.category) {
               this.products = this.products.filter(item => item.category === this.category);
+              shouldPage = false;
             }
 
             if (this.brands && this.brands.length > 0) {
               this.products = this.products.filter(item => this.brands.indexOf(item.brand) !== -1);
+              shouldPage = false;
+            }
+
+            if (shouldPage) {
+              if (params.pagesize || params.page) {
+
+                const start: number = (this.pageNo - 1) * this.pageSize;
+                const end: number = +start + +this.pageSize;
+
+                this.products = this.products.slice(start, end);
+              } else {
+                this.products = this.products.slice(this.pageNo - 1, this.pageSize);
+              }
+            }
+
+            if (this.sortBy) {
+              this.products = this.productService.sortProducts(this.products, this.sortBy);
             }
           });
       });
@@ -88,11 +111,24 @@ export class CollectionComponent implements OnInit, OnDestroy {
     });
   }
 
-  // product Pagination
-  setPage(page: number) {
+  // SortBy Filter
+  sortByFilter(value) {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { page: page },
+      queryParams: { sortBy: value ? value : null },
+      queryParamsHandling: 'merge', // preserve the existing query params in the route
+      skipLocationChange: false  // do trigger navigation
+    }).finally(() => {
+      this.viewScroller.setOffset([120, 120]);
+      this.viewScroller.scrollToAnchor('products'); // Anchore Link
+    });
+  }
+
+  // product Pagination
+  private setPage() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { page: this.pageNo, pagesize: this.pageSize },
       queryParamsHandling: 'merge', // preserve the existing query params in the route
       skipLocationChange: false  // do trigger navigation
     }).finally(() => {
@@ -104,6 +140,16 @@ export class CollectionComponent implements OnInit, OnDestroy {
   // Change Grid Layout
   updateGridLayout(value: string) {
     this.grid = value;
+  }
+
+  updatePage(value: number) {
+    this.pageNo = value;
+    this.setPage();
+  }
+
+  updatePageSize(value) {
+    this.pageSize = value.target.value;
+    this.setPage();
   }
 
   // Change Layout View

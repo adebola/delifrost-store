@@ -34,10 +34,8 @@
       <li *ngIf="(authService.user$ | async) as user" ngbDropdown>
         <a class="btn btn-outline-default text-left" id="dropdownBasic2" ngbDropdownToggle>{{user.fullName}}</a>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2" style="margin: 10px;">
-          <button class="nav-link" [routerLink]="['/shop/wishlist']" ngbDropdownItem>Wishlist</button>
-          <button class="nav-link" [routerLink]="['/pages/orders']" ngbDropdownItem>Order History</button>
+          <button class="nav-link" [routerLink]="['/pages/wishlist']" ngbDropdownItem>Wishlist</button>
           <button class="nav-link" [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
-          <button class="nav-link" [routerLink]="['/pages/profile']" ngbDropdownItem>Profile</button>
           <button class="nav-link" (click)="onLogout()" ngbDropdownItem>Logout</button>
         </div>
       </li>

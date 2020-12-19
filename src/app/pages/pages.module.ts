@@ -11,13 +11,21 @@ import { ProfileComponent } from './account/profile/profile.component';
 
 
 import { OrderComponent } from './account/order/order.component';
+import { WishlistComponent } from './wishlist/wishlist.component';
+import {AddressComponent} from './address/address.component';
+import {StatisticsComponent} from './statistics/statistics.component';
+import {ChangePasswordComponent} from './password/change-password.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     ProfileComponent,
-    OrderComponent
+    OrderComponent,
+    WishlistComponent,
+    AddressComponent,
+    StatisticsComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

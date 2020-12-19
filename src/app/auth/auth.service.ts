@@ -40,17 +40,20 @@ export interface AuthSignInResponseData {
   fullName: string;
   telephone: string;
   address: string;
+  organization: string;
   token: string;
 }
 
 const SIGNUP_URL = environment.base_url + '/api/v1/auth/signup';
 const SIGNIN_URL = environment.base_url + '/api/v1/auth/signin';
+const UPDATE_URL = environment.base_url + '/api/v1/users';
 
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private subject = new BehaviorSubject<User>(null);
   public user$ = this.subject.asObservable();
+  private user: User;
 
   public isLoggedIn = false;
   public userId = 0;
@@ -59,6 +62,43 @@ export class AuthService {
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router, private toastrService: ToastrService) { }
+
+  public updateUser(user: User) {
+
+    const self = this;
+
+    user.email = this.user.email;
+    user.username = this.user.username;
+
+    this.http.put<any>(UPDATE_URL + '/' + this.userId, user)
+        .pipe (
+            catchError(err => {
+              this.handleError(err, self);
+              return throwError(err);
+            }),
+            tap(u  => {
+              this.toastrService.success('User has been updated successfully');
+
+              const newUser: User = new User(
+                  self.user.userId,
+                  u.username,
+                  u.email,
+                  u.fullName,
+                  u.telephone,
+                  self.user.address,
+                  u.organization,
+                  self.user.token,
+                  self.user.tokenExpirationDate
+              );
+
+              self.user = newUser;
+              self.subject.next(newUser);
+              this.saveUserToLocalStorage(newUser);
+            })
+        ).subscribe();
+}
+
+
 
   signup(username: string, email: string, password: string,
          fullName: string, telephone: string, address: string,
@@ -113,6 +153,8 @@ export class AuthService {
 
       const expirationDuration = expiryDate.getTime() - nowDate.getTime();
 
+      console.log(responseData);
+
       const user =
           new User(
               +responseData.id,
@@ -121,15 +163,21 @@ export class AuthService {
               responseData.fullName,
               responseData.telephone,
               responseData.address,
+              responseData.organization,
               responseData.token,
               expiryDate
           );
 
+      this.user = user;
       self.subject.next(user);
       self.autoLogout(expirationDuration);
       self.isLoggedIn = true;
       self.userId = user.userId;
-      localStorage.setItem('userData', JSON.stringify(user));
+      this.saveUserToLocalStorage(user);
+  }
+
+  public saveUserToLocalStorage(user: User) {
+    localStorage.setItem('userData', JSON.stringify(user ? user : this.user));
   }
 
   private handleError(errorResponse: HttpErrorResponse, self: any) {
@@ -179,6 +227,7 @@ export class AuthService {
         userData.fullName,
         userData.telephone,
         userData.address,
+        userData.organization,
         userData._token,
         new Date(userData._tokenExpirationDate));
 
@@ -187,6 +236,7 @@ export class AuthService {
 
       if (expirationDuration > 1000) {
         this.autoLogout(expirationDuration);
+        this.user = user;
         this.subject.next(user);
 
         this.userId = user.userId;

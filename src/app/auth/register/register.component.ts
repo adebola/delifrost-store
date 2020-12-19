@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs';
 import {AuthService} from 'src/app/auth/auth.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 
 declare var grecaptcha: any;
 
@@ -43,8 +43,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
             return this.toastrService.error('Passwords do not match');
         }
 
-        console.log(form);
-
         if (!form.valid) {
             return this.toastrService.error('The Form has not been completely filled out');
         }
@@ -64,6 +62,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         this.subscription = this.authService.signup(email, email, password, fullName, telephone, address, organization, response)
             .pipe(
+                catchError(() => grecaptcha.reset()),
                 tap(() => {
                     this.router.navigate(['/auth/login']);
                     this.toastrService.info('User has been registered successfully');

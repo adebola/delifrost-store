@@ -9,13 +9,17 @@ import { Product } from '../../../../shared/classes/product';
 export class GridComponent implements OnInit {
 
   @Input() products: Product[] = [];
-  @Input() paginate: any = {};
+  // @Input() paginate: any = {};
+  @Input() totalLength: number;
   @Input() layoutView = 'grid-view';
   @Input() pageSize: number;
+  @Input() pageNo: number;
+  @Input() sortBy: string;
 
   @Output() setGrid: EventEmitter<any> = new EventEmitter<any>();
   @Output() setLayout: EventEmitter<any> = new EventEmitter<any>();
   @Output() setPaging: EventEmitter<any> = new EventEmitter<any>();
+  @Output() sortedBy: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
@@ -31,8 +35,12 @@ export class GridComponent implements OnInit {
     this.setLayout.emit(value); // Set layout view
   }
 
-  paging(value: number) {
+  paging(value) {
     this.pageSize = value;
     this.setPaging.emit(value);
+  }
+
+  sorting(event) {
+    this.sortedBy.emit(event.target.value)
   }
 }

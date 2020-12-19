@@ -6,6 +6,7 @@ export class User {
               public fullName: string,
               public telephone: string,
               public address: string,
+              public organization: string,
               private _token: string,
               private _tokenExpirationDate: Date) {}
 

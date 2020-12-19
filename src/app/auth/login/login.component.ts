@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import { Subscription, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { tap } from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 declare var grecaptcha: any;
 
 @Component({
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(form: FormGroup) {
 
     if (!form.valid) {
-      return this.toastrService.error('Please fill out all items in form', 'Validation Error');
+      return this.toastrService.error('Please fill out all items properly in the form', 'Validation Error');
     }
 
     const response = grecaptcha.getResponse();
@@ -50,7 +50,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.subscription = this.authService.login(email, password, response)
       .pipe(
-        tap(() => this.router.navigate(['/home']))
+          catchError(() => grecaptcha.reset()),
+          tap(() => this.router.navigate(['/home']))
       ).subscribe(() => grecaptcha.reset());
   }
 

@@ -1,83 +1,89 @@
-<!--<app-breadcrumb [title]="'Profile'" [breadcrumb]="'Profile'"></app-breadcrumb>-->
-<!-- personal deatail section start -->
-<section class="contact-page register-page">
+<section class="register-page py-1 my-1">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <h3>PERSONAL DETAIL</h3>
-                <form class="theme-form">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="name">First Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter Your name" required="">
+            <div class="col-lg-12 mx-auto" style="max-width: 600px;">
+                <div class="theme-card">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm)">
+
+                        <div class="form-group">
+                            <input type="text" name="fullname" class="form-control" id="fullname"
+                                   placeholder="Full Name (Required)" formControlName="fullname" required/>
+
+                            <div *ngIf="profileForm.controls.fullname.touched && profileForm.controls.fullname.errors?.required" class="text text-danger">
+                                Full Name is required.
+                            </div>
+
+                            <div *ngIf="profileForm.controls.fullname.touched && profileForm.controls.fullname.errors?.pattern" class="text text-danger">
+                                Full Name must be alphabets.
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="email">Last Name</label>
-                            <input type="text" class="form-control" id="last-name" placeholder="Email" required="">
+
+                        <div class="form-group">
+                            <input type="text" name="organization" class="form-control" id="organization"
+                                   placeholder="Organization (Optional)" formControlName="organization"/>
                         </div>
-                        <div class="col-md-6">
-                            <label for="review">Phone number</label>
-                            <input type="text" class="form-control" id="review" placeholder="Enter your number" required="">
+
+                        <div class="form-group">
+                            <input type="text" name="telephone" class="form-control" id="telephone"
+                                   placeholder="Telephone Number (Required)" formControlName="telephone"/>
+                            <div *ngIf="profileForm.controls.telephone.touched && profileForm.controls.telephone.errors?.required" class="text text-danger">
+                                Telephone Number is required.
+                            </div>
+                            <div *ngIf="profileForm.controls.telephone.touched && profileForm.controls.telephone.errors?.pattern" class="text text-danger">
+                                Telephone Number must be numbers.
+                            </div>
+                            <div *ngIf="profileForm.controls.telephone.touched && profileForm.controls.telephone.errors?.minlength" class="text text-danger">
+                                Telephone Number must be a minimum of 11 characters
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" placeholder="Email" required="">
+
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" id="email" placeholder="Email (Required)"
+                                   formControlName="email"/>
+                            <div *ngIf="profileForm.controls.email.touched && profileForm.controls.email.errors?.required" class="text text-danger">
+                                Email Address is required
+                            </div>
+                            <div *ngIf="profileForm.controls.email.touched && profileForm.controls.email.errors?.email" class="text text-danger">
+                                Invalid Email Address
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <label for="review">Write Your Message</label>
-                            <textarea class="form-control mb-0" placeholder="Write Your Message" id="exampleFormControlTextarea1" rows="6"></textarea>
-                        </div>
-                    </div>
-                </form>
+
+                        <button class="btn btn-solid" type="submit">
+                           Save Settings
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Section ends -->
-<!-- address section start -->
-<section class="contact-page register-page section-b-space">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h3>SHIPPING ADDRESS</h3>
-                <form class="theme-form">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <label for="name">flat / plot</label>
-                            <input type="text" class="form-control" id="home-ploat" placeholder="company name" required="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="name">Address *</label>
-                            <input type="text" class="form-control" id="address-two" placeholder="Address" required="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="email">Zip Code *</label>
-                            <input type="text" class="form-control" id="zip-code" placeholder="zip-code" required="">
-                        </div>
-                        <div class="col-md-6 select_input">
-                            <label for="review">Country *</label>
-                            <select class="form-control" size="1">
-                                <option value="India">India</option>
-                                <option value="UAE">UAE</option>
-                                <option value="U.K">U.K</option>
-                                <option value="US">US</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="review">City *</label>
-                            <input type="text" class="form-control" id="city" placeholder="City" required="">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="review">Region/State *</label>
-                            <input type="text" class="form-control" id="region-state" placeholder="Region/state" required="">
-                        </div>
-                        <div class="col-md-12">
-                            <button class="btn btn-sm btn-solid" type="submit">Save setting</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</section>
+
+
+<!--<section class="register-page section-b-space">-->
+<!--        <div class="row">-->
+<!--            <div class="col-sm-12">-->
+<!--                <h3 class="text-center">PERSONAL DETAIL</h3>-->
+<!--                <form class="theme-form">-->
+<!--                    <div class="container mx-auto mb-3 alig" style="border: 1px solid red;">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="name">Full Name</label>-->
+<!--                            <input type="text" class="form-control" id="name" placeholder="Enter Your name" required="">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="email">Last Name</label>-->
+<!--                            <input type="text" class="form-control" id="last-name" placeholder="Email" required="">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="review">Phone number</label>-->
+<!--                            <input type="text" class="form-control" id="review" placeholder="Enter your number" required="">-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <label for="email">Email</label>-->
+<!--                            <input type="text" class="form-control" id="email" placeholder="Email" required="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--</section>-->
 <!-- Section ends -->

@@ -41,9 +41,9 @@
                                 </div>
                                 <div class="collection-product-wrapper" id="products">
 
-                                    <app-grid [products]="products" [paginate]="paginate" [layoutView]="layoutView"
-                                        [pageSize]="20" (setGrid)="updateGridLayout($event)"
-                                        (setLayout)="updateLayoutView($event)" (setPaging)="setPage($event)">
+                                    <app-grid [products]="products" [totalLength]="totalLength" [layoutView]="layoutView"
+                                        [pageSize]="pageSize" [pageNo]="pageNo" (setGrid)="updateGridLayout($event)" [sortBy]="sortBy" (sortedBy)="sortByFilter($event)"
+                                        (setLayout)="updateLayoutView($event)" (setPaging)="updatePageSize($event)">
                                     </app-grid>
 
                                     <div class="product-wrapper-grid" [ngClass]="layoutView">
@@ -67,8 +67,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <app-pagination [products]="products" [paginate]="paginate"
-                                        (setPage)="setPage($event)">
+                                    <app-pagination [products]="products"  [totalItems]="totalLength" [pageNo]="pageNo" [pageSize]="pageSize"
+                                        (setPage)="updatePage($event)">
                                     </app-pagination>
                                 </div>
                             </div>

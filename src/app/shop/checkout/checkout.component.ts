@@ -60,7 +60,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     let address;
 
-    this.subAddress =  this.addressService.loadUserAddresses().subscribe(a => {
+    this.subAddress =  this.addressService.addresses$.subscribe(a => {
       if (a && this.firstTime) {
         this.firstTime = false;
         address = a[0].address;

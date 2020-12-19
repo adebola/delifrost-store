@@ -3,7 +3,7 @@
         <div class="col-12">
             <div class="product-filter-content">
                 <div class="search-count">
-                    <h5 *ngIf="products && paginate">Showing Products 1-{{ products.length }} of {{ paginate.totalItems }}</h5>
+                    <h5 *ngIf="products && totalLength">Showing Products {{1 + +pageSize * (+pageNo - 1)}}-{{ 1 + +pageSize * (+pageNo - 1) + +pageSize }} of {{totalLength }}</h5>
                 </div>
                 <div class="collection-view">
                     <ul>
@@ -37,6 +37,13 @@
                         <option value="20"  [selected]="pageSize == 20">20</option>
                         <option value="40"  [selected]="pageSize == 40">40</option>
                         <option value="60"  [selected]="pageSize == 60">60</option>
+                    </select>
+                </div>
+                <div class="product-page-filter">
+                    <select (change)="sorting($event)">
+                        <option value="">Sorting Items</option>
+                        <option value="a-z"  [selected]="sortBy == 'a-z'">Alphabetically A-Z</option>
+                        <option value="z-a"  [selected]="sortBy == 'z-a'">Alphabetically Z-A</option>
                     </select>
                 </div>
             </div>
