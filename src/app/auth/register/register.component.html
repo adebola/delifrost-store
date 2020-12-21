@@ -61,6 +61,9 @@
                             <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required" class="text text-danger">
                                 Password is required
                             </div>
+                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.minlength" class="text text-danger">
+                                Password should be a minimum of 6 characters
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -69,6 +72,9 @@
                                    formControlName="repeatpassword" placeholder="Reconfirm Password (Required)"/>
                             <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.required" class="text text-danger">
                                 Password Re-Conformation is required
+                            </div>
+                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.minlength" class="text text-danger">
+                                Password should be a minimum of 6 characters
                             </div>
                         </div>
 

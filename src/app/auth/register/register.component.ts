@@ -80,8 +80,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
             organization: [''],
             telephone: ['', [Validators.required, Validators.minLength(11), Validators.pattern('[0-9]+')]],
             email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required]],
-            repeatpassword: ['', [Validators.required]],
+            password: ['', [Validators.required, Validators.minLength(6)]],
+            repeatpassword: ['', [Validators.required, Validators.minLength(6)]],
             address: ['', [Validators.required, Validators.maxLength(200)]]
         });
     }

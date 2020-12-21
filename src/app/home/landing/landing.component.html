@@ -20,8 +20,8 @@
     <div class="row category-border">
       <ng-container *ngFor="let category of categoryService.categories$ | async">
       <div class="col-sm-4 border-padding mb-2">
-        <div class="category-banner">
-          <div class="bg-size blur-up lazyloaded" [ngStyle] = "{'background-image': 'url(' + category.image_url + ')', 'background-size': 'cover', 'background-position': 'center center', 'display': 'block'}" style="max-height: 200px;">
+        <div class="category-banner" style="border: 5px solid #a3d7e7;">
+          <div class="bg-size blur-up lazyloaded" [ngStyle] = "{'background-image': 'url(' + category.image_url + ')', 'background-size': 'cover', 'background-position': 'center center', 'display': 'block', 'max-height': '200px'}">
             <img [src]="category.image_url" class="img-fluid blur-up lazyload bg-img" alt="" style="display: block;">
           </div>
           <div class="category-box">
@@ -95,7 +95,7 @@
                 </div>
                 <div class="col-sm-4 service-block1">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                    id="Capa_1" x="0px" y="0px" viewBox="0 0 480 480" style="enable-background: new 0 0 480 480"
+                    id="Capa_1" x="0px" y="0px" viewBox="0 0 480 480"
                     xml:space="preserve" width="512px" height="512px">
                     <g>
                       <g>

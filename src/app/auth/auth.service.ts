@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import {Observable, BehaviorSubject, throwError, of} from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User } from './user.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -44,6 +44,7 @@ export interface AuthSignInResponseData {
   token: string;
 }
 
+const AUTH_URL =  environment.base_url + '/api/v1/auth';
 const SIGNUP_URL = environment.base_url + '/api/v1/auth/signup';
 const SIGNIN_URL = environment.base_url + '/api/v1/auth/signin';
 const UPDATE_URL = environment.base_url + '/api/v1/users';
@@ -63,6 +64,62 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router, private toastrService: ToastrService) { }
 
+  public changePassword(password: string, newPassword: string) {
+    const self = this;
+
+    this.http.put<{message: string}>(UPDATE_URL + '/password/' + this.userId, {
+      currentpassword : password,
+      newPassword
+    }).pipe(
+        catchError(err => {
+          this.handleError(err, self);
+          return throwError(err);
+        }),
+        tap(() => this.toastrService.success('Password changed successfully'))
+    ).subscribe();
+  }
+
+  public getResetToken(token: string): Observable<User> {
+
+    if (!token || token.length === 0 ) {
+      return of(null);
+    }
+
+    return this.http.get<User>(AUTH_URL + '/user/' + token);
+  }
+
+  public changeTokenPassword(token: string, password: string) {
+    const self = this;
+
+    this.http.post<{message: string}>(AUTH_URL + '/' + 'changepassword',{
+      token,
+      password
+    } ).pipe(
+        catchError(err => {
+          this.handleError(err, self);
+          return throwError(err);
+        }),
+        tap(() => this.toastrService.success('Password changed successfully'))
+    ).subscribe(() => this.router.navigate(['/auth/login']));
+  }
+
+  public generatePasswordResetRequest(email: string) {
+
+    const self = this;
+    this.http.post<{message: string}>(AUTH_URL + '/resetpassword', {
+      email
+    }).pipe(
+        catchError(err => {
+          this.handleError(err, self);
+          return throwError(err);
+        }),
+        tap(() => this.toastrService.success('Password reset link has been sent to your email'))
+    ).subscribe(message => {
+
+      console.log('MESSAGE FROM THE BACKEND', message);
+      // const message = 'Please click on ' + environment.base_url + '/auth'
+    });
+  }
   public updateUser(user: User) {
 
     const self = this;
@@ -97,7 +154,6 @@ export class AuthService {
             })
         ).subscribe();
 }
-
 
 
   signup(username: string, email: string, password: string,
@@ -183,8 +239,6 @@ export class AuthService {
   private handleError(errorResponse: HttpErrorResponse, self: any) {
     let errorMessage = 'Unknown Error Occurred';
 
-    console.log(errorResponse);
-
     switch (errorResponse.status) {
       case 400:
         errorMessage = 'Bad Request: ' + errorResponse.error.message;
@@ -199,7 +253,7 @@ export class AuthService {
         break;
     }
 
-    self.toastrService.error(errorMessage);
+    this.toastrService.error(errorMessage);
   }
 
   autoLogout(expirationDuration: number) {

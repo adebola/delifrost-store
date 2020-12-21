@@ -57,7 +57,5 @@ export class ProfileComponent implements OnInit, OnDestroy {
         email: [{ value: user.email, disabled: true}, [Validators.required, Validators.email]],
       });
     });
-
-
   }
 }

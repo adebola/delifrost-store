@@ -9,7 +9,6 @@ import { Product } from '../../../../shared/classes/product';
 export class GridComponent implements OnInit {
 
   @Input() products: Product[] = [];
-  // @Input() paginate: any = {};
   @Input() totalLength: number;
   @Input() layoutView = 'grid-view';
   @Input() pageSize: number;

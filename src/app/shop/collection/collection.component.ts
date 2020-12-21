@@ -58,11 +58,13 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
             if (params.category) {
               this.products = this.products.filter(item => item.category === this.category);
+              this.pageSize = this.products.length;
               shouldPage = false;
             }
 
             if (this.brands && this.brands.length > 0) {
               this.products = this.products.filter(item => this.brands.indexOf(item.brand) !== -1);
+              this.pageSize = this.products.length;
               shouldPage = false;
             }
 

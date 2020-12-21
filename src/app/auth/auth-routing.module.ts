@@ -1,10 +1,10 @@
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
-import { AuthGuard } from './auth-guard.service';
-import { NgModule } from '@angular/core';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
+import {ResetPasswordComponent} from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -14,7 +14,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
-
   },
   {
     path: 'register',
@@ -23,6 +22,10 @@ const routes: Routes = [
   {
     path: 'forgotpassword',
     component: ForgetPasswordComponent,
+  },
+  {
+    path: 'forgotpassword/:token',
+    component: ResetPasswordComponent,
   },
   {
     path: '401',
