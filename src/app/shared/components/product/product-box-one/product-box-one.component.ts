@@ -3,7 +3,6 @@ import { QuickViewComponent } from '../../modal/quick-view/quick-view.component'
 import { Product, Bundle } from '../../../classes/product';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
-import { Observable, Subscription } from 'rxjs';
 import { WishListService } from 'src/app/shared/services/wishlist.service';
 
 @Component({
@@ -20,6 +19,8 @@ export class ProductBoxOneComponent implements OnInit {
   @Input() onHowerChangeImage: boolean = false; // Default False
   @Input() cartModal: boolean = false; // Default False
   @Input() loader: boolean = false;
+
+  private quantity = 1;
 
   public bundle: Bundle;
 
@@ -48,10 +49,14 @@ export class ProductBoxOneComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    this.cartService.addToCart(product, this.bundle.id, 1);
+    this.cartService.addToCart(product, this.bundle.id, this.quantity);
   }
 
   addToWishlist(product: any) {
     this.wishListService.save(this.bundle.id);
+  }
+
+  onInputChange(event) {
+    this.quantity = +event.target.value;
   }
 }

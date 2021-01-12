@@ -35,6 +35,7 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 // Pipes
 import { DiscountPipe } from './pipes/discount.pipe';
 import { ErrorComponent } from './error/error.component';
+import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick-terms-view.component';
 
 
 
@@ -51,6 +52,7 @@ import { ErrorComponent } from './error/error.component';
     NewsletterComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
+    QuickTermsViewComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
@@ -88,6 +90,7 @@ import { ErrorComponent } from './error/error.component';
     NewsletterComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
+    QuickTermsViewComponent,
     VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,

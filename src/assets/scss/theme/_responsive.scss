@@ -250,7 +250,7 @@
     }
 }
 
-@media(max-width: 1430px) and (min-width: 1200px) {
+@media(max-width: 1430px) and (min-width: 1024px) {
     .layout3-menu {
         max-width: 100%;
         .main-menu {
@@ -577,7 +577,7 @@
 }
 
 // Experimental
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
     .rtl {
         .offset-xl-1 {
             margin-right: 8.33333333%;
@@ -587,7 +587,7 @@
 }
 
 // Experimental
-@media(max-width: 1199px) {
+@media(max-width: 1023px) {
     section,
     .section-t-space {
         padding-top: 60px;

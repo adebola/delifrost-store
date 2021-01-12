@@ -1,6 +1,6 @@
 {
-  "name": "fotojug",
-  "version": "0.0.0",
+  "name": "delifrost-store",
+  "version": "2.5.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

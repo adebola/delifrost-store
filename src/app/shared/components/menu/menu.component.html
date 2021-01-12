@@ -14,7 +14,7 @@
       </li>
 
       <li *ngIf="(authService.user$ | async)">
-        <a class="nav-link" [routerLink]="['/shop/collection']">shop</a>
+        <a class="nav-link link" [routerLink]="['/shop/collection']">shop</a>
       </li>
 
       <!-- <li *ngIf="isLoggedIn">
@@ -23,18 +23,18 @@
 
       <ng-container *ngIf="!(authService.user$ | async)">
         <li>
-          <a class="nav-link" [routerLink]="['/auth/register']">Register</a>
+          <a class="nav-link link" [routerLink]="['/auth/register']">Register</a>
         </li>
 
         <li>
-          <a class="nav-link" [routerLink]="['/auth/login']">Login</a>
+          <a class="nav-link link" [routerLink]="['/auth/login']">Login</a>
         </li>
       </ng-container>
 
       <li *ngIf="(authService.user$ | async) as user" ngbDropdown>
-        <a class="btn btn-outline-default text-left" id="dropdownBasic2" ngbDropdownToggle>{{user.fullName}}</a>
+        <a class="btn btn-outline-default text-left link" id="dropdownBasic2" ngbDropdownToggle>{{user.fullName}}</a>
         <div ngbDropdownMenu aria-labelledby="dropdownBasic2" style="margin: 10px;">
-          <button class="nav-link" [routerLink]="['/pages/wishlist']" ngbDropdownItem>Wishlist</button>
+          <button class="nav-link" [routerLink]="['/pages/wishlist']" ngbDropdownItem>Favourites</button>
           <button class="nav-link" [routerLink]="['/pages/dashboard']" ngbDropdownItem>Dashboard</button>
           <button class="nav-link" (click)="onLogout()" ngbDropdownItem>Logout</button>
         </div>

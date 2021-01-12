@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 })
 export class CartService {
 
-  private cart: Cart;
+  private readonly cart: Cart;
   public cartChanged = new Subject<Product[]>();
 
   constructor(private toastrService: ToastrService) {
@@ -26,8 +26,11 @@ export class CartService {
   public zeroCart() {
     this.cart.items = null;
     this.cart.totalQty = 0;
+    this.cart.totalVAT = 0;
+    this.cart.subTotal = 0;
     this.cart.totalPrice = 0;
     this.cart.delivery = 0;
+
     localStorage.removeItem('cartItems');
     this.cartChanged.next(this.cartArray());
   }
@@ -70,8 +73,15 @@ export class CartService {
   }
 
   public get cartTotalAmount(): number {
-
     return this.cart.totalPrice;
+  }
+
+  public get cartSubTotal(): number {
+    return this.cart.subTotal;
+  }
+
+  public get cartVAT(): number {
+    return this.cart.totalVAT;
   }
 
   // Add Product Bundle to Shopping Cart
@@ -81,6 +91,7 @@ export class CartService {
     let storedItem: Product;
     let incrementalPrice = 0;
     let incrementalQuantity = 0;
+    let incrementalVAT = 0;
 
     if (this.cart.items) {
       storedItem = this.cart.items[item.productId];
@@ -98,18 +109,23 @@ export class CartService {
         const discount = 1 - (bundle.discount / 100);
         incrementalPrice = quantity * (bundle.price * discount);
         incrementalQuantity = (quantity > 0) ? 1 : 0;
+        incrementalVAT = bundle.vatExclusive ? 0 : incrementalPrice * 0.075;
 
-        bundle.quantity = bundle.quantity ? bundle.quantity += quantity : quantity;
-        bundle.subTotalPrice = bundle.subTotalPrice ? bundle.subTotalPrice += incrementalPrice : incrementalPrice;
+        bundle.quantity = bundle.quantity ? bundle.quantity + quantity : quantity;
+        bundle.subTotalPrice = bundle.subTotalPrice ? bundle.subTotalPrice + incrementalPrice : incrementalPrice;
+        bundle.VATPrice = bundle.VATPrice ? bundle.VATPrice + incrementalVAT : incrementalVAT;
+        bundle.subTotalVatPrice =  bundle.subTotalPrice +  bundle.VATPrice;
 
         this.toastrService.success(item.name + ' has been added to the Cart.');
       } else {
         bundle.quantity = 0;
         bundle.subTotalPrice = 0;
+        bundle.subTotalVatPrice = 0;
+        bundle.VATPrice = 0;
       }
     });
 
-    this.recalculate()
+    this.recalculate();
     this.cartChanged.next(this.cartArray());
     localStorage.setItem('cartItems', JSON.stringify(this.cart));
 
@@ -118,13 +134,18 @@ export class CartService {
 
   recalculate() {
     let total_price = 0;
+    let subtotal_price = 0;
+    let vat = 0;
+
     let quantity = 0;
 
     for (const id in this.cart.items) {
       if (this.cart.items[id]) {
         this.cart.items[id].bundles.forEach((bundle) => {
           if (bundle.quantity > 0) {
-            total_price += bundle.subTotalPrice;
+            subtotal_price += bundle.subTotalPrice;
+            vat += bundle.VATPrice;
+            total_price += bundle.subTotalVatPrice;
             quantity++;
           }
         });
@@ -132,6 +153,8 @@ export class CartService {
     }
 
     this.cart.totalPrice = total_price;
+    this.cart.subTotal = subtotal_price;
+    this.cart.totalVAT = vat;
     this.cart.totalQty = quantity;
   }
 
@@ -144,11 +167,13 @@ export class CartService {
     if (storedItem) {
       storedItem.bundles.forEach((bundle) => {
         if (bundle.id === bundleId) {
-          this.cart.totalPrice -= bundle.subTotalPrice;
+          this.cart.totalPrice -= bundle.subTotalVatPrice;
           this.cart.totalQty -= 1;
 
           bundle.quantity = 0;
           bundle.subTotalPrice = 0;
+          bundle.VATPrice = 0;
+          bundle.subTotalVatPrice = 0;
           this.toastrService.success(storedItem.name + ' has been removed from the Cart.');
         } else {
           if (bundle.quantity > 0) {
@@ -171,6 +196,7 @@ export class CartService {
   public addItemByOne(productId: number, bundleId: number) {
 
     let incrementalPrice = 0;
+    let incrementalVAT = 0;
     const storedItem: Product = this.cart.items[productId];
 
     if (storedItem) {
@@ -178,11 +204,12 @@ export class CartService {
         if (bundle.id === bundleId) {
           const discount = 1 - (bundle.discount / 100);
           incrementalPrice = bundle.price * discount;
+          incrementalVAT = bundle.vatExclusive ? 0 : incrementalPrice * 0.075;
 
           bundle.quantity += 1;
           bundle.subTotalPrice += incrementalPrice;
-
-          //this.cart.totalPrice += incrementalPrice;
+          bundle.VATPrice += incrementalVAT;
+          bundle.subTotalVatPrice = bundle.subTotalPrice +  bundle.VATPrice;
         }
       });
 
@@ -194,6 +221,8 @@ export class CartService {
 
   public reduceItemByOne(productId: number, bundleId: number) {
     let incrementalPrice = 0;
+    let incrementalVAT = 0;
+
     const storedItem: Product = this.cart.items[productId];
 
     if (storedItem) {
@@ -201,15 +230,12 @@ export class CartService {
         if (bundle.id === bundleId) {
           const discount = 1 - (bundle.discount / 100);
           incrementalPrice = bundle.price * discount;
+          incrementalVAT = bundle.vatExclusive ? 0 : incrementalPrice * 0.075;
 
           bundle.quantity -= 1;
           bundle.subTotalPrice -= incrementalPrice;
-
-          //this.cart.totalPrice -= incrementalPrice;
-
-          // if (bundle.quantity === 0) {
-          //   this.cart.totalQty -= 1;
-          // }
+          bundle.VATPrice -= incrementalVAT;
+          bundle.subTotalVatPrice = bundle.subTotalPrice +  bundle.VATPrice;
         }
       });
       this.recalculate();

@@ -5,17 +5,33 @@
     </a>
   </div>
 
-  <div class="col-12 col-sm-12 text-center text-md-left col-md-4">
+  <div class="col-12 col-sm-12 text-center text-md-left col-md-5">
     <h4 class="product-name">
       <strong> {{ product.name | titlecase }}</strong>
     </h4>
-    <h4>
-      <small class="text-muted">SubTotal :
-        {{ bundle.subTotalPrice | currency: "₦":"symbol":"1.0-0" }}</small>
-    </h4>
+    <div class="row">
+      <div class="col-4">
+        <h4>
+          <small class="text-muted">Price :
+            {{ bundle.subTotalPrice | currency: "₦":"symbol":"1.0-0" }}</small>
+        </h4>
+      </div>
+      <div class="col-4">
+        <h4>
+          <small class="text-muted">VAT :
+            {{ bundle.VATPrice | currency: "₦":"symbol":"1.0-0" }}</small>
+        </h4>
+      </div>
+      <div class="col-4">
+        <h4>
+          <small class="text-muted">SubTotal :
+            {{ bundle.subTotalVatPrice | currency: "₦":"symbol":"1.0-0" }}</small>
+        </h4>
+      </div>
+    </div>
   </div>
 
-  <div class="col-12 col-sm-12 col-md-6 row" style="width: 100%;">
+  <div class="col-12 col-sm-12 col-md-5 row" style="width: 100%;">
     <div class="col-5 col-sm-5 col-md-5 text-right m-0 pt-2">
       <h6>
         <strong>

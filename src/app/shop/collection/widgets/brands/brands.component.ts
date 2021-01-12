@@ -11,27 +11,14 @@ export class BrandsComponent implements OnInit {
 
   @Input() products: Product[] = [];
   @Input() brands: any[] = [];
-
   @Output() brandsFilter: EventEmitter<any> = new EventEmitter<any>();
 
   public collapse = true;
-  public uniqueBrands: string[];
 
   constructor(public productService: ProductService) {
   }
 
   ngOnInit(): void {
-  }
-
-  get filterbyBrand() {
-
-    if (!this.uniqueBrands) {
-      this.uniqueBrands = this.productService.uniqueBrands();
-
-      // this.productService.uniqueBrands().subscribe(o => this.uniqueBrands = o);
-    }
-
-    return this.uniqueBrands;
   }
 
   appliedFilter(event) {
@@ -45,12 +32,5 @@ export class BrandsComponent implements OnInit {
 
     const brands = this.brands.length ? { brand: this.brands.join(',') } : { brand: null };
     this.brandsFilter.emit(brands);
-  }
-
-  // check if the item are selected
-  checked(item) {
-    if (this.brands.indexOf(item) !== -1) {
-      return true;
-    }
   }
 }

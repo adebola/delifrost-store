@@ -23,7 +23,7 @@ export class WishlistComponent implements OnInit {
   }
 
   onAdd(id: number, sku_id: number) {
-    this.wishlistService.updateStatus(id, 2, sku_id);
+    // this.wishlistService.updateStatus(id, 2, sku_id);
     this.cartService.addToCart(this.productService.findProductByBundleId(sku_id), sku_id, 1);
   }
 }

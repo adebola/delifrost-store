@@ -114,12 +114,10 @@ export class AuthService {
           return throwError(err);
         }),
         tap(() => this.toastrService.success('Password reset link has been sent to your email'))
-    ).subscribe(message => {
-
-      console.log('MESSAGE FROM THE BACKEND', message);
-      // const message = 'Please click on ' + environment.base_url + '/auth'
-    });
+    ).subscribe();
   }
+
+
   public updateUser(user: User) {
 
     const self = this;
@@ -208,8 +206,6 @@ export class AuthService {
       const nowDate = new Date();
 
       const expirationDuration = expiryDate.getTime() - nowDate.getTime();
-
-      console.log(responseData);
 
       const user =
           new User(

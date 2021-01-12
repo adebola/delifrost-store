@@ -17,8 +17,8 @@ export class CollectionComponent implements OnInit, OnDestroy {
   public products: Product[];
   public brands: any[] = [];
   public category: string;
-  public pageNo: number = 1;
-  public pageSize: number = 20;
+  public pageNo = 1;
+  public pageSize = 20;
   public sortBy: string; // Sorting Order
   public mobileSidebar = false;
   public loader = true;
@@ -35,10 +35,6 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    if (this.subQuery) {
-      this.subQuery.unsubscribe();
-    }
-
     this.subQuery = this.route.queryParams.subscribe(params => {
 
         this.brands = params.brand ? params.brand.split(',') : [];
@@ -46,13 +42,13 @@ export class CollectionComponent implements OnInit, OnDestroy {
         this.sortBy = params.sortBy ? params.sortBy : null;
         this.pageNo = (params.page && +params.page > 0) ? params.page : 1;
 
-        if (this.subProducts) {
-          this.subProducts.unsubscribe();
-        }
+        // if (this.subProducts) {
+        //   this.subProducts.unsubscribe();
+        // }
 
         this.subProducts = this.productService.products$.subscribe(products => {
             this.products = products;
-            this.totalLength = this.products.length;
+            this.totalLength = products.length;
 
             let shouldPage = true;
 
@@ -100,17 +96,30 @@ export class CollectionComponent implements OnInit, OnDestroy {
 
   // Append filter value to Url
   updateFilter(tags: any) {
-    tags.page = null; // Reset Pagination
+    // tags.page = null; // Reset Pagination
 
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: tags,
-      queryParamsHandling: 'merge', // preserve the existing query params in the route
-      skipLocationChange: false  // do trigger navigation
-    }).finally(() => {
-      this.viewScroller.setOffset([120, 120]);
-      this.viewScroller.scrollToAnchor('products'); // Anchore Link
-    });
+    if (tags.brand) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: tags,
+        queryParamsHandling: 'merge', // preserve the existing query params in the route
+        skipLocationChange: false  // do trigger navigation
+      }).finally(() => {
+        this.viewScroller.setOffset([120, 120]);
+        this.viewScroller.scrollToAnchor('products'); // Anchore Link
+      });
+    } else {
+      this.pageSize = 20;
+
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {},
+        skipLocationChange: false  // do trigger navigation
+      }).finally(() => {
+        this.viewScroller.setOffset([120, 120]);
+        this.viewScroller.scrollToAnchor('products'); // Anchore Link
+      });
+    }
   }
 
   // SortBy Filter

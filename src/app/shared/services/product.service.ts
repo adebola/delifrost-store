@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
-import {catchError, first, take, tap} from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { Product } from '../classes/product';
 import { environment } from 'src/environments/environment';
@@ -59,19 +59,15 @@ export class ProductService {
     return returnProduct;
   }
 
-  public uniqueBrands(): string[] {
+  public uniqueBrands(): Observable<string[]> {
 
-    if (!this.products) {
-      this.products$.pipe(take(1)).subscribe(products => {
-        return this.findBrands(products);
-      });
-    } else {
-      return this.findBrands(this.products);
-    }
+    return this.products$.pipe(
+        map(products => this.findBrands(products))
+    );
   }
 
-  private findBrands(products: Product[]) {
-    const brands = [];
+  private findBrands(products: Product[]): string[] {
+    const brands: string[] = [];
 
     for (const product of products) {
       if (product.brand) {
@@ -87,7 +83,7 @@ export class ProductService {
 
   public searchProducts(searchString: string): Observable<Product[]> {
 
-    return this.http.get<Product[]>(PRODUCT_URL + '/search/' + searchString,
+    return this.http.get<Product[]>(PRODUCT_URL + '/search/' + searchString.toLowerCase(),
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
@@ -97,12 +93,11 @@ export class ProductService {
   }
 
   public getProductBySlug(slug: string): Observable<Product> {
-
     return of(this.products.find(item => item.productId === +slug));
   }
 
   // Sorting Filter
-  public sortProducts(products: Product[], payload: string): any {
+  public sortProducts(products: Product[], payload: string): Product[] {
 
     if (payload === 'ascending' || payload === 'a-z') {
       return products.sort((a, b) => {

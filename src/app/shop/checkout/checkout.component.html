@@ -1,4 +1,3 @@
-<!--<app-breadcrumb [title]="'Checkout'" [breadcrumb]="'Checkout'"></app-breadcrumb>-->
 <section class="section-b-space">
   <div class="container padding-cls">
     <div class="checkout-page">
@@ -139,19 +138,12 @@
                     </li>
                   </ul>
                   <ul class="sub-total">
-                    <li>
-                      Subtotal
-                      <span class="count">{{
-                        getTotal
-                          | currency: productService?.Currency.currency:"symbol"
-                      }}</span>
-                    </li>
                     <li *ngIf="products.length">
                       Shipping
                       <div class="shipping">
                         <div class="shopping-option">
                           <input type="radio" name="shipping" (change)="onChange('pickup')" [checked]="true"
-                            id="local-pickup" />
+                                 id="local-pickup" />
                           <label for="local-pickup">Local Pickup</label>
                         </div>
                         <div class="shopping-option">
@@ -159,6 +151,21 @@
                           <label for="free-shipping">Delivery</label>
                         </div>
                       </div>
+                    </li>
+                    <hr/>
+                    <li>
+                      Sub-Total
+                      <span class="count">{{
+                        this.cartService.cartSubTotal
+                          | currency: productService?.Currency.currency:"symbol"
+                      }}</span>
+                    </li>
+                    <li>
+                      VAT
+                      <span class="count">{{
+                        this.cartService.cartVAT
+                                | currency: productService?.Currency.currency:"symbol"
+                        }}</span>
                     </li>
                   </ul>
                   <ul class="total">
@@ -176,7 +183,6 @@
                     Place Order
                   </button>
                 </div>
-
               </div>
             </div>
           </div>

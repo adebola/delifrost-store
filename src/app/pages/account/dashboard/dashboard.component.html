@@ -20,7 +20,7 @@
                             <li class="active"><a (click)="onAccountInfo()"  [style.cursor]="'pointer'">Account Info</a></li>
                             <li><a (click)="onAddress()"  [style.cursor]="'pointer'">Address Book</a></li>
                             <li><a (click)="onMyOrders()" [style.cursor]="'pointer'">My Orders</a></li>
-                            <li><a (click)="onMyWishList()" [style.cursor]="'pointer'">My Wishlist</a></li>
+                            <li><a (click)="onMyWishList()" [style.cursor]="'pointer'">My Favourites</a></li>
                             <li><a (click)="onMyProfile()" [style.cursor]="'pointer'">My Profile</a></li>
                             <li><a (click)="onChangePassword()"  [style.cursor]="'pointer'">Change Password</a></li>
                             <li class="last"><a (click)="onLogout()" [style.cursor]="'pointer'">Log Out</a></li>
@@ -45,7 +45,7 @@
                             <app-order></app-order>
                         </ng-container>
                         <ng-container *ngIf="openWishlist">
-                            <h2 class="text-center">WishList</h2>
+                            <h2 class="text-center">My Favourites</h2>
                             <app-wishlist></app-wishlist>
                         </ng-container>
                         <ng-container *ngIf="openProfile">

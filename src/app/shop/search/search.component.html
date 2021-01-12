@@ -2,59 +2,50 @@
 <!-- section start -->
 <section class="authentication-page section-b-space">
     <div class="container">
-      <section class="search-block">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-              <form class="form-header">
-                <div class="form-group">
-                  <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product" (input)="searchProducts($event.target.value)">
+        <section class="search-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <form class="form-header">
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="exampleInputPassword1"
+                                       placeholder="Search a Product" (input)="searchProducts($event.target.value)">
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
-              </form>
             </div>
-          </div>
+        </section>
+        <div *ngIf="(products$ | async) as products; else noload">
+            <ng-container *ngIf="products.length > 0; else noload">
+                <div class="collection-product-wrapper" id="products">
+                    <div class="product-wrapper-grid" [ngClass]="layoutView">
+                        <div class="row">
+                            <div class="col-grid-box" [ngClass]="grid" *ngFor="let product of products">
+                                <div class="product-box">
+                                    <app-product-box-one [product]="product"
+                                                         [currency]="productService?.Currency" [thumbnail]="false"
+                                                         [cartModal]="false" [loader]="false">
+                                    </app-product-box-one>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+<!--                    <app-pagination [products]="products" [totalLength]="10"-->
+<!--                                    (setPage)="setPage($event)">-->
+<!--                    </app-pagination>-->
+                </div>
+            </ng-container>
         </div>
-      </section>
-      <div *ngIf="(products$ | async) as products">
-        <div class="collection-product-wrapper" id="products">
-          <!-- <app-grid [products]="products" [paginate]="paginate" [layoutView]="layoutView"
-              [sortBy]="sortBy" (setGrid)="updateGridLayout($event)"
-              (setLayout)="updateLayoutView($event)" (sortedBy)="sortByFilter($event)">
-          </app-grid> -->
-          <div class="product-wrapper-grid" [ngClass]="layoutView">
-              <div class="row">
-                  <div class="col-grid-box" [ngClass]="grid" *ngFor="let product of products">
-                      <div class="product-box">
-                          <app-product-box-one [product]="product"
-                              [currency]="productService?.Currency" [thumbnail]="false"
-                              [cartModal]="false" [loader]="false">
-                          </app-product-box-one>
-                      </div>
-                  </div>
-                  <!-- <div class="col-sm-12 text-center section-b-space mt-5 no-found"
-                      *ngIf="products && !products.length">
-                      <img src="assets/images/empty-search.jpg" class="img-fluid mb-4">
-                      <h3>Sorry! Couldn't find the product you were looking For!!! </h3>
-                      <p>Please check if you have misspelt something or try searching with
-                          other words.</p>
-                      <a [routerLink]="['/shop/collection/left/sidebar']"
-                          class="btn btn-solid">continue shopping</a>
-                  </div> -->
-              </div>
-          </div>
-          <app-pagination [products]="products" [totalItems]="10"
-              (setPage)="setPage($event)">
-          </app-pagination>
-      </div>
-
-      </div>
-        <div class="col-sm-12 text-center" *ngIf="!(products$ | async)">
-          <img src="assets/images/empty-search.jpg" class="img-fluid mb-4">
-            <h3>Sorry! Couldn't find the product you were looking For!!!    </h3>
-            <p>Please check if you have misspelt something or try searching with other words.</p>
-            <a [routerLink]="['/shop/collection']" class="btn btn-solid">continue shopping</a>
-        </div>
+        <ng-template #noload>
+            <div class="col-sm-12 text-center">
+                <img src="assets/images/empty-search.jpg" class="img-fluid mb-4">
+                <h3>Sorry! Couldn't find the product you were looking For!!! </h3>
+                <p>Please check if you have misspelt something or try searching with other words.</p>
+                <a [routerLink]="['/shop/collection']" class="btn btn-solid">continue shopping</a>
+            </div>
+        </ng-template>
     </div>
- </section>
+</section>
 <!-- section end -->

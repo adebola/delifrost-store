@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, NgForm, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AuthService} from 'src/app/auth/auth.service';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {catchError, tap} from 'rxjs/operators';
+import {QuickTermsViewComponent} from '../../shared/components/modal/quick-terms-view/quick-terms-view.component';
 
 declare var grecaptcha: any;
 
@@ -19,6 +20,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     public error: string = null;
     private subscription: Subscription;
     public registerForm: FormGroup;
+    public submitted = false;
+    @ViewChild('quickTermsView') QuickTermsView: QuickTermsViewComponent;
 
     constructor(
         private authService: AuthService,
@@ -39,12 +42,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     onSubmit(form: FormGroup) {
 
-        if (form.value.password !== form.value.repeatpassword) {
-            return this.toastrService.error('Passwords do not match');
-        }
+        this.submitted = true;
+
+        console.log(form);
 
         if (!form.valid) {
             return this.toastrService.error('The Form has not been completely filled out');
+        }
+
+        if (form.value.password !== form.value.repeatpassword) {
+            return this.toastrService.error('Passwords do not match');
         }
 
         const response = grecaptcha.getResponse();
@@ -78,11 +85,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.registerForm = this.fb.group({
             fullname: ['', [Validators.required, Validators.pattern('[a-zA-Z][a-zA-Z ]+[a-zA-Z]$')]],
             organization: [''],
-            telephone: ['', [Validators.required, Validators.minLength(11), Validators.pattern('[0-9]+')]],
+            telephone: ['', ],
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]],
             repeatpassword: ['', [Validators.required, Validators.minLength(6)]],
-            address: ['', [Validators.required, Validators.maxLength(200)]]
+            address: ['', [Validators.required, Validators.maxLength(200)]],
+            acceptTerms: [false, Validators.requiredTrue]
         });
     }
 }

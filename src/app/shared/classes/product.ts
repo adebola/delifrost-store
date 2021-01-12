@@ -16,12 +16,14 @@ export interface Bundle {
     description: string;
     isNew: boolean;
     onSale: boolean;
+    vatExclusive: boolean;
     imagePath: string[];
     variantOptions: Variant[];
 
     quantity: number;
+    VATPrice: number;
     subTotalPrice: number;
-    stock: number;
+    subTotalVatPrice: number;
 }
 
 export interface Variant {

@@ -7,9 +7,7 @@
                 <h3>create account</h3>
                 <div class="theme-card">
                     <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm)">
-
                         <div class="form-group">
-<!--                            <label for="fullname">Full Name<span class="required">*</span></label>-->
                             <input type="text" name="fullname" class="form-control" id="fullname"
                                    placeholder="Full Name (Required)" formControlName="fullname" required/>
 
@@ -23,13 +21,11 @@
                         </div>
 
                         <div class="form-group">
-<!--                            <label for="organization">Organization (Optional)</label>-->
                             <input type="text" name="organization" class="form-control" id="organization"
                                    placeholder="Organization (Optional)" formControlName="organization"/>
                         </div>
 
                         <div class="form-group">
-<!--                            <label for="telephone">Telephone Number<span class="required">*</span></label>-->
                             <input type="text" name="telephone" class="form-control" id="telephone"
                                    placeholder="Telephone Number (Required)" formControlName="telephone"/>
                             <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.required" class="text text-danger">
@@ -44,7 +40,6 @@
                         </div>
 
                         <div class="form-group">
-<!--                            <label for="email">Email<span class="required">*</span></label>-->
                             <input type="email" name="email" class="form-control" id="email" placeholder="Email (Required)"
                                    formControlName="email" required/>
                             <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.required" class="text text-danger">
@@ -55,7 +50,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-<!--                            <label for="password">Password<span class="required">*</span></label>-->
                             <input type="password" class="form-control" id="password" name="password"
                                    formControlName="password" placeholder="Enter Password (Required)"/>
                             <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required" class="text text-danger">
@@ -67,7 +61,6 @@
                         </div>
 
                         <div class="form-group">
-<!--                            <label for="repeatpassword">Re confirm Password<span class="required">*</span></label>-->
                             <input type="password" class="form-control" id="repeatpassword" name="repeatpassword"
                                    formControlName="repeatpassword" placeholder="Reconfirm Password (Required)"/>
                             <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.required" class="text text-danger">
@@ -79,11 +72,20 @@
                         </div>
 
                         <div class="form-group">
-<!--                            <label for="address">Address<span class="required">*</span></label>-->
                             <textarea class="form-control" id="address" name="address"
                                       formControlName="address" placeholder="Address (Required)"></textarea>
                             <div *ngIf="registerForm.controls.address.touched && registerForm.controls.address.errors?.required" class="text text-danger">
                                 Address is required
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" class="form-control pull-left" class="pull-left" formControlName="acceptTerms" id="acceptTerms" name="acceptTerms"/>
+                                &#160;&#160; <a (click)="QuickTermsView.openModal()" style="cursor: pointer;">I Accept the Terms and Conditions</a>
+                            </label>
+                            <div *ngIf="submitted && registerForm.controls.acceptTerms.errors" class="text text-danger">
+                                Please accept Terms and Conditions to Register
                             </div>
                         </div>
 
@@ -100,5 +102,6 @@
             </div>
         </div>
     </div>
+    <app-quick-terms-view #quickTermsView></app-quick-terms-view>
 </section>
 <!--Section ends-->

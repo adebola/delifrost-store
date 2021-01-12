@@ -21,7 +21,10 @@ export class WishListService {
   private user: User;
   private wishlist: WishList[];
 
-  constructor(private http: HttpClient, private authService: AuthService, private toastrService: ToastrService) {
+  constructor(
+      private http: HttpClient,
+      private authService: AuthService,
+      private toastrService: ToastrService) {
     this.loadWishList();
   }
 
@@ -51,7 +54,7 @@ export class WishListService {
     this.subFind = this.http.get<WishList[]>(USER_WISHLIST_URL + '/' + userId)
       .pipe(
         catchError(err => {
-          const message = ' Unable to Load WishList';
+          const message = ' Unable to Load Favourites';
           this.toastrService.error(message);
           console.log(message, err);
           return throwError(err);
@@ -68,7 +71,7 @@ export class WishListService {
     if (this.user) {
 
       if (this.InWishList(bundleId)) {
-        return this.toastrService.info('The Item is already in your WishList');
+        return this.toastrService.info('The Item is already in your Favourites');
       }
 
       const wishlist: WishList = new WishList();
@@ -82,7 +85,7 @@ export class WishListService {
       this.subSave = this.http.post<WishList[]>(USER_WISHLIST_URL, wishlist)
         .pipe(
           catchError(err => {
-            const message = ' Unable to Save WishList';
+            const message = ' Unable to Save to your Favourites';
             this.toastrService.error(message);
             console.log(message, err);
             return throwError(err);
@@ -90,7 +93,7 @@ export class WishListService {
           tap(o => {
             this.wishlistSubject.next(o);
             this.wishlist = o;
-            this.toastrService.success('Item has been addded to your WishList');
+            this.toastrService.success('Item has been added to your Favourites');
           })
         ).subscribe();
     } else {
@@ -113,7 +116,7 @@ export class WishListService {
       this.subUpdate = this.http.put<WishList[]>(USER_WISHLIST_URL + '/' + wishlistId, wishlist)
         .pipe(
           catchError(err => {
-            const message = ' Unable to Update WishList';
+            const message = ' Unable to Update your Favourites';
             this.toastrService.error(message);
             console.log(message, err);
             return throwError(err);
@@ -122,7 +125,7 @@ export class WishListService {
             this.wishlistSubject.next(o);
             this.wishlist = o;
             if (status === 3) {
-              this.toastrService.success('Item has been removed from your WishList');
+              this.toastrService.success('Item has been removed from your Favourites');
             }
           })
         ).subscribe();
@@ -132,7 +135,6 @@ export class WishListService {
   }
 
   private InWishList(id: number): boolean {
-
     return !(this.wishlist.find(el => el.sku_id === id) === undefined);
   }
 }

@@ -16,6 +16,8 @@ export class SearchComponent implements OnInit {
   public grid = 'col-xl-3 col-md-6';
   public sortBy = 'ascending';
   private searchSubject = new Subject<string>();
+  public nodisplay = false;
+
 
   readonly products$ = this.searchSubject.pipe(
     debounceTime(250),
@@ -24,30 +26,28 @@ export class SearchComponent implements OnInit {
   );
 
   constructor(
-    public productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private viewScroller: ViewportScroller) { }
+      private router: Router,
+      private route: ActivatedRoute,
+      public productService: ProductService,
+      private viewScroller: ViewportScroller) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   searchProducts(searchString: string) {
-
     if (searchString && searchString.length > 0) {
-      this.searchSubject.next(searchString);
+      return this.searchSubject.next(searchString);
     }
   }
 
-  setPage(page: number) {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { page: page },
-      queryParamsHandling: 'merge', // preserve the existing query params in the route
-      skipLocationChange: false  // do trigger navigation
-    }).finally(() => {
-      this.viewScroller.setOffset([120, 120]);
-      this.viewScroller.scrollToAnchor('products'); // Anchore Link
-    });
-  }
+  // setPage(page: number) {
+  //   this.router.navigate([], {
+  //     relativeTo: this.route,
+  //     queryParams: { page: page },
+  //     queryParamsHandling: 'merge', // preserve the existing query params in the route
+  //     skipLocationChange: false  // do trigger navigation
+  //   }).finally(() => {
+  //     this.viewScroller.setOffset([120, 120]);
+  //     this.viewScroller.scrollToAnchor('products'); // Anchore Link
+  //   });
+  // }
 }

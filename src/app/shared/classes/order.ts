@@ -9,6 +9,7 @@ export class OrderItem {
     product_name: string;
     quantity: number;
     unit_price: number;
+    vat_price: number;
     discount: number;
     total_price: number;
 }

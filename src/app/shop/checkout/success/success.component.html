@@ -1,44 +1,6 @@
-<ng-container *ngIf="!(order$ | async)">
-    <!-- breadcrumb start -->
-    <app-breadcrumb [title]="'404 page'" [breadcrumb]="'404 page'"></app-breadcrumb>
-    <!-- breadcrumb End -->
 
-    <!-- section start -->
-    <section class="p-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="error-section">
-                        <h1>404</h1>
-                        <h2>page not found</h2>
-                        <a [routerLink]="'/home'" class="btn btn-solid">back to home</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</ng-container>
-<!-- Section ends -->
 
-<ng-container *ngIf="(order$ | async) as order">
-    <app-breadcrumb [title]="'Order Success'" [breadcrumb]="'Order Success'"></app-breadcrumb>
-    <!-- thank-you section start -->
-    <section class="section-b-space light-layout">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="success-text">
-                        <i class="fa fa-check-circle" aria-hidden="true"></i>
-                        <h2>thank you</h2>
-                        <p>Payment has been received and your Order Placed Successfully</p>
-                        <p>Transaction ID:{{ order.id }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Section ends -->
-
+<ng-container *ngIf="(order$ | async) as order; else loading">
     <!-- order-detail section start -->
     <section class="section-b-space">
         <div class="container">
@@ -121,4 +83,121 @@
         </div>
     </section>
 </ng-container>
+
+
+<ng-template #loading>
+    <section class="p-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="error-section">
+                        <h2>Loading Please Wait...</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</ng-template>
+
+
+<!--<ng-container *ngIf="(order$ | async) as order">-->
+<!--    &lt;!&ndash; thank-you section start &ndash;&gt;-->
+<!--    <section class="section-b-space light-layout">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-12">-->
+<!--                    <div class="success-text">-->
+<!--                        <i class="fa fa-check-circle" aria-hidden="true"></i>-->
+<!--                        <h2>thank you</h2>-->
+<!--                        <p>Payment has been received and your Order Placed Successfully</p>-->
+<!--                        <p>Transaction ID:{{ order.id }}</p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--    &lt;!&ndash; Section ends &ndash;&gt;-->
+
+<!--    &lt;!&ndash; order-detail section start &ndash;&gt;-->
+<!--    <section class="section-b-space">-->
+<!--        <div class="container">-->
+<!--            <div class="row">-->
+<!--                <div class="col-lg-6">-->
+<!--                    <div class="product-order">-->
+<!--                        <h3>your order details</h3>-->
+<!--                        <div class="row product-order-detail" *ngFor="let item of order.orderItems">-->
+<!--                            <ng-container *ngIf="item.quantity > 0">-->
+<!--                                <div class="col-2">-->
+<!--                                    <img [src]="item.image_path" alt="" class="img-fluid" style="max-height: 50px;">-->
+<!--                                </div>-->
+<!--                                <div class="col-5 order_detail">-->
+<!--                                    <div>-->
+<!--                                        <h4>product name</h4>-->
+<!--                                        <h5>{{ item.product_name }}</h5>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-2 order_detail">-->
+<!--                                    <div>-->
+<!--                                        <h4>qty</h4>-->
+<!--                                        <h5>{{ item.quantity }}</h5>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="col-3 order_detail">-->
+<!--                                    <div>-->
+<!--                                        <h4>price</h4>-->
+<!--                                        <h5>{{ item.total_price  | currency:productService?.Currency.currency:'symbol' }}-->
+<!--                                        </h5>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </ng-container>-->
+<!--                        </div>-->
+<!--                        <div class="total-sec">-->
+<!--                            <ul>-->
+<!--                                <li>Subtotal-->
+<!--                                    <span>{{ order.orderAmount | currency:productService?.Currency.currency:'symbol' }}</span>-->
+<!--                                </li>-->
+<!--                                <li>Delivery-->
+<!--                                    <span>{{ 1000 | currency:productService?.Currency.currency:'symbol'}}</span></li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                        <div class="final-total">-->
+<!--                            <h3>total-->
+<!--                                <span>{{ order.orderAmount | currency:productService?.Currency.currency:'symbol' }}</span>-->
+<!--                            </h3>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="col-lg-6">-->
+<!--                    <div class="row order-success-sec">-->
+<!--                        <div class="col-sm-6">-->
+<!--                            <h4>summary</h4>-->
+<!--                            <ul class="order-detail">-->
+<!--                                <li>order ID: {{ order.id }}</li>-->
+<!--                                <li>Order Date: {{ order.orderedAt | date}} </li>-->
+<!--                                <li>Order Total:-->
+<!--                                    {{ order.orderAmount | currency:productService?.Currency.currency:'symbol' }}-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+<!--                        <div class="col-sm-6">-->
+<!--                            <h4>shipping address</h4>-->
+<!--                            <ul class="order-detail">-->
+<!--                                <li>Address: {{ order.address}}</li>-->
+<!--                                <li>Contact No. {{ order.telephone }}</li>-->
+<!--                            </ul>-->
+<!--                        </div>-->
+
+
+<!--                        <div class="col-md-12" *ngIf="order.deliver">-->
+<!--                            <div class="delivery-sec">-->
+<!--                                <h3>expected date of delivery</h3>-->
+<!--                                <h2>{{ order.orderedAt | date}}</h2>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</ng-container>-->
 <!-- Section ends -->

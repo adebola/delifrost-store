@@ -527,7 +527,7 @@ header {
 }
 
 // Responsive menu css start //
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
     .responsive-btn {
         display: none;
     }
@@ -907,7 +907,7 @@ header {
 }
 
 // Experimental
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
     header {
         .main-navbar {
             .nav-menu {
