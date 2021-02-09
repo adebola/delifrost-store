@@ -16,14 +16,12 @@ import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CategoriesComponent } from './components/categories/categories.component';
-import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { ProductBoxOneComponent } from './components/product/product-box-one/product-box-one.component';
 import { ProductBoxVerticalComponent } from './components/product/product-box-vertical/product-box-vertical.component';
 
 // Modals Components
 import { NewsletterComponent } from './components/modal/newsletter/newsletter.component';
 import { QuickViewComponent } from './components/modal/quick-view/quick-view.component';
-import { VideoModalComponent } from './components/modal/video-modal/video-modal.component';
 import { QuickAddressViewComponent } from './components/modal/quick-address-view/quick-address-view.component';
 
 // Skeleton Loader Components
@@ -36,6 +34,8 @@ import { TapToTopComponent } from './components/tap-to-top/tap-to-top.component'
 import { DiscountPipe } from './pipes/discount.pipe';
 import { ErrorComponent } from './error/error.component';
 import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick-terms-view.component';
+import {TreeViewWrapperComponent} from './components/treeview/treeview.component';
+import {TreeviewModule} from 'ngx-treeview';
 
 
 
@@ -45,7 +45,6 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
     FooterComponent,
     MenuComponent,
     SettingsComponent,
-    BreadcrumbComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
     ProductBoxVerticalComponent,
@@ -53,10 +52,10 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
-    VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
     ErrorComponent,
+    TreeViewWrapperComponent,
     DiscountPipe
   ],
   imports: [
@@ -66,6 +65,7 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
     ReactiveFormsModule,
     NgbModule,
     CarouselModule,
+    TreeviewModule.forRoot(),
     BarRatingModule,
     LazyLoadImageModule.forRoot({
       // preset: scrollPreset // <-- tell LazyLoadImage that you want to use scrollPreset
@@ -83,7 +83,6 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
     NgxSkeletonLoaderModule,
     HeaderComponent,
     FooterComponent,
-    BreadcrumbComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
     ProductBoxVerticalComponent,
@@ -91,9 +90,9 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
-    VideoModalComponent,
     SkeletonProductBoxComponent,
     TapToTopComponent,
+    TreeViewWrapperComponent,
     DiscountPipe
   ]
 })

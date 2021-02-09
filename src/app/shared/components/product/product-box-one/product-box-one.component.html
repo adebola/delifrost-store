@@ -10,7 +10,7 @@
         <img 
           [defaultImage]="ImageSrc ? ImageSrc : 'assets/images/products/placeholder.jpg'" 
           [lazyLoad]="ImageSrc ? ImageSrc : product.bundles[0].imagePath" 
-          class="img-fluid lazy-loading" 
+          class="img-fluid lazy-loading"
           alt="{{ product.bundles[0].imagePath }}" />
       </a>
     </div>
@@ -28,19 +28,28 @@
     </ul>
     <div class="cart-info cart-wrap">
       <a title="Add to cart" (click)="addToCart(product)" *ngIf="!cartModal">
-        <i class="ti-shopping-cart"></i>
+<!--        <i class="ti-shopping-cart"></i>-->
+          <i class="fa fa-cart-plus" aria-hidden="true"></i>
       </a>
       <a title="Add to Wishlist" (click)="addToWishlist(product)">
-        <i class="ti-heart" aria-hidden="true"></i>
+          <i class="fa fa-heart-o" aria-hidden="true"></i>
+<!--        <i class="ti-heart" aria-hidden="true"></i>-->
       </a>
       <a title="Quick View" (click)="QuickView.openModal(bundle.id)">
-        <i class="ti-search" aria-hidden="true"></i>
+          <i class="fa fa-search"></i>
+<!--        <i class="ti-search" aria-hidden="true"></i>-->
       </a>
     </div>
   </div>
   <div class="product-detail">
     <div>
+<!--        <app-stock-inventory [stock]="0"></app-stock-inventory>-->
 <!--      <bar-rating [rate]="5" [readOnly]="false"></bar-rating>-->
+
+        <div class="pro_inventory" *ngIf="product.bundles[0].stock == 0">
+            <h5 class="avalibility" style="color: #A3D7E7;"><strong>Out of Stock</strong></h5>
+        </div>
+
        <a [routerLink]="['/shop/product/', product.productId]">
         <h5>{{ product.name | titlecase }}</h5>
       </a>

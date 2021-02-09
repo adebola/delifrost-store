@@ -11,6 +11,7 @@ export interface Product {
 export interface Bundle {
     id: number;
     sku: string;
+    stock: number;
     price: number;
     discount: number;
     description: string;

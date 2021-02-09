@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Product} from '../../../../shared/classes/product';
 import {ProductService} from '../../../../shared/services/product.service';
 import {Subscription} from 'rxjs';
@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs';
     templateUrl: './pagination.component.html',
     styleUrls: ['./pagination.component.scss']
 })
-export class PaginationComponent implements OnInit, OnDestroy {
+export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() products: Product[] = [];
     @Input() pageSize: number;
@@ -23,24 +23,8 @@ export class PaginationComponent implements OnInit, OnDestroy {
     public pages;
     private subscription: Subscription;
 
-    constructor(private productService: ProductService) {
-    }
-
     ngOnInit(): void {
-
-        if (this.totalLength === 0) {
-
-            if (this.subscription) {
-                this.subscription.unsubscribe();
-            }
-
-            this.subscription = this.productService.products$.subscribe(product => {
-              this.totalLength = product.length;
-              this.setParams();
-            });
-        } else {
-            this.setParams();
-        }
+        this.setParams();
     }
 
     ngOnDestroy(): void {
@@ -55,8 +39,12 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
     private setParams() {
         this.totalPages = Math.ceil(this.totalLength / this.pageSize);
-        this.startPage = 1;
-        this.endPage = this.totalPages;
-        this.pages = Array.from(Array((this.endPage + 1) - this.startPage).keys()).map(i => this.startPage + i);
+        this.startPage = 1 + (this.pageSize * (this.pageNo - 1));
+        this.endPage = Math.min(+this.startPage + +this.pageSize - 1, this.totalLength);
+        this.pages = Array.from(Array((this.totalPages + 1) - 1).keys()).map(i => 1 + i);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.setParams();
     }
 }

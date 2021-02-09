@@ -4,6 +4,7 @@ import { Product, Bundle } from '../../../classes/product';
 import { ProductService } from '../../../services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 import { WishListService } from 'src/app/shared/services/wishlist.service';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-box-one',
@@ -15,10 +16,10 @@ export class ProductBoxOneComponent implements OnInit {
 
   @Input() product: Product;
   @Input() currency: any = this.productService.Currency; // Default Currency
-  @Input() thumbnail: boolean = false; // Default False
-  @Input() onHowerChangeImage: boolean = false; // Default False
-  @Input() cartModal: boolean = false; // Default False
-  @Input() loader: boolean = false;
+  @Input() thumbnail = false; // Default False
+  @Input() onHowerChangeImage = false; // Default False
+  @Input() cartModal = false; // Default False
+  @Input() loader = false;
 
   private quantity = 1;
 
@@ -29,18 +30,15 @@ export class ProductBoxOneComponent implements OnInit {
   public ImageSrc: string;
 
   constructor(
-    private wishListService: WishListService,
-    private productService: ProductService,
-    private cartService: CartService) { }
+      private toastrService: ToastrService,
+      private wishListService: WishListService,
+      private productService: ProductService,
+      private cartService: CartService) { }
 
   ngOnInit(): void {
     this.loader = true;
     this.bundle = this.product.bundles[0];
     this.loader = false;
-
-    // if (this.loader) {
-    //   setTimeout(() => { this.loader = false; }, 2000); // Skeleton Loader
-    // }
   }
 
   // Change Variants Image
@@ -49,6 +47,11 @@ export class ProductBoxOneComponent implements OnInit {
   }
 
   addToCart(product: Product) {
+
+    if (this.product.bundles[0].stock === 0) {
+      return this.toastrService.info('The Product is currently out of stock please check back later');
+    }
+
     this.cartService.addToCart(product, this.bundle.id, this.quantity);
   }
 

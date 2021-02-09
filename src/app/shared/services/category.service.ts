@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 import {environment} from 'src/environments/environment';
 import {Category} from '../classes/category';
@@ -13,14 +13,15 @@ const CATEGORY_URL = environment.base_url + '/api/v1/store/categories';
 })
 export class CategoryService {
   private subject = new BehaviorSubject<Category[]>([]);
-  categories$: Observable<Category[]> = this.subject.asObservable();
+  private categories: Category[];
+  public categories$: Observable<Category[]> = this.subject.asObservable();
 
   constructor(private http: HttpClient, private toastrService: ToastrService) {
     this.loadCategories();
   }
 
   private loadCategories() {
-    const categories$ = this.http.get<Category[]>(CATEGORY_URL)
+     this.http.get<Category[]>(CATEGORY_URL)
         .pipe(
             catchError(err => {
               const message = ' Unable to Load categories';
@@ -28,7 +29,19 @@ export class CategoryService {
               console.log(message, err);
               return throwError(err);
             }),
-            tap(categories => this.subject.next(categories))
+            tap(categories => {
+                this.subject.next(categories);
+                this.categories = categories;
+            })
         ).subscribe();
+  }
+
+  public getSubCategories(categoryName: string): any[] {
+
+      const category = this.categories.find(el => el.name === categoryName && el.subCategories);
+
+      if (category) {
+          return category.subCategories;
+      }
   }
 }

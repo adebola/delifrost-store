@@ -2,17 +2,8 @@
 <div class="collection-collapse-block border-0" [class.open]="collapse">
     <h3 class="collapse-block-title" (click)="collapse = !collapse">Category</h3>
     <div class="collection-collapse-block-content">
-        <div class="collection-brand-filter" style="min-height: 280px;">
-            <ul class="category-list">
-                <li>
-                    <a [routerLink]="['/shop/collection']">All</a>
-                </li>
-                <li *ngFor="let category of categoryService.categories$ | async">
-                    <a [routerLink]="['/shop/collection']" [queryParams]="{ category: category.name }">
-                        {{ category.name }}
-                    </a>
-                </li>
-            </ul>
+        <div class="collection-brand-filter" style="min-height: 380px;">
+            <app-treeview-wrapper [items]="items" (itemSelected)="itemSelected($event)"></app-treeview-wrapper>
         </div>
     </div>
 </div>

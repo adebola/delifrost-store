@@ -1,8 +1,14 @@
-<div class="pro_inventory" *ngIf="stock <= 5">
+<div class="pro_inventory">
     <p class="active">
-      Hurry! We have only {{ stock }} product in stock.
+        {{ stock }} Left
     </p>
     <div class="inventory-scroll nostripes active">
-      <span style="width: 95%;"></span>
+        <span style="width: 95%;"></span>
     </div>
+    <h5 *ngIf="stock > 0; else nostock" class="avalibility"><span>In Stock</span></h5>
+    <ng-template #nostock>
+        <h5 class="avalibility"><span>Out of Stock</span></h5>
+    </ng-template>
 </div>
+
+

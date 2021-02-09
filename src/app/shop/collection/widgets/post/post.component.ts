@@ -26,8 +26,8 @@ export class PostComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    this.likesSub.unsubscribe();
-    this.dislikesSub.unsubscribe();
+    if (this.likesSub) { this.likesSub.unsubscribe(); }
+    if (this.dislikesSub) { this.dislikesSub.unsubscribe(); }
   }
 
   ngAfterViewInit(): void {

@@ -29,10 +29,12 @@
                                         <h2 class="td-color">
                                             <a [routerLink]="['/shop/product/', item.sku_id]"
                                                 class="icon mr-1">
-                                                <i class="ti-close"></i>
+<!--                                                <i class="ti-close"></i>-->
+                                                <i class="fa fa-times" aria-hidden="true"></i>
                                             </a>
                                             <a [routerLink]="['/shop/product/left/sidebar/trim-dress']" class="cart">
-                                                <i class="ti-shopping-cart"></i>
+<!--                                                <i class="ti-shopping-cart"></i>-->
+                                                <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                             </a>
                                         </h2>
                                     </div>
@@ -43,10 +45,12 @@
                             </td>
                             <td>
                                 <a (click)="onRemove(item.id, item.sku_id)" class="icon mr-3" style="cursor: pointer;">
-                                    <i class="ti-close"></i>
+<!--                                    <i class="ti-close"></i>-->
+                                    <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
                                 <a (click)="onAdd(item.id, item.sku_id)" class="cart" style="cursor: pointer;">
-                                    <i class="ti-shopping-cart"></i>
+<!--                                    <i class="ti-shopping-cart"></i>-->
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                 </a>
                             </td>
                         </tr>

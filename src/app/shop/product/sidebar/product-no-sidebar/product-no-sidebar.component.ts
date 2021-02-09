@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductDetailsMainSlider, ProductDetailsThumbSlider } from '../../../../shared/data/slider';
 import { Bundle, Product } from '../../../../shared/classes/product';
 import { ProductService } from '../../../../shared/services/product.service';
 import { CartService } from 'src/app/shared/services/cart.service';
@@ -23,12 +22,12 @@ export class ProductNoSidebarComponent implements OnInit {
   public price: number;
   public discountedPrice: number;
   public product: Product;
-  public counter: number = 1;
-  public activeSlide: any = 0;
-  public selectedSize: any;
+  public counter = 1;
 
-  public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
-  public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
+  // public activeSlide: any = 0;
+  // public selectedSize: any;
+  // public ProductDetailsMainSliderConfig: any = ProductDetailsMainSlider;
+  // public ProductDetailsThumbConfig: any = ProductDetailsThumbSlider;
 
   public posts$: Observable<Post[]>;
   public showAddPost = false;

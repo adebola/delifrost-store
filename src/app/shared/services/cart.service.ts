@@ -113,7 +113,8 @@ export class CartService {
 
         bundle.quantity = bundle.quantity ? bundle.quantity + quantity : quantity;
         bundle.subTotalPrice = bundle.subTotalPrice ? bundle.subTotalPrice + incrementalPrice : incrementalPrice;
-        bundle.VATPrice = bundle.VATPrice ? bundle.VATPrice + incrementalVAT : incrementalVAT;
+
+        bundle.VATPrice = bundle.vatExclusive ? 0 :  (bundle.VATPrice > 0.0 ? bundle.VATPrice += incrementalVAT : incrementalVAT);
         bundle.subTotalVatPrice =  bundle.subTotalPrice +  bundle.VATPrice;
 
         this.toastrService.success(item.name + ' has been added to the Cart.');

@@ -6,7 +6,9 @@ import { ProductService } from '../../shared/services/product.service';
 import { OrderService, OrderDetails } from '../../shared/services/order.service';
 import { CartService } from 'src/app/shared/services/cart.service';
 
-import '../../../assets/js/inline.js';
+// import '../../../assets/js/inline.js';
+// import 'https://js.paystack.co/v1/inline.js';
+
 import { QuickAddressViewComponent } from 'src/app/shared/components/modal/quick-address-view/quick-address-view.component';
 import { AddressService } from 'src/app/shared/services/address.service';
 import { AuthService } from 'src/app/auth/auth.service';
@@ -57,7 +59,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-
     let address;
 
     this.subAddress =  this.addressService.addresses$.subscribe(a => {
@@ -119,9 +120,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   private paystackCheckOut() {
     const handler = PaystackPop.setup({
-      key: 'pk_test_94dbaebf2467e2b41e3552f23a093e7e55cbe57e',
+      key: 'pk_live_bfb16d02aa71e338d149d20a790d3ae874ba8896',
       email: this.email,
-      amount: this.cartService.cartTotalAmount * 100,
+      amount: Math.round(this.cartService.cartTotalAmount * 100),
       currency: 'NGN',
       ref: this.generateId(16),
       callback: (response) => {

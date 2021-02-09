@@ -5,15 +5,9 @@ import { HomeRoutingModule } from './home-routing.module';
 
 import { LandingComponent } from './landing/landing.component';
 
-// Widget Components
-import { SliderComponent } from './widgets/slider/slider.component';
-
 @NgModule({
   declarations: [
     LandingComponent,
-
-    // Widget Components
-    SliderComponent,
   ],
   imports: [
     CommonModule,

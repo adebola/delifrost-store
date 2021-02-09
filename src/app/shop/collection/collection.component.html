@@ -1,4 +1,4 @@
-<section class="section-b-space">
+<section style="margin-top: 30px; padding-top: 0;">
     <div class="collection-wrapper">
         <div class="container">
             <div class="row">
@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <app-pagination [products]="products" [totalLength]="totalLength" [pageNo]="pageNo" [pageSize]="pageSize"
+                                    <app-pagination *ngIf="totalLength > 0" [products]="products" [totalLength]="totalLength" [pageNo]="pageNo" [pageSize]="pageSize"
                                         (setPage)="updatePage($event)">
                                     </app-pagination>
                                 </div>

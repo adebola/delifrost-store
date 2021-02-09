@@ -44,8 +44,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         this.submitted = true;
 
-        console.log(form);
-
         if (!form.valid) {
             return this.toastrService.error('The Form has not been completely filled out');
         }
@@ -56,8 +54,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         const response = grecaptcha.getResponse();
         if (response.length === 0) {
-            this.captchaError = true;
-            return;
+            return this.captchaError = true;
         }
 
         const email = form.value.email;
@@ -72,14 +69,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 catchError(() => grecaptcha.reset()),
                 tap(() => {
                     this.router.navigate(['/auth/login']);
-                    this.toastrService.info('User has been registered successfully');
+                    this.toastrService.info('You have been registered successfully, DELIFROST Admin will activate your account to grant you access');
                 })
             ).subscribe(() => grecaptcha.reset());
     }
 
-    resolved($event: string) {
-        console.log($event);
-    }
+    resolved($event: string) {}
 
     private createForm(): void {
         this.registerForm = this.fb.group({
