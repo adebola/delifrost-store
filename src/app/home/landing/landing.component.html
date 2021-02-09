@@ -27,37 +27,30 @@
   </div>
 </section>
 
-
-<!-- About section start -->
-<section class="section-b-space">
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-5 col-lg-6 col-md-12 offset-xl-1 text-center">
-        <img src="assets/images/delifrost-brands.png" alt="" class="img-fluid" />
-      </div>
-      <div class="col-xl-5 col-lg-6 col-md-12">
-        <div class="about-section">
-          <div>
-            <h2>about us</h2>
-            <div class="about-text">
-              <p>
-                DÉLIFROST is a dynamic company that has established itself as
-                one of the leading FMCG distribution companies in Nigeria in
-                just about ten years.
-              </p>
-              <p>
-                with a comprehensive portfolio of top international
-                chilled/frozen FMCG food brands dedicated to the modern trade
-                and the food service segment.
-              </p>
-            </div>
-          </div>
-        </div>
+<section class="section-b-space mx-5">
+  <div class="title1">
+    <h2 class="title-inner1">favourites</h2>
+  </div>
+<div class="product-wrapper-grid" [ngClass]="layoutView">
+  <div class="row">
+    <div class="col-grid-box" [ngClass]="grid" *ngFor="let product of favouriteProducts">
+      <div class="product-box">
+        <app-product-box-one [product]="product"
+                             [currency]="productService?.Currency" [thumbnail]="false"
+                             [cartModal]="false" [loader]="false">
+        </app-product-box-one>
       </div>
     </div>
-  </div>
-</section>
-<!-- About section  end -->
 
-<app-newsletter></app-newsletter>
+    <div class="col-sm-12 text-center section-b-space mt-5 no-found"
+         *ngIf="favouriteProducts && !favouriteProducts.length">
+      <img src="assets/images/empty-wishlist.png" class="img-fluid mb-4">
+      <h3>Your dont have any products in your favourite bucket!!! </h3>
+      <p>Please products to your favourite's bucket.</p>
+      <a [routerLink]="['/shop/collection']"
+         class="btn btn-solid">continue shopping</a>
+    </div>
+  </div>
+</div>
+</section>
 <app-footer [themeLogo]="themeLogo" [mainFooter]="false"></app-footer>

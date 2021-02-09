@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { BehaviorSubject, Subscription, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import {BehaviorSubject, Observable, of, Subscription, throwError} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { User } from 'src/app/auth/user.model';
 import { environment } from 'src/environments/environment';
 import { WishList } from '../classes/wishlist';
+import {Product} from '../classes/product';
+import {ProductService} from './product.service';
 
 const USER_WISHLIST_URL = environment.base_url + '/api/v1/store/wishlist';
 
@@ -24,6 +26,7 @@ export class WishListService {
   constructor(
       private http: HttpClient,
       private authService: AuthService,
+      private productService: ProductService,
       private toastrService: ToastrService) {
     this.loadWishList();
   }
@@ -85,7 +88,7 @@ export class WishListService {
       this.subSave = this.http.post<WishList[]>(USER_WISHLIST_URL, wishlist)
         .pipe(
           catchError(err => {
-            const message = ' Unable to Save to your Favourites';
+            const message = 'Unable to Save to your Favourites';
             this.toastrService.error(message);
             console.log(message, err);
             return throwError(err);

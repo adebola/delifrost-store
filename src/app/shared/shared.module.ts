@@ -20,7 +20,6 @@ import { ProductBoxOneComponent } from './components/product/product-box-one/pro
 import { ProductBoxVerticalComponent } from './components/product/product-box-vertical/product-box-vertical.component';
 
 // Modals Components
-import { NewsletterComponent } from './components/modal/newsletter/newsletter.component';
 import { QuickViewComponent } from './components/modal/quick-view/quick-view.component';
 import { QuickAddressViewComponent } from './components/modal/quick-address-view/quick-address-view.component';
 
@@ -48,7 +47,6 @@ import {TreeviewModule} from 'ngx-treeview';
     CategoriesComponent,
     ProductBoxOneComponent,
     ProductBoxVerticalComponent,
-    NewsletterComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
@@ -86,7 +84,6 @@ import {TreeviewModule} from 'ngx-treeview';
     CategoriesComponent,
     ProductBoxOneComponent,
     ProductBoxVerticalComponent,
-    NewsletterComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
