@@ -17,7 +17,6 @@ import { MenuComponent } from './components/menu/menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { ProductBoxOneComponent } from './components/product/product-box-one/product-box-one.component';
-import { ProductBoxVerticalComponent } from './components/product/product-box-vertical/product-box-vertical.component';
 
 // Modals Components
 import { QuickViewComponent } from './components/modal/quick-view/quick-view.component';
@@ -36,8 +35,6 @@ import {QuickTermsViewComponent} from './components/modal/quick-terms-view/quick
 import {TreeViewWrapperComponent} from './components/treeview/treeview.component';
 import {TreeviewModule} from 'ngx-treeview';
 
-
-
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -46,7 +43,6 @@ import {TreeviewModule} from 'ngx-treeview';
     SettingsComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
-    ProductBoxVerticalComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
@@ -66,7 +62,7 @@ import {TreeviewModule} from 'ngx-treeview';
     TreeviewModule.forRoot(),
     BarRatingModule,
     LazyLoadImageModule.forRoot({
-      // preset: scrollPreset // <-- tell LazyLoadImage that you want to use scrollPreset
+      preset: scrollPreset // <-- tell LazyLoadImage that you want to use scrollPreset
     }),
     NgxSkeletonLoaderModule,
   ],
@@ -83,7 +79,6 @@ import {TreeviewModule} from 'ngx-treeview';
     FooterComponent,
     CategoriesComponent,
     ProductBoxOneComponent,
-    ProductBoxVerticalComponent,
     QuickViewComponent,
     QuickAddressViewComponent,
     QuickTermsViewComponent,
