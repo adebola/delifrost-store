@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {catchError, tap} from 'rxjs/operators';
 import {QuickTermsViewComponent} from '../../shared/components/modal/quick-terms-view/quick-terms-view.component';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 declare var grecaptcha: any;
 
@@ -21,13 +22,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     public registerForm: FormGroup;
     public submitted = false;
+    closeResult = '';
     @ViewChild('quickTermsView') QuickTermsView: QuickTermsViewComponent;
+    @ViewChild('content') modal;
 
     constructor(
-        private authService: AuthService,
         private router: Router,
+        private fb: FormBuilder,
+        private modalService: NgbModal,
+        private authService: AuthService,
         private toastrService: ToastrService,
-        private fb: FormBuilder) {
+        ) {
     }
 
     ngOnDestroy(): void {
@@ -69,12 +74,32 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 catchError(() => grecaptcha.reset()),
                 tap(() => {
                     this.router.navigate(['/auth/login']);
-                    this.toastrService.info('You have been registered successfully, DELIFROST Admin will activate your account to grant you access');
+                    // this.toastrService
+                    //     .info('You have been registered successfully, DELIFROST Admin will activate your account to grant you access');
+                    this.open(this.modal);
                 })
             ).subscribe(() => grecaptcha.reset());
     }
 
     resolved($event: string) {}
+
+    open(content) {
+        this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
+    }
 
     private createForm(): void {
         this.registerForm = this.fb.group({

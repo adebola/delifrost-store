@@ -11,11 +11,13 @@
                             <input type="text" name="fullname" class="form-control" id="fullname"
                                    placeholder="Full Name (Required)" formControlName="fullname" required/>
 
-                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.required"
+                                 class="text text-danger">
                                 Full Name is required.
                             </div>
 
-                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.pattern" class="text text-danger">
+                            <div *ngIf="registerForm.controls.fullname.touched && registerForm.controls.fullname.errors?.pattern"
+                                 class="text text-danger">
                                 Full Name must be alphabets.
                             </div>
                         </div>
@@ -28,34 +30,42 @@
                         <div class="form-group">
                             <input type="text" name="telephone" class="form-control" id="telephone"
                                    placeholder="Telephone Number (Required)" formControlName="telephone"/>
-                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.required"
+                                 class="text text-danger">
                                 Telephone Number is required.
                             </div>
-                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.pattern" class="text text-danger">
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.pattern"
+                                 class="text text-danger">
                                 Telephone Number must be numbers.
                             </div>
-                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.minlength" class="text text-danger">
+                            <div *ngIf="registerForm.controls.telephone.touched && registerForm.controls.telephone.errors?.minlength"
+                                 class="text text-danger">
                                 Telephone Number must be a minimum of 11 characters
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <input type="email" name="email" class="form-control" id="email" placeholder="Email (Required)"
+                            <input type="email" name="email" class="form-control" id="email"
+                                   placeholder="Email (Required)"
                                    formControlName="email" required/>
-                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.required"
+                                 class="text text-danger">
                                 Email Address is required
                             </div>
-                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.email" class="text text-danger">
+                            <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors?.email"
+                                 class="text text-danger">
                                 Invalid Email Address
                             </div>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control" id="password" name="password"
                                    formControlName="password" placeholder="Enter Password (Required)"/>
-                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.required"
+                                 class="text text-danger">
                                 Password is required
                             </div>
-                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.minlength" class="text text-danger">
+                            <div *ngIf="registerForm.controls.password.touched && registerForm.controls.password.errors?.minlength"
+                                 class="text text-danger">
                                 Password should be a minimum of 6 characters
                             </div>
                         </div>
@@ -63,10 +73,12 @@
                         <div class="form-group">
                             <input type="password" class="form-control" id="repeatpassword" name="repeatpassword"
                                    formControlName="repeatpassword" placeholder="Reconfirm Password (Required)"/>
-                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.required"
+                                 class="text text-danger">
                                 Password Re-Conformation is required
                             </div>
-                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.minlength" class="text text-danger">
+                            <div *ngIf="registerForm.controls.repeatpassword.touched && registerForm.controls.repeatpassword.errors?.minlength"
+                                 class="text text-danger">
                                 Password should be a minimum of 6 characters
                             </div>
                         </div>
@@ -74,15 +86,18 @@
                         <div class="form-group">
                             <textarea class="form-control" id="address" name="address"
                                       formControlName="address" placeholder="Address (Required)"></textarea>
-                            <div *ngIf="registerForm.controls.address.touched && registerForm.controls.address.errors?.required" class="text text-danger">
+                            <div *ngIf="registerForm.controls.address.touched && registerForm.controls.address.errors?.required"
+                                 class="text text-danger">
                                 Address is required
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>
-                                <input type="checkbox" class="form-control pull-left" class="pull-left" formControlName="acceptTerms" id="acceptTerms" name="acceptTerms"/>
-                                &#160;&#160; <a (click)="QuickTermsView.openModal()" style="cursor: pointer;">I Accept the Terms and Conditions</a>
+                                <input type="checkbox" class="form-control pull-left" class="pull-left"
+                                       formControlName="acceptTerms" id="acceptTerms" name="acceptTerms"/>
+                                &#160;&#160; <a (click)="QuickTermsView.openModal()" style="cursor: pointer;">I Accept
+                                the Terms and Conditions</a>
                             </label>
                             <div *ngIf="submitted && registerForm.controls.acceptTerms.errors" class="text text-danger">
                                 Please accept Terms and Conditions to Register
@@ -90,7 +105,8 @@
                         </div>
 
                         <div class="form-group">
-                            <re-captcha  (resolved)="resolved($event)" siteKey="6LdBMvkZAAAAAHvvSY40x6YyBkV-tKvdE6zQTgXz"></re-captcha>
+                            <re-captcha (resolved)="resolved($event)"
+                                        siteKey="6LdBMvkZAAAAAHvvSY40x6YyBkV-tKvdE6zQTgXz"></re-captcha>
                             <div *ngIf="captchaError" class="error required">Recaptcha not verified.</div>
                         </div>
 
@@ -102,6 +118,26 @@
             </div>
         </div>
     </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">DELIFROST E-COMMERCE</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>
+                You have been registered successfully
+            </p>
+            <p>
+                Delifrost Admin will activate your account to grant you access to the Store
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">OK</button>
+        </div>
+    </ng-template>
+
     <app-quick-terms-view #quickTermsView></app-quick-terms-view>
 </section>
 <!--Section ends-->
