@@ -4,6 +4,7 @@ import {AuthService} from '../auth.service';
 import {ActivatedRoute} from '@angular/router';
 import {User} from '../user.model';
 import {Subscription} from 'rxjs';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
     selector: 'app-reset-password',
@@ -18,6 +19,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
 
     constructor(private fb: FormBuilder,
+                private toastrService: ToastrService,
                 private route: ActivatedRoute,
                 public authService: AuthService) { }
 
@@ -27,8 +29,10 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
 
         if (this.token) {
-            console.log(this.token);
-            // this.subscribtion = this.authService.getResetToken(this.token).subscribe(user => this.user = user);
+            console.log('TOKEN', this.token);
+            this.subscribtion = this.authService.getResetToken(this.token).subscribe(user => {
+                this.user = user;
+            });
         }
     }
 
@@ -42,17 +46,17 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
 
         if (!form.valid) {
             console.log(form);
-            // return this.toastrService.error('Please fill in form correctly');
+            return this.toastrService.error('Please fill in form correctly');
         }
 
         const password: string = form.value.password;
         const repeatpassword: string = form.value.repeatpassword;
 
         if (password !== repeatpassword) {
-            // return this.toastrService.error('Passwords do not match please try again!')
+            return this.toastrService.error('Passwords do not match please try again!')
         }
 
-        // this.authService.changeTokenPassword(this.token, password);
+        this.authService.changeTokenPassword(this.token, password);
     }
 
     private createForm() {

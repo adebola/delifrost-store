@@ -120,7 +120,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   private paystackCheckOut() {
     const handler = PaystackPop.setup({
-      key: 'pk_live_bfb16d02aa71e338d149d20a790d3ae874ba8896',
+      // key: 'pk_live_bfb16d02aa71e338d149d20a790d3ae874ba8896',
+      key: 'pk_test_a0fa9ec7220232efc363d83de99ac17b7bcdb609',
       email: this.email,
       amount: Math.round(this.cartService.cartTotalAmount * 100),
       currency: 'NGN',
